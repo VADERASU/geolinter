@@ -1,0 +1,19 @@
+.logo {
+    float: left;
+    overflow: hidden;
+    color: #fff;
+    font-size: 20px;
+    line-height: 40px;
+    white-space: nowrap;
+    text-decoration: none;
+    margin-right: 24px;
+}
+
+.label {
+    float: left;
+    color: #fff;
+    font-size: 14px;
+    line-height: 40px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
