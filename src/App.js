@@ -21,10 +21,12 @@ class App extends Component {
     return(
       <div className='App'>
         <Layout className='mainContainer'>
-          {/** Nav bar */}
-          <Header className='headContainer'>
+          {/** Nav bar, may deprecated */}
+          {/**
+           * <Header className='headContainer'>
             <NavBar />
           </Header>
+           */}
 
           {/** Main layout of the system */}
           <Content className='vastContainer'>
@@ -32,25 +34,49 @@ class App extends Component {
             <Row gutter={8}>
               {/** Vega-lite script editor */}
               <Col span={8}>
-                <Card
-                  title='Script'
-                  size='small'
-                  className='cardDetail'
-                  style={{height: 900}}
-                ></Card>
+                <Row gutter={[8,8]}>
+                <Col span={24}>
+                    <Card
+                        title='Vega-lite Script'
+                        size='small'
+                        className='cardDetail'
+                        style={{height: 855}}
+                      ></Card>
+                  </Col>
+                  <Col span={24}>
+                      <Card
+                      title='Status Bar & Global Options'
+                      size='small'
+                      className='cardDetail'
+                      style={{height: 200}}
+                      ></Card>
+                  </Col>
+                </Row>
               </Col>
-              {/** Middle Col for detected flaws and recommendations */}
-              <Col span={8}>
-                <Row gutter={8}>
+
+              {/** Middle Col for detected flaws (R2) and Finetunings */}
+              <Col span={16}>
+                <Row gutter={[8,8]}>
                   <Col span={24}>
                     <Card
-                    title='Script'
+                    title='Detected Flaws (R2) '
                     size='small'
                     className='cardDetail'
+                    style={{height: 700, marginLeft:-8}}
+                  ></Card>
+                  </Col>
+                  <Col span={24}>
+                    <Card
+                    title='Recommendations'
+                    size='small'
+                    className='cardDetail'
+                    style={{height: 355}}
                   ></Card>
                   </Col>
                 </Row>
               </Col>
+
+
             </Row>
           </Content>
         </Layout>
