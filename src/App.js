@@ -3,20 +3,29 @@ import './styles/App.css';
 import {Layout} from 'antd';
 import {Row, Col, Card} from 'antd';
 //import {Select, Slider, Switch, Empty} from 'antd';
+/** import local components */
 import NavBar from './components/nav_bar';
+import CodeEditor from './components/codeEditor';
+import StatusBar from './components/statusBar';
+import MapLinter from './components/mapLinter';
 
 /** Import test data, can be uploaded by users */
+import usCounties from './resource/usCounties.json';
 
 /** Main App class */
 class App extends Component {
   constructor(props){
     super(props);
+
+    this.state = {
+      geoData: usCounties,
+    };
   }
 
   /** Render components for the main layout */
   render(){
     
-    const { Header, Content } = Layout;
+    const { Content } = Layout;
 
     return(
       <div className='App'>
@@ -32,42 +41,30 @@ class App extends Component {
           <Content className='vastContainer'>
             {/** Row #1 */}
             <Row gutter={8}>
-              {/** Vega-lite script editor */}
+              {/** Left Main Col */}
               <Col span={8}>
                 <Row gutter={[8,8]}>
                 {/** Nav Panel */}
                 <Col span={24}>
                   <NavBar />
                 </Col>
+                {/** Vega-Lite Script Editor */}
                 <Col span={24}>
-                    <Card
-                        title='Vega-lite Script'
-                        size='small'
-                        className='cardDetail'
-                        style={{height: 760}}
-                      ></Card>
-                  </Col>
+                  <CodeEditor />
+                </Col>
                   <Col span={24}>
-                      <Card
-                      title='Status Bar & Global Options'
-                      size='small'
-                      className='cardDetail'
-                      style={{height: 200}}
-                      ></Card>
+                      <StatusBar />
                   </Col>
                 </Row>
               </Col>
 
-              {/** Middle Col for detected flaws (R2) and Finetunings */}
-              <Col span={16}>
+              {/** Middle Main Col */}
+              <Col span={10}>
                 <Row gutter={[8,8]}>
                   <Col span={24}>
-                    <Card
-                    title='Detected Flaws (R2) '
-                    size='small'
-                    className='cardDetail'
-                    style={{height: 700}}
-                  ></Card>
+                    <MapLinter
+                      geoData={this.state.geoData}
+                    />
                   </Col>
                   <Col span={24}>
                     <Card
@@ -80,6 +77,12 @@ class App extends Component {
                 </Row>
               </Col>
 
+              {/** Right Main Col */}
+              <Col span={6}>
+                <Row gutter={[8,8]}>
+                  
+                </Row>
+              </Col>
 
             </Row>
           </Content>
