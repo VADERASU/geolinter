@@ -35,12 +35,16 @@ class App extends Component {
               {/** Vega-lite script editor */}
               <Col span={8}>
                 <Row gutter={[8,8]}>
+                {/** Nav Panel */}
+                <Col span={24}>
+                  <NavBar />
+                </Col>
                 <Col span={24}>
                     <Card
                         title='Vega-lite Script'
                         size='small'
                         className='cardDetail'
-                        style={{height: 855}}
+                        style={{height: 760}}
                       ></Card>
                   </Col>
                   <Col span={24}>
@@ -62,7 +66,7 @@ class App extends Component {
                     title='Detected Flaws (R2) '
                     size='small'
                     className='cardDetail'
-                    style={{height: 700, marginLeft:-8}}
+                    style={{height: 700}}
                   ></Card>
                   </Col>
                   <Col span={24}>

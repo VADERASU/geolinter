@@ -41,6 +41,7 @@
   /*height: 32vh;*/
 }
 
+/** Redefine card style features */
 .ant-card-head-title{
   flex: none;
 }

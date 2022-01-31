@@ -1,9 +1,16 @@
+.navBarDetail {
+    border-radius: 5px;
+    background: #dee2e6;
+    border: #dee2e6;
+    /*height: 32vh;*/
+  }
+
 .logo {
     float: left;
     overflow: hidden;
-    color: #fff;
+    
     font-size: 20px;
-    line-height: 40px;
+    line-height: 30px;
     white-space: nowrap;
     text-decoration: none;
     margin-right: 24px;
@@ -17,3 +24,4 @@
     margin-right: 10px;
     margin-left: 10px;
 }
+
