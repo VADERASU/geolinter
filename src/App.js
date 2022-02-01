@@ -11,7 +11,7 @@ import MapLinter from './components/mapLinter';
 
 /** Import test data, can be uploaded by users */
 import usstates from './resource/usstates.json';
-import usCounties from './resource/usCounties.json';
+import state from './resource/state.json';
 
 /** Main App class */
 class App extends Component {
@@ -20,7 +20,7 @@ class App extends Component {
 
     this.state = {
       geoData: usstates,
-      testData: usCounties,
+      testData: state,
     };
   }
 

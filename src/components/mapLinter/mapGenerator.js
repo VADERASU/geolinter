@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import '../../styles/MapLinter.css';
 //import {Card} from 'antd';
 import embed from 'vega-embed';
-import { VegaLite } from 'react-vega'
 
 class MapGenerator extends Component {
     constructor(props){
@@ -11,7 +10,9 @@ class MapGenerator extends Component {
     }
 
     drawVegaMap = (geoData, testData) => {
-        //console.log(geoData);
+        console.log(testData);
+        
+        /* TOPOJSON!!!
         const spec = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             width: 600,
@@ -35,25 +36,36 @@ class MapGenerator extends Component {
                   },
             }
         };
+        */
 
         const spec1 = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-            width: 600,
-            height: 500,
+            width: 730,
+            height: 400,
+            //background: "#F3F8FB",
             data: {
                 values: testData,
                 format: {
-                    //type: "geojson",
                     property: "features"
                 }
             },
             mark: 'geoshape',
             projection: {type: 'albersUsa'},
             encoding: {
-                  stroke: {
+                stroke: {
                     value: "black"
-                  },
-            }
+                },
+            },
+            usermeta: {
+                embedOptions: {
+                    actions: {
+                        export: true,
+                        source: false,
+                        compiled: false,
+                        editor: false
+                    },
+                }
+              }
         };
 
         const result = embed(this.canvasRef.current, spec1)
@@ -67,40 +79,15 @@ class MapGenerator extends Component {
 
     /** class function section */
     componentDidMount(){
-        //this.drawVegaMap(this.props.geoData, this.props.testData);
+        this.drawVegaMap(this.props.geoData, this.props.testData);
         //console.log(this.props);
     }
 
     /** render components */
     render(){
 
-        const spec = {
-            //$schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-            width: 600,
-            height: 500,
-            data: {
-                values: this.props.testData,
-                format: {
-                    property: "features"
-                }
-            },
-            mark: 'geoshape',
-            projection: {type: 'albersUsa'},
-            encoding: {
-                fill: {
-                    field: "properties.STATE_ID",
-                    scale: {"scheme": "greys"}
-                  },
-                  stroke: {
-                    value: "black"
-                  },
-            }
-        };
-
         return(
-            <div ref={this.canvasRef}>
-               <VegaLite spec={spec} /> 
-            </div>
+            <div ref={this.canvasRef}></div>
         );
     }
 }
