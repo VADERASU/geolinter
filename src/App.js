@@ -10,8 +10,9 @@ import StatusBar from './components/statusBar';
 import MapLinter from './components/mapLinter';
 
 /** Import test data, can be uploaded by users */
-import usstates from './resource/usstates.json';
+//import usstates from './resource/usstates.json'; //TOPOJSON
 import state from './resource/state.json';
+//import covid from './resource/covid.json';
 
 /** Main App class */
 class App extends Component {
@@ -19,16 +20,65 @@ class App extends Component {
     super(props);
 
     this.state = {
-      geoData: usstates,
+      //geoData: covid,
       testData: state,
+      /** vegalite script */
+      vegaLiteSpec:{},
+      /** end of vegalite script */
+      /** vegaLite raw code */
+      rawScript:
+`{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 730,
+  "height": 400,
+  "data": {
+    "values": "testData",
+    "format": {
+      "property": "features"
+    }
+  },
+  "mark": "geoshape",
+  "projection": {"type": "albersUsa"},
+  "encoding": {
+    "stroke": {
+      "value": "black"
+    }
+  },
+  "usermeta": {
+    "embedOptions": {
+      "actions": {
+        "export": true,
+        "source": false,
+        "compiled": false,
+        "editor": false
+      }
+    }
+  }
+}`,
+      /** end of raw script */
     };
   }
+
+  /** class functions */
+  handleScriptRunClick = () => {
+    let changedScript = JSON.parse(this.state.rawScript);
+    console.log(changedScript);
+  };
+
+  handleEditorChange =(newValue)=>{
+    this.setState({
+        rawScript: newValue
+    });
+    
+  };
 
   /** Render components for the main layout */
   render(){
     //console.log(this.state.geoData);
     const { Content } = Layout;
-
+    //const vagaLiteSpecString = JSON.stringify(this.state.rawScript, null, 4);
+    //const newJson = JSON.parse(vagaLiteSpecString);
+    //console.log(newJson);
     return(
       <div className='App'>
         <Layout className='mainContainer'>
@@ -52,7 +102,11 @@ class App extends Component {
                 </Col>
                 {/** Vega-Lite Script Editor */}
                 <Col span={24}>
-                  <CodeEditor />
+                  <CodeEditor
+                    vagaLiteSpecText={this.state.rawScript}
+                    onScriptRunClick={this.handleScriptRunClick}
+                    onEditorChange={this.handleEditorChange}
+                  />
                 </Col>
                   <Col span={24}>
                       <StatusBar />
@@ -65,7 +119,7 @@ class App extends Component {
                 <Row gutter={[8,8]}>
                   <Col span={24}>
                     <MapLinter
-                      geoData={this.state.geoData}
+                      //geoData={this.state.geoData}
                       testData={this.state.testData}
                     />
                   </Col>

@@ -1,0 +1,10 @@
+.editorDetail {
+    border-radius: 5px;
+    background: #F3F8FB;
+    /*height: 32vh;*/
+}
+
+.ace_editor{
+    background: #F3F8FB!important;
+    margin-left: -5px;
+}

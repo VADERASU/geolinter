@@ -55,6 +55,10 @@ class MapGenerator extends Component {
                 stroke: {
                     value: "black"
                 },
+                "color": {
+                    "field": "id",
+                    "type": "quantitative"
+                }         
             },
             usermeta: {
                 embedOptions: {
@@ -65,7 +69,7 @@ class MapGenerator extends Component {
                         editor: false
                     },
                 }
-              }
+            }
         };
 
         const result = embed(this.canvasRef.current, spec1)
