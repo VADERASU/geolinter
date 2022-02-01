@@ -10,6 +10,7 @@ import StatusBar from './components/statusBar';
 import MapLinter from './components/mapLinter';
 
 /** Import test data, can be uploaded by users */
+import usstates from './resource/usstates.json';
 import usCounties from './resource/usCounties.json';
 
 /** Main App class */
@@ -18,13 +19,14 @@ class App extends Component {
     super(props);
 
     this.state = {
-      geoData: usCounties,
+      geoData: usstates,
+      testData: usCounties,
     };
   }
 
   /** Render components for the main layout */
   render(){
-    
+    //console.log(this.state.geoData);
     const { Content } = Layout;
 
     return(
@@ -64,6 +66,7 @@ class App extends Component {
                   <Col span={24}>
                     <MapLinter
                       geoData={this.state.geoData}
+                      testData={this.state.testData}
                     />
                   </Col>
                   <Col span={24}>

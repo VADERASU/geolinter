@@ -23,6 +23,7 @@ class MapLinter extends Component {
             >
                 <MapGenerator
                     geoData={this.props.geoData}
+                    testData={this.props.testData}
                 />
             </Card>
         );
