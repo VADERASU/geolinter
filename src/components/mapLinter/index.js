@@ -22,8 +22,8 @@ class MapLinter extends Component {
                 style={{height: 700}}
             >
                 <MapGenerator
-                    geoData={this.props.geoData}
-                    testData={this.props.testData}
+                    selectedCaseData={this.props.selectedCaseData}
+                    vegaLiteSpec={this.props.vegaLiteSpec}
                 />
             </Card>
         );

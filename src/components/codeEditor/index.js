@@ -2,11 +2,7 @@ import {Component} from "react";
 import '../../styles/CodeEditor.css';
 import {Card, Button} from 'antd';
 /** import code editor */
-import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-json";
-import "ace-builds/src-noconflict/theme-xcode";
-
-
+import EditorPanel from "./codeEditor";
 
 class CodeEditor extends Component {
     constructor(props){
@@ -25,10 +21,11 @@ class CodeEditor extends Component {
                 highlightActiveLine: true,
                 enableSnippets: true,
                 showLineNumbers: true,
-                height: "550px",
+                height: "750px",
                 width: "615px",
                 annotations: [{ row: 10, column: 3, type: 'error', text: 'Some error.'}]
             },
+            classDef: null
 
         };
     }
@@ -73,27 +70,11 @@ class CodeEditor extends Component {
                     </div>
                 }
             >
-                <AceEditor
-                    value={this.props.vagaLiteSpecText}
-                    onChange={this.props.onEditorChange}
-                    placeholder={this.state.codeEditorOpt.placeholder}
-                    mode={this.state.codeEditorOpt.mode}
-                    theme={this.state.codeEditorOpt.theme}
-                    name="vegaCodeEditor"
-                    fontSize={this.state.codeEditorOpt.fontSize}
-                    showPrintMargin={this.state.codeEditorOpt.showPrintMargin}
-                    showGutter={this.state.codeEditorOpt.showGutter}
-                    highlightActiveLine={this.state.codeEditorOpt.highlightActiveLine}
-                    height={this.state.codeEditorOpt.height}
-                    width={this.state.codeEditorOpt.width}
-                    setOptions={{
-                        useWorker: false,
-                        enableBasicAutocompletion: this.state.codeEditorOpt.enableBasicAutocompletion,
-                        enableLiveAutocompletion: this.state.codeEditorOpt.enableLiveAutocompletion,
-                        enableSnippets: this.state.codeEditorOpt.enableSnippets,
-                        showLineNumbers: this.state.codeEditorOpt.showLineNumbers,
-                        tabSize: 2
-                    }}
+                <EditorPanel
+                    vagaLiteSpecText={this.props.vagaLiteSpecText}
+                    onEditorChange={this.props.onEditorChange}
+                    codeEditorOpt={this.state.codeEditorOpt}
+                    classDef={this.state.classDef}
                 />
             </Card>
         );

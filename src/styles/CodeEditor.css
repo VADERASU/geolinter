@@ -8,3 +8,7 @@
     background: #F3F8FB!important;
     margin-left: -5px;
 }
+
+.hidden{
+    display: none;
+}

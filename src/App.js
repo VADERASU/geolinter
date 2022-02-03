@@ -12,49 +12,28 @@ import MapLinter from './components/mapLinter';
 /** Import test data, can be uploaded by users */
 //import usstates from './resource/usstates.json'; //TOPOJSON
 import state from './resource/state.json';
-//import covid from './resource/covid.json';
+
+/** import case scripts */
+import { case_scripts } from './resource/cases';
 
 /** Main App class */
 class App extends Component {
   constructor(props){
     super(props);
+    
+    this.dataset = {
+      state: state
+    };
 
     this.state = {
-      //geoData: covid,
-      testData: state,
+      mapDataList: ['state'],
+      selectedCaseData: state,
       /** vegalite script */
-      vegaLiteSpec:{},
+      selectRawCase: "state",
+      vegaLiteSpec: JSON.parse(case_scripts["state"]),
       /** end of vegalite script */
       /** vegaLite raw code */
-      rawScript:
-`{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 730,
-  "height": 400,
-  "data": {
-    "values": "testData",
-    "format": {
-      "property": "features"
-    }
-  },
-  "mark": "geoshape",
-  "projection": {"type": "albersUsa"},
-  "encoding": {
-    "stroke": {
-      "value": "black"
-    }
-  },
-  "usermeta": {
-    "embedOptions": {
-      "actions": {
-        "export": true,
-        "source": false,
-        "compiled": false,
-        "editor": false
-      }
-    }
-  }
-}`,
+      rawScript: case_scripts["state"],
       /** end of raw script */
     };
   }
@@ -62,7 +41,10 @@ class App extends Component {
   /** class functions */
   handleScriptRunClick = () => {
     let changedScript = JSON.parse(this.state.rawScript);
-    console.log(changedScript);
+    this.setState({
+      vegaLiteSpec: changedScript
+    });
+    //console.log(changedScript);
   };
 
   handleEditorChange =(newValue)=>{
@@ -72,13 +54,21 @@ class App extends Component {
     
   };
 
+  handleCaseSelection = (selectedCase) => {
+    //console.log(selectedCase);
+    this.setState({
+      selectRawCase: selectedCase,
+      selectedCaseData:this.dataset[selectedCase],
+      rawScript: case_scripts[selectedCase]
+    });
+  };
+
   /** Render components for the main layout */
   render(){
     //console.log(this.state.geoData);
     const { Content } = Layout;
-    //const vagaLiteSpecString = JSON.stringify(this.state.rawScript, null, 4);
-    //const newJson = JSON.parse(vagaLiteSpecString);
-    //console.log(newJson);
+    /** extract cases and data name */
+
     return(
       <div className='App'>
         <Layout className='mainContainer'>
@@ -98,7 +88,10 @@ class App extends Component {
                 <Row gutter={[8,8]}>
                 {/** Nav Panel */}
                 <Col span={24}>
-                  <NavBar />
+                  <NavBar
+                    mapDataList={this.state.mapDataList}
+                    onCaseSelection={this.handleCaseSelection}
+                  />
                 </Col>
                 {/** Vega-Lite Script Editor */}
                 <Col span={24}>
@@ -119,8 +112,8 @@ class App extends Component {
                 <Row gutter={[8,8]}>
                   <Col span={24}>
                     <MapLinter
-                      //geoData={this.state.geoData}
-                      testData={this.state.testData}
+                      selectedCaseData={this.state.selectedCaseData}
+                      vegaLiteSpec={this.state.vegaLiteSpec}
                     />
                   </Col>
                   <Col span={24}>

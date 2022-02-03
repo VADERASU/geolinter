@@ -9,9 +9,7 @@ class MapGenerator extends Component {
         this.canvasRef = React.createRef();
     }
 
-    drawVegaMap = (geoData, testData) => {
-        console.log(testData);
-        
+    drawVegaMap = (selectedCaseData, spec) => {
         /* TOPOJSON!!!
         const spec = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -38,13 +36,17 @@ class MapGenerator extends Component {
         };
         */
 
+        /** Preprocess the vega spec */
+        spec.data.values = selectedCaseData;
+        console.log(spec);
+
         const spec1 = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             width: 730,
             height: 400,
             //background: "#F3F8FB",
             data: {
-                values: testData,
+                values: selectedCaseData,
                 format: {
                     property: "features"
                 }
@@ -72,19 +74,23 @@ class MapGenerator extends Component {
             }
         };
 
-        const result = embed(this.canvasRef.current, spec1)
+        const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
+                // result should be stored into the state
                 console.log(re);
             });
-            
         
         
     };
 
     /** class function section */
     componentDidMount(){
-        this.drawVegaMap(this.props.geoData, this.props.testData);
+        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec);
         //console.log(this.props);
+    }
+
+    componentDidUpdate(){
+        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec);
     }
 
     /** render components */
