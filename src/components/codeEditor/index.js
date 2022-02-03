@@ -3,6 +3,7 @@ import '../../styles/CodeEditor.css';
 import {Card, Button} from 'antd';
 /** import code editor */
 import EditorPanel from "./codeEditor";
+import CodeDiffer from "./codeDiffer";
 
 class CodeEditor extends Component {
     constructor(props){
@@ -74,7 +75,12 @@ class CodeEditor extends Component {
                     vagaLiteSpecText={this.props.vagaLiteSpecText}
                     onEditorChange={this.props.onEditorChange}
                     codeEditorOpt={this.state.codeEditorOpt}
-                    classDef={this.state.classDef}
+                    classDef={this.state.codeEditorHide ? "hidden" : null}
+                />
+
+                <CodeDiffer 
+                    vagaLiteSpecText={this.props.vagaLiteSpecText}
+                    specOld={this.props.specOld}
                 />
             </Card>
         );

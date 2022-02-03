@@ -12,3 +12,7 @@
 .hidden{
     display: none;
 }
+
+.overFlowScroll{
+    overflow: scroll;
+}

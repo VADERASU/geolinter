@@ -29,7 +29,8 @@ class EditorPanel extends Component{
                     showLineNumbers: this.props.codeEditorOpt.showLineNumbers,
                     tabSize: 2
                 }}
-                className={this.props.classDef}
+                //className={this.props.classDef}
+                className="hidden"
             />
         );
     }

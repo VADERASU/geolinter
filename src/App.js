@@ -31,19 +31,28 @@ class App extends Component {
       /** vegalite script */
       selectRawCase: "state",
       vegaLiteSpec: JSON.parse(case_scripts["state"]),
-      /** end of vegalite script */
       /** vegaLite raw code */
       rawScript: case_scripts["state"],
-      /** end of raw script */
+      specOld: "",
+      codeEditorHide: false,
+      codeDiffHide: true
     };
   }
 
   /** class functions */
   handleScriptRunClick = () => {
+    // store the old spec string for the last step
+    let oldSpec = JSON.stringify(this.state.vegaLiteSpec, null, 4);
+    this.setState({
+      specOld: oldSpec
+    });
+    //parse the string spec into real Vega spec
     let changedScript = JSON.parse(this.state.rawScript);
     this.setState({
       vegaLiteSpec: changedScript
     });
+    //show code diff by the code differ
+    //this.setState();
     //console.log(changedScript);
   };
 
@@ -99,6 +108,9 @@ class App extends Component {
                     vagaLiteSpecText={this.state.rawScript}
                     onScriptRunClick={this.handleScriptRunClick}
                     onEditorChange={this.handleEditorChange}
+                    specOld={this.state.specOld}
+                    codeEditorHide={this.state.codeEditorHide}
+                    codeDiffHide={this.state.codeDiffHide}
                   />
                 </Col>
                   <Col span={24}>
