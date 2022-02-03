@@ -1,14 +1,43 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import '../../styles/CodeEditor.css';
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-xcode";
 
 class EditorPanel extends Component{
+    constructor(props){
+        super(props);
+        this.canvasRef = React.createRef();
+    }
+
+    addAnnotation = () => {
+        const editor = this.canvasRef.current.editor;
+        const annotations = [{
+            row: 1,
+            column: 0,
+            text: "Strange error",
+            type: "warning" // also warning and information and error
+        }];
+        editor.getSession().setAnnotations(annotations);
+    };
+
+    componentDidMount(){
+        //console.log(this.props);
+        this.addAnnotation();
+    }
+
+    componentDidUpdate(){
+        this.addAnnotation();
+    }
 
     render(){
+        let markers = [];
+        markers.push({startRow: 6, startCol: 5, endRow: 6, endCol: 20, className: 'myMarker', type: 'text' });
+        
         return(
-            <AceEditor
+            <div className={this.props.editorView}>
+                <AceEditor
+                ref={this.canvasRef}
                 value={this.props.vagaLiteSpecText}
                 onChange={this.props.onEditorChange}
                 placeholder={this.props.codeEditorOpt.placeholder}
@@ -29,9 +58,9 @@ class EditorPanel extends Component{
                     showLineNumbers: this.props.codeEditorOpt.showLineNumbers,
                     tabSize: 2
                 }}
-                //className={this.props.classDef}
-                className="hidden"
+                markers={markers}
             />
+            </div> 
         );
     }
 }

@@ -16,3 +16,8 @@
 .overFlowScroll{
     overflow: scroll;
 }
+
+.myMarker {
+    position:absolute;
+    background:rgba(100,200,100,0.5);
+  }

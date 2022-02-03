@@ -8,6 +8,8 @@ import NavBar from './components/nav_bar';
 import CodeEditor from './components/codeEditor';
 import StatusBar from './components/statusBar';
 import MapLinter from './components/mapLinter';
+import LinterReport from './components/linterReport';
+import SupportMapView from './components/supportMapView';
 
 /** Import test data, can be uploaded by users */
 //import usstates from './resource/usstates.json'; //TOPOJSON
@@ -34,14 +36,19 @@ class App extends Component {
       /** vegaLite raw code */
       rawScript: case_scripts["state"],
       specOld: "",
+      /** Code Editor View controller */
       codeEditorHide: false,
-      codeDiffHide: true
+      codeDiffHide: true,
+      editorView: "Editor"
     };
   }
 
   /** class functions */
+
+  // When click the "Run Script" btn
   handleScriptRunClick = () => {
     // store the old spec string for the last step
+    this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
     let oldSpec = JSON.stringify(this.state.vegaLiteSpec, null, 4);
     this.setState({
       specOld: oldSpec
@@ -52,10 +59,14 @@ class App extends Component {
       vegaLiteSpec: changedScript
     });
     //show code diff by the code differ
-    //this.setState();
+    this.setState({
+      codeEditorHide: true,
+      codeDiffHide: false
+    });
     //console.log(changedScript);
   };
 
+  // when change the content in code editor
   handleEditorChange =(newValue)=>{
     this.setState({
         rawScript: newValue
@@ -63,6 +74,7 @@ class App extends Component {
     
   };
 
+  // When select a new case study
   handleCaseSelection = (selectedCase) => {
     //console.log(selectedCase);
     this.setState({
@@ -71,6 +83,14 @@ class App extends Component {
       rawScript: case_scripts[selectedCase]
     });
   };
+
+  // When switch between editor and diff viewer
+  handleEditorViewSwitch = (switchKey) => {
+    let newView = switchKey.target.value;
+    this.setState({
+      editorView: newView
+    });
+  }
 
   /** Render components for the main layout */
   render(){
@@ -109,8 +129,8 @@ class App extends Component {
                     onScriptRunClick={this.handleScriptRunClick}
                     onEditorChange={this.handleEditorChange}
                     specOld={this.state.specOld}
-                    codeEditorHide={this.state.codeEditorHide}
-                    codeDiffHide={this.state.codeDiffHide}
+                    editorView={this.state.editorView}
+                    onEditorViewSwitch={this.handleEditorViewSwitch}
                   />
                 </Col>
                   <Col span={24}>
@@ -129,12 +149,7 @@ class App extends Component {
                     />
                   </Col>
                   <Col span={24}>
-                    <Card
-                    title='Recommendations'
-                    size='small'
-                    className='cardDetail'
-                    style={{height: 355}}
-                  ></Card>
+                    <LinterReport />
                   </Col>
                 </Row>
               </Col>
@@ -142,7 +157,9 @@ class App extends Component {
               {/** Right Main Col */}
               <Col span={6}>
                 <Row gutter={[8,8]}>
-                  
+                  <Col span={24}>
+                    <SupportMapView />
+                  </Col>
                 </Row>
               </Col>
 

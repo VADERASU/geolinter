@@ -2,7 +2,7 @@ export const case_scripts = {
     state:
 `{
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 730,
+    "width": 700,
     "height": 400,
     "background": "#F3F8FB",
     "data": {
@@ -26,12 +26,7 @@ export const case_scripts = {
     },
     "usermeta": {
         "embedOptions": {
-            "actions": {
-                "export": true,
-                "source": false,
-                "compiled": false,
-                "editor": false
-            }
+            "actions": false
         }
     }
 }`,

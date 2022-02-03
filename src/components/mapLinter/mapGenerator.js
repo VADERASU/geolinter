@@ -38,41 +38,7 @@ class MapGenerator extends Component {
 
         /** Preprocess the vega spec */
         spec.data.values = selectedCaseData;
-        console.log(spec);
-
-        const spec1 = {
-            $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-            width: 730,
-            height: 400,
-            //background: "#F3F8FB",
-            data: {
-                values: selectedCaseData,
-                format: {
-                    property: "features"
-                }
-            },
-            mark: 'geoshape',
-            projection: {type: 'albersUsa'},
-            encoding: {
-                stroke: {
-                    value: "black"
-                },
-                "color": {
-                    "field": "id",
-                    "type": "quantitative"
-                }         
-            },
-            usermeta: {
-                embedOptions: {
-                    actions: {
-                        export: true,
-                        source: false,
-                        compiled: false,
-                        editor: false
-                    },
-                }
-            }
-        };
+        //console.log(spec);
 
         const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
