@@ -13,9 +13,9 @@ class EditorPanel extends Component{
     addAnnotation = () => {
         const editor = this.canvasRef.current.editor;
         const annotations = [{
-            row: 1,
+            row: 19,
             column: 0,
-            text: "Strange error",
+            text: "Error or warning msg",
             type: "warning" // also warning and information and error
         }];
         editor.getSession().setAnnotations(annotations);
@@ -32,7 +32,7 @@ class EditorPanel extends Component{
 
     render(){
         let markers = [];
-        markers.push({startRow: 6, startCol: 5, endRow: 6, endCol: 20, className: 'myMarker', type: 'text' });
+        markers.push({startRow: 19, startCol: 4, endRow: 22, endCol: 50, className: 'myMarker', type: 'text' });
         
         return(
             <div className={this.props.editorView}>
