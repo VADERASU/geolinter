@@ -10,10 +10,14 @@ import StatusBar from './components/statusBar';
 import MapLinter from './components/mapLinter';
 import LinterReport from './components/linterReport';
 import SupportMapView from './components/supportMapView';
+import RecommendClassView from './components/recommendClass';
+import FineTuningView from './components/fineTuning';
 
 /** Import test data, can be uploaded by users */
 //import usstates from './resource/usstates.json'; //TOPOJSON
 import state from './resource/state.json';
+import us10m from './resource/us10m.json';
+import unemployment from './resource/unemployment.json';
 
 /** import case scripts */
 import { case_scripts } from './resource/cases';
@@ -24,11 +28,15 @@ class App extends Component {
     super(props);
     
     this.dataset = {
-      state: state
+      state: state,
+      county_unemployment: {
+        geo: us10m,
+        data: unemployment
+      }
     };
 
     this.state = {
-      mapDataList: ['state'],
+      mapDataList: ['state','county_unemployment'],
       selectedCaseData: state,
       /** vegalite script */
       selectRawCase: "state",
@@ -37,9 +45,11 @@ class App extends Component {
       rawScript: case_scripts["state"],
       specOld: "",
       /** Code Editor View controller */
-      codeEditorHide: false,
-      codeDiffHide: true,
-      editorView: "Editor"
+      editorView: "Editor",
+      /** for operation history map */
+      specHistory: null,
+      oldSelectRawCase: null,
+      oldSelectedCaseData: null
     };
   }
 
@@ -58,11 +68,6 @@ class App extends Component {
     this.setState({
       vegaLiteSpec: changedScript
     });
-    //show code diff by the code differ
-    this.setState({
-      codeEditorHide: true,
-      codeDiffHide: false
-    });
     //console.log(changedScript);
   };
 
@@ -76,11 +81,17 @@ class App extends Component {
 
   // When select a new case study
   handleCaseSelection = (selectedCase) => {
+    let specHistory = this.state.vegaLiteSpec;
+    let oldSelectRawCase = this.state.selectRawCase;
     //console.log(selectedCase);
     this.setState({
       selectRawCase: selectedCase,
       selectedCaseData:this.dataset[selectedCase],
-      rawScript: case_scripts[selectedCase]
+      rawScript: case_scripts[selectedCase],
+      vegaLiteSpec: JSON.parse(case_scripts[selectedCase]),
+      specHistory: specHistory,
+      oldSelectRawCase: oldSelectRawCase,
+      oldSelectedCaseData: this.dataset[oldSelectRawCase]
     });
   };
 
@@ -94,7 +105,6 @@ class App extends Component {
 
   /** Render components for the main layout */
   render(){
-    //console.log(this.state.geoData);
     const { Content } = Layout;
     /** extract cases and data name */
 
@@ -144,6 +154,7 @@ class App extends Component {
                 <Row gutter={[8,8]}>
                   <Col span={24}>
                     <MapLinter
+                      selectRawCase={this.state.selectRawCase}
                       selectedCaseData={this.state.selectedCaseData}
                       vegaLiteSpec={this.state.vegaLiteSpec}
                     />
@@ -158,7 +169,17 @@ class App extends Component {
               <Col span={6}>
                 <Row gutter={[8,8]}>
                   <Col span={24}>
-                    <SupportMapView />
+                    <SupportMapView 
+                      specHistory={this.state.specHistory}
+                      oldSelectRawCase={this.state.oldSelectRawCase}
+                      oldSelectedCaseData={this.state.oldSelectedCaseData}
+                    />
+                  </Col>
+                  <Col span={24}>
+                    <RecommendClassView />
+                  </Col>
+                  <Col span={24}>
+                    <FineTuningView />
                   </Col>
                 </Row>
               </Col>

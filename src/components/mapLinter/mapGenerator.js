@@ -9,7 +9,7 @@ class MapGenerator extends Component {
         this.canvasRef = React.createRef();
     }
 
-    drawVegaMap = (selectedCaseData, spec) => {
+    drawVegaMap = (selectedCaseData, spec, selectRawCase) => {
         /* TOPOJSON!!!
         const spec = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -36,27 +36,37 @@ class MapGenerator extends Component {
         };
         */
 
-        /** Preprocess the vega spec */
-        spec.data.values = selectedCaseData;
-        //console.log(spec);
+        if(selectRawCase === 'county_unemployment'){
 
-        const result = embed(this.canvasRef.current, spec)
+            spec.data.values = selectedCaseData.geo;
+            spec.transform[0].from.data.values = selectedCaseData.data.data;
+            //console.log(spec);
+            const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
                 // result should be stored into the state
                 console.log(re);
             });
-        
+        }else{
+            /** Preprocess the vega spec */
+            spec.data.values = selectedCaseData;
+
+            const result = embed(this.canvasRef.current, spec)
+            .then((re)=>{
+                // result should be stored into the state
+                console.log(re);
+            });
+        }  
         
     };
 
     /** class function section */
     componentDidMount(){
-        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec);
+        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
         //console.log(this.props);
     }
 
     componentDidUpdate(){
-        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec);
+        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
     }
 
     /** render components */
