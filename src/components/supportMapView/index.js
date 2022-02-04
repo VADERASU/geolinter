@@ -27,7 +27,7 @@ class SupportMapView extends Component {
             spec.data.values = selectedCaseData;
             spec.height = 200;
             spec.width = 400;
-            spec.encoding.color.legend = null;
+            if(spec.encoding.hasOwnProperty('color')) spec.encoding.color.legend = null;
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
                 // result should be stored into the state

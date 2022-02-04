@@ -1,6 +1,6 @@
 import {Component} from "react";
 import '../../styles/StatusBar.css';
-import {Card} from 'antd';
+import {Card, Steps} from 'antd';
 
 class StatusBar extends Component {
     constructor(props){
@@ -11,13 +11,29 @@ class StatusBar extends Component {
 
     /** render components */
     render(){
+
+        const { Step } = Steps;
+
         return(
             <Card
                 title='Status Bar & Global Options'
                 size='small'
                 className='cardDetail'
                 style={{height: 200}}
-            ></Card>
+            >
+                <Steps 
+                    size="small"
+                    current={1}
+                    style={{
+                        marginTop: 10,
+                        width: 550
+                    }}
+                >
+                    <Step title="Finished" description="Hard rules check" />
+                    <Step title="In Progress" description="Fix deceptive design" />
+                    <Step title="Waiting" description="Finetuning" />
+                </Steps>
+            </Card>
         );
     }
 }

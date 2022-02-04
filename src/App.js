@@ -59,9 +59,14 @@ class App extends Component {
   handleScriptRunClick = () => {
     // store the old spec string for the last step
     this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
+    let specHistory = this.state.vegaLiteSpec;
+    let oldSelectRawCase = this.state.selectRawCase;
     let oldSpec = JSON.stringify(this.state.vegaLiteSpec, null, 4);
     this.setState({
-      specOld: oldSpec
+      specOld: oldSpec,
+      specHistory: specHistory,
+      oldSelectRawCase: oldSelectRawCase,
+      oldSelectedCaseData: this.dataset[oldSelectRawCase]
     });
     //parse the string spec into real Vega spec
     let changedScript = JSON.parse(this.state.rawScript);
