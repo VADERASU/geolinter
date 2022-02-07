@@ -128,7 +128,7 @@ class App extends Component {
             {/** Row #1 */}
             <Row gutter={8}>
               {/** Left Main Col */}
-              <Col span={8}>
+              <Col span={7}>
                 <Row gutter={[8,8]}>
                 {/** Nav Panel */}
                 <Col span={24}>
@@ -171,7 +171,7 @@ class App extends Component {
               </Col>
 
               {/** Right Main Col */}
-              <Col span={6}>
+              <Col span={7}>
                 <Row gutter={[8,8]}>
                   <Col span={24}>
                     <SupportMapView 

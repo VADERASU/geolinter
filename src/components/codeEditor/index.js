@@ -23,7 +23,7 @@ class CodeEditor extends Component {
                 enableSnippets: true,
                 showLineNumbers: true,
                 height: "755px",
-                width: "615px",
+                width: "540px",
                 annotations: [{ row: 10, column: 3, type: 'error', text: 'Some error.'}]
             },
             tabOptions: ['Editor', 'Diff Viewer']
