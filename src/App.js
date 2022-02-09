@@ -19,6 +19,10 @@ import state from './resource/state.json';
 import us10m from './resource/us10m.json';
 import unemployment from './resource/unemployment.json';
 
+// import case 1 data -> state-level education statics
+import state_education from './resource/case1_state_edu/state_education.json';
+import state_education_features from './resource/case1_state_edu/state_education_features.json';
+
 /** import case scripts */
 import { case_scripts } from './resource/cases';
 
@@ -29,6 +33,10 @@ class App extends Component {
     
     this.dataset = {
       state: state,
+      state_education:{
+        geo: state_education,
+        features: state_education_features
+      },
       county_unemployment: {
         geo: us10m,
         data: unemployment
