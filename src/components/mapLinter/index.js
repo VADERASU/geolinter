@@ -15,12 +15,13 @@ class MapLinter extends Component {
     }
 
     /** render components */
+    /** TODO: should add the vis design between two maps */
     render(){
         return(
             <Card
                 size='small'
                 className='cardDetail'
-                style={{height: 800}}
+                style={{height: 500}}
             >
                 <MapGenerator
                     selectedCaseData={this.props.selectedCaseData}
@@ -28,9 +29,13 @@ class MapLinter extends Component {
                     selectRawCase={this.props.selectRawCase}
                 />
 
-                <Divider />
+                <Divider
+                    style={{marginTop: 5, marginBottom: 5}}
+                />
 
-                <MainMapHistogram />
+                <MainMapHistogram
+                    selectedCaseData={this.props.selectedCaseData}
+                />
             </Card>
         );
     }

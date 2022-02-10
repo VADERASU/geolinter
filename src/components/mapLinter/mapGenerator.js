@@ -10,31 +10,6 @@ class MapGenerator extends Component {
     }
 
     drawVegaMap = (selectedCaseData, spec, selectRawCase) => {
-        /* TOPOJSON!!!
-        const spec = {
-            $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-            width: 600,
-            height: 500,
-            data: {
-                values: geoData,
-                format: {
-                    type: "topojson",
-                    feature: "us_states"
-                }
-            },
-            mark: 'geoshape',
-            projection: {type: 'albersUsa'},
-            encoding: {
-                fill: {
-                    field: "properties.STATE_ID",
-                    scale: {"scheme": "greys"}
-                  },
-                  stroke: {
-                    value: "black"
-                  },
-            }
-        };
-        */
 
         if(selectRawCase === 'county_unemployment'){
 
@@ -45,15 +20,21 @@ class MapGenerator extends Component {
             .then((re)=>{
                 // result should be stored into the state
                 console.log(re);
+            })
+            .catch((err)=>{
+                console.log(err);
             });
-        }else{
+        }else if(selectRawCase === 'state_education'){
             /** Preprocess the vega spec */
-            spec.data.values = selectedCaseData;
+            spec.data.values = selectedCaseData.geo;
 
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
                 // result should be stored into the state
                 console.log(re);
+            })
+            .catch((err)=>{
+                console.log(err);
             });
         }  
         

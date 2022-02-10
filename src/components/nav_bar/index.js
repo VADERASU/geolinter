@@ -24,7 +24,7 @@ class NavBar extends React.Component{
                     size={'small'}
                     defaultValue={this.props.mapDataList[0]}
                     style={{
-                        width: 120,
+                        width: 180,
                         float: 'left',
                         marginTop: '3px',
                         marginRight: '24px'

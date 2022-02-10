@@ -55,7 +55,7 @@ class CodeEditor extends Component {
                             style={{
                                 float:'left',
                                 marginTop: 7,
-                                marginRight: 50
+                                marginRight: 5
                             }}
                             optionType="button"
                             onChange={this.props.onEditorViewSwitch}
@@ -68,7 +68,7 @@ class CodeEditor extends Component {
                          style={{
                             float:'left',
                             marginTop: 7,
-                            marginRight: 20
+                            marginRight: 5
                         }}
                         >
                             Run Script
@@ -77,7 +77,7 @@ class CodeEditor extends Component {
                             style={{
                                 float:'left',
                                 marginTop: 10,
-                                marginRight: 20
+                                marginRight: 5
                             }}
                         ><b>Status Annotation Msg</b></span>
                         

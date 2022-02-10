@@ -9,19 +9,17 @@ import CodeEditor from './components/codeEditor';
 import StatusBar from './components/statusBar';
 import MapLinter from './components/mapLinter';
 import LinterReport from './components/linterReport';
+import LinterCharts from './components/linterCharts';
 import SupportMapView from './components/supportMapView';
-import RecommendClassView from './components/recommendClass';
 import FineTuningView from './components/fineTuning';
 
 /** Import test data, can be uploaded by users */
-//import usstates from './resource/usstates.json'; //TOPOJSON
-import state from './resource/state.json';
-import us10m from './resource/us10m.json';
-import unemployment from './resource/unemployment.json';
-
 // import case 1 data -> state-level education statics
 import state_education from './resource/case1_state_edu/state_education.json';
 import state_education_features from './resource/case1_state_edu/state_education_features.json';
+// import case 2 data -> county-level unemployment statics
+import us10m from './resource/us10m.json';
+import unemployment from './resource/unemployment.json';
 
 /** import case scripts */
 import { case_scripts } from './resource/cases';
@@ -32,25 +30,25 @@ class App extends Component {
     super(props);
     
     this.dataset = {
-      state: state,
       state_education:{
         geo: state_education,
         features: state_education_features
       },
       county_unemployment: {
         geo: us10m,
-        data: unemployment
+        data: unemployment,
+        features: null
       }
     };
 
     this.state = {
-      mapDataList: ['state','county_unemployment'],
-      selectedCaseData: state,
+      mapDataList: ['state_education','county_unemployment'],
+      selectedCaseData: this.dataset['state_education'],
       /** vegalite script */
-      selectRawCase: "state",
-      vegaLiteSpec: JSON.parse(case_scripts["state"]),
+      selectRawCase: "state_education",
+      vegaLiteSpec: JSON.parse(case_scripts["state_education"]),
       /** vegaLite raw code */
-      rawScript: case_scripts["state"],
+      rawScript: case_scripts["state_education"],
       specOld: "",
       /** Code Editor View controller */
       editorView: "Editor",
@@ -77,10 +75,14 @@ class App extends Component {
       oldSelectedCaseData: this.dataset[oldSelectRawCase]
     });
     //parse the string spec into real Vega spec
-    let changedScript = JSON.parse(this.state.rawScript);
-    this.setState({
-      vegaLiteSpec: changedScript
-    });
+    try{
+      let changedScript = JSON.parse(this.state.rawScript);  
+      this.setState({
+        vegaLiteSpec: changedScript
+      });
+    }catch(err){
+      console.log(err);
+    }
     //console.log(changedScript);
   };
 
@@ -138,40 +140,47 @@ class App extends Component {
               {/** Left Main Col */}
               <Col span={7}>
                 <Row gutter={[8,8]}>
-                {/** Nav Panel */}
-                <Col span={24}>
-                  <NavBar
-                    mapDataList={this.state.mapDataList}
-                    onCaseSelection={this.handleCaseSelection}
-                  />
-                </Col>
-                {/** Vega-Lite Script Editor */}
-                <Col span={24}>
-                  <CodeEditor
-                    vagaLiteSpecText={this.state.rawScript}
-                    onScriptRunClick={this.handleScriptRunClick}
-                    onEditorChange={this.handleEditorChange}
-                    specOld={this.state.specOld}
-                    editorView={this.state.editorView}
-                    onEditorViewSwitch={this.handleEditorViewSwitch}
-                  />
-                </Col>
+                  {/** Nav Panel */}
+                  <Col span={24}>
+                    <NavBar
+                      mapDataList={this.state.mapDataList}
+                      onCaseSelection={this.handleCaseSelection}
+                    />
+                  </Col>
+                  {/** Vega-Lite Script Editor */}
+                  <Col span={24}>
+                    <CodeEditor
+                      vagaLiteSpecText={this.state.rawScript}
+                      onScriptRunClick={this.handleScriptRunClick}
+                      onEditorChange={this.handleEditorChange}
+                      specOld={this.state.specOld}
+                      editorView={this.state.editorView}
+                      onEditorViewSwitch={this.handleEditorViewSwitch}
+                    />
+                  </Col>
                   <Col span={24}>
                       <StatusBar />
                   </Col>
                 </Row>
               </Col>
 
-              {/** Middle Main Col */}
+              {/** Right Main Col */}
               <Col span={10}>
                 <Row gutter={[8,8]}>
+
                   <Col span={24}>
-                    <MapLinter
-                      selectRawCase={this.state.selectRawCase}
-                      selectedCaseData={this.state.selectedCaseData}
-                      vegaLiteSpec={this.state.vegaLiteSpec}
-                    />
+                    <Row gutter={[8,8]}>
+                      {/** Main Map*/}
+                      <Col span={24}>
+                        <MapLinter
+                          selectRawCase={this.state.selectRawCase}
+                          selectedCaseData={this.state.selectedCaseData}
+                          vegaLiteSpec={this.state.vegaLiteSpec}
+                        />
+                      </Col>
+                    </Row>
                   </Col>
+                  {/** Linter Components */}
                   <Col span={24}>
                     <LinterReport />
                   </Col>
@@ -180,7 +189,9 @@ class App extends Component {
 
               {/** Right Main Col */}
               <Col span={7}>
-                <Row gutter={[8,8]}>
+                <LinterCharts />
+                {/**
+                 *  <Row gutter={[8,8]}>
                   <Col span={24}>
                     <SupportMapView 
                       specHistory={this.state.specHistory}
@@ -195,6 +206,7 @@ class App extends Component {
                     <FineTuningView />
                   </Col>
                 </Row>
+                 */}
               </Col>
 
             </Row>

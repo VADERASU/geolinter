@@ -1,12 +1,12 @@
 export const case_scripts = {
-    state:
+    state_education:
 `{
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 700,
-    "height": 400,
+    "width": 550,
+    "height": 300,
     "background": "#F3F8FB",
     "data": {
-        "values": "state_data",
+        "values": "state_education",
         "format": {
             "property": "features"
         }
@@ -20,8 +20,15 @@ export const case_scripts = {
             "value": "black"
         },
         "color": {
-            "field": "id",
-            "type": "quantitative"
+            "field": "properties.higher_education_rate",
+            "type": "quantitative",
+            "scale": {
+                "scheme": "Oranges",
+                "type": "quantize"
+            },
+            "legend": {
+                "title": null
+            }
         }         
     },
     "usermeta": {
@@ -33,8 +40,8 @@ export const case_scripts = {
 county_unemployment:
 `{
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 700,
-    "height": 400,
+    "width": 550,
+    "height": 300,
     "background": "#F3F8FB",
     "data": {
         "values": "county_unemployment",

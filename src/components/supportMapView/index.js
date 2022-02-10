@@ -39,7 +39,7 @@ class SupportMapView extends Component {
     /** class function section */
     componentDidMount(){
         if(this.props.oldSelectRawCase !== null){
-            this.drawVegaMap(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
+            //this.drawVegaMap(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
         }
         
         //console.log(this.props);
@@ -47,7 +47,7 @@ class SupportMapView extends Component {
 
     componentDidUpdate(){
         if(this.props.oldSelectRawCase !== null){
-            this.drawVegaMap(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
+            //this.drawVegaMap(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
         }
     }
 
@@ -57,8 +57,7 @@ class SupportMapView extends Component {
             size='small'
             className='cardDetail'
             style={{
-                height: 400,
-                marginLeft: -8
+                height: 500
             }}
           >
             <div ref={this.canvasRef}></div>

@@ -26,7 +26,7 @@ class StatusBar extends Component {
                     current={1}
                     style={{
                         marginTop: 10,
-                        width: 550
+                        width: 500
                     }}
                 >
                     <Step title="Finished" description="Hard rules check" />

@@ -1,18 +1,18 @@
 import React, {Component} from "react";
 import {Card} from 'antd';
 
-class RecommendClassView extends Component {
+class LinterCharts extends Component {
     render(){
         return(
             <Card
-            title='Recommend Classifications'
+            //title='Recommend Classifications'
             size='small'
             className='cardDetail'
-            style={{height: 392}}
+            style={{height: 1065}}
           >
 
           </Card>
         );
     }
 }
-export default RecommendClassView;
+export default LinterCharts;
