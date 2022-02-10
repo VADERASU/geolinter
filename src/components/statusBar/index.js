@@ -19,7 +19,7 @@ class StatusBar extends Component {
                 title='Status Bar & Global Options'
                 size='small'
                 className='cardDetail'
-                style={{height: 200}}
+                style={{height: 198}}
             >
                 <Steps 
                     size="small"

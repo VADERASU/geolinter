@@ -11,7 +11,7 @@ import MapLinter from './components/mapLinter';
 import LinterReport from './components/linterReport';
 import LinterCharts from './components/linterCharts';
 import SupportMapView from './components/supportMapView';
-import FineTuningView from './components/fineTuning';
+import ClassRecommend from './components/classRecommend';
 
 /** Import test data, can be uploaded by users */
 // import case 1 data -> state-level education statics
@@ -55,7 +55,14 @@ class App extends Component {
       /** for operation history map */
       specHistory: null,
       oldSelectRawCase: null,
-      oldSelectedCaseData: null
+      oldSelectedCaseData: null,
+      /** class recommendation selection */
+      selectedClassificationFeature: null,
+      defaultClassificationFeature: null,
+      supportClassificationMethods: [
+        'Equal interval', 'Quantile', 'Mean Standard Deviation', 'Maximum breaks',
+        'Head tail', 'Jenks Caspall', 'Fisher Jenks', 'Max p'
+      ]
     };
   }
 
@@ -165,33 +172,62 @@ class App extends Component {
               </Col>
 
               {/** Right Main Col */}
-              <Col span={10}>
+              <Col span={17}>
                 <Row gutter={[8,8]}>
 
                   <Col span={24}>
-                    <Row gutter={[8,8]}>
+                    <Row>
                       {/** Main Map*/}
-                      <Col span={24}>
+                      <Col span={12}>
                         <MapLinter
                           selectRawCase={this.state.selectRawCase}
                           selectedCaseData={this.state.selectedCaseData}
                           vegaLiteSpec={this.state.vegaLiteSpec}
                         />
                       </Col>
+                      <Col span={2}>
+                        {/** map comparison chart */}
+                      </Col>
+                      <Col span={10}>
+                      <SupportMapView 
+                        specHistory={this.state.specHistory}
+                        oldSelectRawCase={this.state.oldSelectRawCase}
+                        oldSelectedCaseData={this.state.oldSelectedCaseData}
+                      />
+                      </Col>
                     </Row>
                   </Col>
                   {/** Linter Components */}
                   <Col span={24}>
-                    <LinterReport />
+                    <Row>
+                      <Col span={13}>
+                        <LinterReport />
+                      </Col>
+                      <Col span={11}>
+                        <Row>
+                          <Col span={24}>
+                            <LinterCharts />
+                          </Col>
+                          <Col span={24}>
+                            <ClassRecommend
+                              selectedCaseData={this.state.selectedCaseData}
+                              supportClassificationMethods={this.state.supportClassificationMethods}
+                            />
+                          </Col>
+                        </Row>
+                        
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>
 
               {/** Right Main Col */}
+               {/**
               <Col span={7}>
                 <LinterCharts />
-                {/**
-                 *  <Row gutter={[8,8]}>
+               
+                <Row gutter={[8,8]}>
                   <Col span={24}>
                     <SupportMapView 
                       specHistory={this.state.specHistory}
@@ -206,8 +242,9 @@ class App extends Component {
                     <FineTuningView />
                   </Col>
                 </Row>
-                 */}
+                
               </Col>
+               */}
 
             </Row>
           </Content>

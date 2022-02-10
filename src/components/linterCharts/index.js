@@ -8,7 +8,7 @@ class LinterCharts extends Component {
             //title='Recommend Classifications'
             size='small'
             className='cardDetail'
-            style={{height: 1065}}
+            style={{height: 250}}
           >
 
           </Card>

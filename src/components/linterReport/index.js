@@ -9,7 +9,7 @@ class LinterReport extends Component {
             title='Detected Violations'
             size='small'
             className='cardDetail'
-            style={{height: 550}}
+            style={{height: 555}}
           >
 
           </Card>

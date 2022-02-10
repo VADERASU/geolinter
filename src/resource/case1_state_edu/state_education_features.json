@@ -1,5 +1,20 @@
 {
     "description": "state_education",
+    "classification_methods": [
+        "equal_interval",
+        "quantile",
+        "mean_standard_deviation",
+        "maximum_breaks",
+        "head_tail",
+        "jenks_caspall",
+        "fisher_jenks",
+        "max_p"
+    ],
+    "classification_methods_title": [
+        "Equal interval"
+    ],
+    "max": 0.37,
+    "min": 0.11,
     "data_list": [
         0.11,
         0.16,

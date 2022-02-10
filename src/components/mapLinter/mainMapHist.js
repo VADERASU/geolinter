@@ -8,7 +8,7 @@ class MainMapHistogram extends Component {
         this.canvasRef = React.createRef();
     }
 
-    drawHistogram = (data, breaks, colorRange) => {
+    drawHistogram = (data, breaks, colorRange, maxVal, minVal) => {
         const {scrollWidth, scrollHeight} = this.canvasRef.current;
         const format = d3.format(".02f");
         /**
@@ -63,6 +63,41 @@ class MainMapHistogram extends Component {
         .attr("height", d => yScale(0) - yScale(d.length))
         .attr("fill", d => colorScale((d.x0+d.x1)/2));
 
+        /** render breaker lines and color bins*/
+        //TODO: Judge if break not exist - unclassed map
+        const colorBinGroup = histGroup.append('g').attr('class', 'colorBins');
+        const breakerLinesGroup = histGroup.append('g').attr('class', 'breakerLines');
+        let colorBinList = [minVal];
+        colorBinList = colorBinList.concat(breaks, maxVal);
+        breaks.forEach((binBreak) => {
+            const breakerLines = histGroup.append('line')
+                .attr("x1", xScale(binBreak))  //<<== change your code here
+                .attr("y1", 0)
+                .attr("x2", xScale(binBreak))  //<<== and here
+                .attr("y2", dimensions.height - dimensions.margin.top - dimensions.margin.bottom)
+                .style("stroke-width", 1.5)
+                .style("stroke", "darkgray")
+                .style("fill", "none"); 
+            
+        });
+
+        /** render color bins */
+        //TODO: Add text annotation and marks with the calculation of color difference
+        colorBinList.forEach((binBreak, i) => {
+            if(i < colorBinList.length - 1){
+                const colorBins = colorBinGroup.append('rect')
+                    .attr('x', xScale(binBreak))
+                    .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
+                    .attr('y', dimensions.height)
+                    .attr('height', 20)
+                    .attr('fill', colorScale(binBreak))
+            }
+        });
+        //console.log(xScale(breaks[0].x1));
+        //const colorBins = colorBinGroup.selectAll('rect')
+        //.data(breaks)
+
+
         /** render x-axis */
         const xAxisGroup = histGroup.append('g')
         .attr("transform", `translate(0, ${dimensions.height - dimensions.margin.bottom})`)
@@ -96,16 +131,18 @@ class MainMapHistogram extends Component {
     extractFeatures = (propData) => {
         let data = this.props.selectedCaseData.features.data_list,
             breaks = this.props.vegaLiteSpec.encoding.color.scale.domain,
-            colorRange = this.props.vegaLiteSpec.encoding.color.scale.range;
+            colorRange = this.props.vegaLiteSpec.encoding.color.scale.range,
+            maxVal = this.props.selectedCaseData.features.max,
+            minVal = this.props.selectedCaseData.features.min;
 
-        return {data, breaks, colorRange};
+        return {data, breaks, colorRange, maxVal, minVal};
     };
 
     componentDidMount() {
         let dataFeatures = this.props.selectedCaseData.features;
-        let {data, breaks, colorRange} = this.extractFeatures(this.props);
+        let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
         if(dataFeatures !== null) {
-            this.drawHistogram(data, breaks, colorRange);
+            this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
         }
     }
 
