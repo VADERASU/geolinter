@@ -35,6 +35,7 @@ class MapLinter extends Component {
 
                 <MainMapHistogram
                     selectedCaseData={this.props.selectedCaseData}
+                    vegaLiteSpec={this.props.vegaLiteSpec}
                 />
             </Card>
         );

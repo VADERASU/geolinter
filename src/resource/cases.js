@@ -23,8 +23,9 @@ export const case_scripts = {
             "field": "properties.higher_education_rate",
             "type": "quantitative",
             "scale": {
-                "scheme": "Oranges",
-                "type": "quantize"
+                "range": ["#edf8e9","#bae4b3","#74c476","#31a354","#006d2c"],
+                "type": "threshold",
+                "domain": [0.16, 0.21, 0.26, 0.32]
             },
             "legend": {
                 "title": null
