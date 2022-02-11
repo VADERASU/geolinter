@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import './styles/App.css';
 import {Layout} from 'antd';
-import {Row, Col, Card} from 'antd';
+import {Row, Col, Card, Divider} from 'antd';
 //import {Select, Slider, Switch, Empty} from 'antd';
 /** import local components */
 import NavBar from './components/nav_bar';
@@ -183,11 +183,11 @@ class App extends Component {
                       </Col>
                       
                       <Col span={12}>
-                      <SupportMapView 
-                        specHistory={this.state.specHistory}
-                        oldSelectRawCase={this.state.oldSelectRawCase}
-                        oldSelectedCaseData={this.state.oldSelectedCaseData}
-                      />
+                        <SupportMapView 
+                          specHistory={this.state.specHistory}
+                          oldSelectRawCase={this.state.oldSelectRawCase}
+                          oldSelectedCaseData={this.state.oldSelectedCaseData}
+                        />
                       </Col>
                     </Row>
                   </Col>

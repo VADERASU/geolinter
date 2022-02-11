@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {Card} from 'antd';
+import {Card, Row, Col, Divider} from 'antd';
 import embed from 'vega-embed';
+import SubMapGenerator from "./supportMapGen";
 
 class SupportMapView extends Component {
     constructor(props){
@@ -8,7 +9,7 @@ class SupportMapView extends Component {
         this.canvasRef = React.createRef();
     }
 
-    drawVegaMap = (selectedCaseData, spec, selectRawCase) => {
+    drawVegaMapHistory = (selectedCaseData, spec, selectRawCase) => {
         if(selectRawCase === 'county_unemployment'){
 
             spec.data.values = selectedCaseData.geo;
@@ -39,7 +40,7 @@ class SupportMapView extends Component {
     /** class function section */
     componentDidMount(){
         if(this.props.oldSelectRawCase !== null){
-            //this.drawVegaMap(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
+            //this.drawVegaMapHistory(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
         }
         
         //console.log(this.props);
@@ -47,7 +48,7 @@ class SupportMapView extends Component {
 
     componentDidUpdate(){
         if(this.props.oldSelectRawCase !== null){
-            //this.drawVegaMap(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
+            //this.drawVegaMapHistory(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
         }
     }
 
@@ -59,8 +60,17 @@ class SupportMapView extends Component {
             style={{
                 height: 500
             }}
-          >
-            <div ref={this.canvasRef}></div>
+          > 
+            <SubMapGenerator 
+                
+            />
+
+            <Divider
+                style={{marginTop: 5, marginBottom: 5}}
+            />
+            <Row>
+                <Col span={24}></Col>
+            </Row>
           </Card>
         );
     }

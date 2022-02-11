@@ -34,7 +34,7 @@ class MapLinter extends Component {
                     style={{marginTop: 5, marginBottom: 5}}
                 />
 
-                <Row gutter={5}>
+                <Row>
                     <Col span={18}>
                     <MainMapHistogram
                         selectedCaseData={this.props.selectedCaseData}

@@ -71,3 +71,7 @@
 .ant-table.ant-table-small{
   font-size: 12px;
 }
+
+.ant-list-item{
+  padding: 0;
+}
