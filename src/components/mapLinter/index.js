@@ -3,7 +3,6 @@ import '../../styles/MapLinter.css';
 import {Card, Divider, Row, Col} from 'antd';
 import MapGenerator from "./mapGenerator";
 import MainMapHistogram from "./mainMapHist";
-import { ROW } from "vega-lite/build/src/channel";
 
 class MapLinter extends Component {
     constructor(props){

@@ -56,6 +56,7 @@ class App extends Component {
       specHistory: null,
       oldSelectRawCase: null,
       oldSelectedCaseData: null,
+      showHistory: false,
       /** class recommendation selection */
       selectedClassificationFeature: null,
       defaultClassificationFeature: null
@@ -120,6 +121,15 @@ class App extends Component {
       editorView: newView
     });
   }
+
+  // handle the classifiation recommendation preview click
+  handldClassificationPreviewClick = (e) => {
+    let selectedClassificationPreview = e.target.offsetParent.attributes.value.nodeValue;
+    //console.log(e.target.offsetParent.attributes.value.nodeValue);
+    this.setState({
+      selectedClassificationFeature: selectedClassificationPreview
+    });
+  };
 
   /** Render components for the main layout */
   render(){
@@ -187,6 +197,11 @@ class App extends Component {
                           specHistory={this.state.specHistory}
                           oldSelectRawCase={this.state.oldSelectRawCase}
                           oldSelectedCaseData={this.state.oldSelectedCaseData}
+                          selectRawCase={this.state.selectRawCase}
+                          selectedCaseData={this.state.selectedCaseData}
+                          vegaLiteSpec={this.state.vegaLiteSpec}
+                          selectedClassificationFeature={this.state.selectedClassificationFeature}
+                          showHistory={this.state.showHistory}
                         />
                       </Col>
                     </Row>
@@ -206,6 +221,7 @@ class App extends Component {
                             <ClassRecommend
                               selectedCaseData={this.state.selectedCaseData}
                               vegaLiteSpec={this.state.vegaLiteSpec}
+                              onClassificationPreviewClick={this.handldClassificationPreviewClick}
                             />
                           </Col>
                         </Row>

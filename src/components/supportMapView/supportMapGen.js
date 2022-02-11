@@ -9,17 +9,42 @@ class SubMapGenerator extends Component {
     }
 
     drawVegaMap = (selectedCaseData, spec, selectRawCase) => {
-        
+        if(selectRawCase === 'county_unemployment'){
+
+            spec.data.values = selectedCaseData.geo;
+            spec.transform[0].from.data.values = selectedCaseData.data.data;
+            //console.log(spec);
+            const result = embed(this.canvasRef.current, spec)
+            .then((re)=>{
+                // result should be stored into the state
+                console.log(re);
+            })
+            .catch((err)=>{
+                console.log(err);
+            });
+        }else if(selectRawCase === 'state_education'){
+            /** Preprocess the vega spec */
+            spec.data.values = selectedCaseData.geo;
+
+            const result = embed(this.canvasRef.current, spec)
+            .then((re)=>{
+                // result should be stored into the state
+                console.log(re);
+            })
+            .catch((err)=>{
+                console.log(err);
+            });
+        }  
     };
 
     /** class function section */
     componentDidMount(){
-        //this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
+        this.drawVegaMap(this.props.selectedCaseData, this.props.subMapSpec, this.props.selectRawCase);
         //console.log(this.props);
     }
 
     componentDidUpdate(){
-        //this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
+        this.drawVegaMap(this.props.selectedCaseData, this.props.subMapSpec, this.props.selectRawCase);
     }
 
     /** render components */

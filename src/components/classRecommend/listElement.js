@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import { Typography, Card, Row, Col } from 'antd';
+import { Typography, Card, Row, Col, Checkbox, Button } from 'antd';
 import { csvParse } from "d3";
 import RecommendHistogram from "./histoGenerator";
+import '../../styles/ClassRecommend.css';
 
 class ListRow extends Component{
     
@@ -16,24 +17,23 @@ class ListRow extends Component{
         return(
             <Card
                 size='small'
-                //hoverable={true}
+                hoverable={true}
+                className='classificationCard'
                 style={{
                     height: 60,
                     width: 650,
-                    background: '#F3F8FB',
-                    borderStyle: 'none'
-
+                    borderStyle: 'none',
                 }}
             >
                 <Row>
                     <Col span={6}>
                     <span
-                            style={{
-                                float:'left',
-                                marginTop: 10,
+                        style={{
+                        float:'left',
+                            marginTop: 10,
                                 
-                            }}
-                        ><b>{features.methodName}</b>
+                        }}
+                    ><b>{features.methodName}</b>
                     </span>
                     </Col>
                     <Col span={6}>
@@ -44,6 +44,14 @@ class ListRow extends Component{
                             maxVal={features.maxVal}
                             minVal={features.minVal}
                         />
+                    </Col>
+                    <Col span={4}>
+                        <Button
+                            value={features.methodName}
+                            onClick={this.props.onClassificationPreviewClick}
+                        >
+                            Preview
+                        </Button>
                     </Col>
                 </Row>
                 

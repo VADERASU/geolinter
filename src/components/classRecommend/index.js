@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Card, List} from 'antd';
 import ListRow from "./listElement";
+import '../../styles/ClassRecommend.css';
 
 class ClassRecommend extends Component {
     render(){
@@ -33,6 +34,7 @@ class ClassRecommend extends Component {
                     <List.Item>
                         <ListRow
                             dataFeatures={item}
+                            onClassificationPreviewClick={this.props.onClassificationPreviewClick}
                         />
                     </List.Item>
                 )}
