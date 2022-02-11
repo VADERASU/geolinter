@@ -58,11 +58,7 @@ class App extends Component {
       oldSelectedCaseData: null,
       /** class recommendation selection */
       selectedClassificationFeature: null,
-      defaultClassificationFeature: null,
-      supportClassificationMethods: [
-        'Equal interval', 'Quantile', 'Mean Standard Deviation', 'Maximum breaks',
-        'Head tail', 'Jenks Caspall', 'Fisher Jenks', 'Max p'
-      ]
+      defaultClassificationFeature: null
     };
   }
 
@@ -143,10 +139,10 @@ class App extends Component {
           {/** Main layout of the system */}
           <Content className='vastContainer'>
             {/** Row #1 */}
-            <Row gutter={8}>
+            <Row gutter={6}>
               {/** Left Main Col */}
               <Col span={7}>
-                <Row gutter={[8,8]}>
+                <Row gutter={[6,6]}>
                   {/** Nav Panel */}
                   <Col span={24}>
                     <NavBar
@@ -173,7 +169,7 @@ class App extends Component {
 
               {/** Right Main Col */}
               <Col span={17}>
-                <Row gutter={[8,8]}>
+                <Row gutter={[6,6]}>
 
                   <Col span={24}>
                     <Row>
@@ -185,10 +181,8 @@ class App extends Component {
                           vegaLiteSpec={this.state.vegaLiteSpec}
                         />
                       </Col>
-                      <Col span={2}>
-                        {/** map comparison chart */}
-                      </Col>
-                      <Col span={10}>
+                      
+                      <Col span={12}>
                       <SupportMapView 
                         specHistory={this.state.specHistory}
                         oldSelectRawCase={this.state.oldSelectRawCase}
@@ -199,19 +193,19 @@ class App extends Component {
                   </Col>
                   {/** Linter Components */}
                   <Col span={24}>
-                    <Row>
-                      <Col span={13}>
+                    <Row gutter={6}>
+                      <Col span={12}>
                         <LinterReport />
                       </Col>
-                      <Col span={11}>
+                      <Col span={12}>
                         <Row>
-                          <Col span={24}>
+                          {/*<Col span={24}>
                             <LinterCharts />
-                          </Col>
+                          </Col>*/}
                           <Col span={24}>
                             <ClassRecommend
                               selectedCaseData={this.state.selectedCaseData}
-                              supportClassificationMethods={this.state.supportClassificationMethods}
+                              vegaLiteSpec={this.state.vegaLiteSpec}
                             />
                           </Col>
                         </Row>

@@ -11,7 +11,14 @@
         "max_p"
     ],
     "classification_methods_title": [
-        "Equal interval"
+        "Equal interval",
+        "Quantile",
+        "Mean Standard Deviation",
+        "Maximum breaks",
+        "Head tail",
+        "Jenks Caspall",
+        "Fisher Jenks",
+        "Max p"
     ],
     "max": 0.37,
     "min": 0.11,

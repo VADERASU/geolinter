@@ -38,6 +38,7 @@
 .cardDetail {
   border-radius: 5px;
   background: #F3F8FB;
+  border-style: none;
   /*height: 32vh;*/
 }
 
