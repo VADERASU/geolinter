@@ -16,7 +16,7 @@ class RecommendHistogram extends Component{
         // Chart dimensions
         let dimensions = {
             width: scrollWidth,
-            height: scrollHeight-30,
+            height: scrollHeight-15,
             margin: {
                 top: 0,
                 right: 10,
@@ -79,7 +79,7 @@ class RecommendHistogram extends Component{
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height + 10)
+                    .attr('y', dimensions.height + 3)
                     .attr('height', 5)
                     .attr('fill', colorScale(binBreak))
             }
@@ -117,7 +117,7 @@ class RecommendHistogram extends Component{
 
     render(){
         return(
-            <div style={{height: 59}} ref={this.canvasRef}> {/** 235px in 1080p */}
+            <div style={{height: 49}} ref={this.canvasRef}> {/** 235px in 1080p */}
                 <svg
                     style={{
                         width: '100%',

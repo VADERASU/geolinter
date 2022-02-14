@@ -26,7 +26,7 @@ class ClassRecommend extends Component {
             title='Classification Recommendation'
             size='small'
             className='cardDetail'
-            style={{height: 555}}
+            style={{height: 450}}
           >
             <List
                 dataSource={data}

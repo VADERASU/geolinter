@@ -182,7 +182,7 @@ class App extends Component {
                 <Row gutter={[6,6]}>
 
                   <Col span={24}>
-                    <Row>
+                    <Row gutter={6}>
                       {/** Main Map*/}
                       <Col span={12}>
                         <MapLinter
@@ -214,9 +214,9 @@ class App extends Component {
                       </Col>
                       <Col span={12}>
                         <Row>
-                          {/*<Col span={24}>
-                            <LinterCharts />
-                          </Col>*/}
+                          <Col span={24}>
+                            <div style={{height: 105}}></div>
+                          </Col>
                           <Col span={24}>
                             <ClassRecommend
                               selectedCaseData={this.state.selectedCaseData}

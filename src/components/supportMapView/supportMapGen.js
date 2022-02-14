@@ -13,6 +13,7 @@ class SubMapGenerator extends Component {
 
             spec.data.values = selectedCaseData.geo;
             spec.transform[0].from.data.values = selectedCaseData.data.data;
+            
             //console.log(spec);
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
@@ -25,7 +26,7 @@ class SubMapGenerator extends Component {
         }else if(selectRawCase === 'state_education'){
             /** Preprocess the vega spec */
             spec.data.values = selectedCaseData.geo;
-
+            
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
                 // result should be stored into the state

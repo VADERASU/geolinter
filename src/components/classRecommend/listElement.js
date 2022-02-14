@@ -20,7 +20,7 @@ class ListRow extends Component{
                 hoverable={true}
                 className='classificationCard'
                 style={{
-                    height: 60,
+                    height: 50,
                     width: 650,
                     borderStyle: 'none',
                 }}
@@ -30,7 +30,7 @@ class ListRow extends Component{
                     <span
                         style={{
                         float:'left',
-                            marginTop: 10,
+                            marginTop: 5,
                                 
                         }}
                     ><b>{features.methodName}</b>

@@ -61,7 +61,8 @@ class SupportMapView extends Component {
                 size='small'
                 className='cardDetail'
                 style={{
-                    height: 500
+                    height: 605,
+                    marginBottom: -200
                 }}
                 > 
                     <SubMapGenerator 
@@ -72,7 +73,9 @@ class SupportMapView extends Component {
                         style={{marginTop: 5, marginBottom: 5}}
                     />
                     <Row>
-                        <Col span={24}></Col>
+                        <Col span={24}>
+                            
+                        </Col>
                     </Row>
                 </Card>
             );
@@ -96,7 +99,8 @@ class SupportMapView extends Component {
                     size='small'
                     className='cardDetail'
                     style={{
-                        height: 500
+                        height: 605,
+                        marginBottom: -200
                     }}
                     > 
                         <SubMapGenerator 
@@ -120,7 +124,8 @@ class SupportMapView extends Component {
                     size='small'
                     className='cardDetail'
                     style={{
-                        height: 500
+                        height: 605,
+                        marginBottom: -200
                     }}
                     > <Empty /> </Card>
                     
