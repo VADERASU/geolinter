@@ -1,8 +1,10 @@
 import React, {Component} from "react";
-import { Typography, Card, Row, Col, Checkbox, Button } from 'antd';
+import { Typography, Card, Row, Col, Button } from 'antd';
 import { csvParse } from "d3";
 import RecommendHistogram from "./histoGenerator";
 import '../../styles/ClassRecommend.css';
+import LineChartGenerator from "./lineGenerator";
+import BarChartGenerator from "./barGenerator";
 
 class ListRow extends Component{
     
@@ -13,11 +15,16 @@ class ListRow extends Component{
         let colorRange = features.colorRange;
         let k = colorRange.length;
         let feature = features.featureList.filter(element => element.k === k);
+        let maxGVF = this.props.maxGVF;
+        let ifMaxGVF = false;
+        if(features.methodName === maxGVF){
+            ifMaxGVF = true;
+        }
         // TODO: if feature.length is 0, make some spatial marks on the corresponding list
         return(
             <Card
                 size='small'
-                hoverable={true}
+                //hoverable={true}
                 className='classificationCard'
                 style={{
                     height: 50,
@@ -26,16 +33,18 @@ class ListRow extends Component{
                 }}
             >
                 <Row>
-                    <Col span={6}>
+                    <Col span={4}>
+                    {/** Classification name */}
                     <span
                         style={{
                         float:'left',
-                            marginTop: 5,
+                            marginTop: 3,
                                 
                         }}
                     ><b>{features.methodName}</b>
                     </span>
                     </Col>
+                    {/** Histogram */}
                     <Col span={6}>
                         <RecommendHistogram 
                             feature={feature}
@@ -45,8 +54,22 @@ class ListRow extends Component{
                             minVal={features.minVal}
                         />
                     </Col>
-                    <Col span={4}>
+                    <Col span={6}>
+                        <LineChartGenerator
+                            features={features}
+                            colorRange={features.colorRange}
+                        />
+                    </Col>
+                    <Col span={6}>
+                        <BarChartGenerator 
+                            feature={feature}
+                            ifMaxGVF={ifMaxGVF}
+                        />
+                    </Col>
+                    {/** preview BTN */}
+                    <Col span={2}>
                         <Button
+                            size="small"
                             value={features.methodName}
                             onClick={this.props.onClassificationPreviewClick}
                         >

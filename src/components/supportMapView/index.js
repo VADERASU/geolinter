@@ -113,7 +113,9 @@ class SupportMapView extends Component {
                             style={{marginTop: 5, marginBottom: 5}}
                         />
                         <Row>
-                            <Col span={24}></Col>
+                            <Col span={12}>
+                                {/** scatter plot for the measures - GVF and Moran */}
+                            </Col>
                         </Row>
                     </Card>
                 );

@@ -59,7 +59,8 @@ class App extends Component {
       showHistory: false,
       /** class recommendation selection */
       selectedClassificationFeature: null,
-      defaultClassificationFeature: null
+      defaultClassificationFeature: null,
+      classificationMeasureList: ['GVF', 'Moran', 'ADCM', 'GADF'],
     };
   }
 
@@ -221,6 +222,7 @@ class App extends Component {
                             <ClassRecommend
                               selectedCaseData={this.state.selectedCaseData}
                               vegaLiteSpec={this.state.vegaLiteSpec}
+                              classificationMeasureList={this.state.classificationMeasureList}
                               onClassificationPreviewClick={this.handldClassificationPreviewClick}
                             />
                           </Col>
