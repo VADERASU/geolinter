@@ -68,7 +68,12 @@ class BarChartGenerator extends Component {
 
     /** Update the canvas if props change */
     componentWillReceiveProps(nextProps, nextContext){
-
+        let feature = nextProps.feature;
+        let ifMaxGVF = nextProps.ifMaxGVF;
+        let {yAxisList, series} = this.extractFeatures(feature, ifMaxGVF);
+        
+        //console.log(this.extractFeatures(features));
+        this.setEchartOption(yAxisList, series);
     }
 
     render(){

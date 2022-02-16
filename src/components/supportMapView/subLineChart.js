@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import ReactECharts from 'echarts-for-react';
 
-class LineChartGenerator extends Component {
+class SubLineChartGenerator extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -11,9 +11,15 @@ class LineChartGenerator extends Component {
 
     setEchartOption = (xAxisList, series) => {
         const options = {
-            grid: { top: 3, right: 8, bottom: 22, left: 10 },
+            grid: { top: 20, right: 20, bottom: 27, left: 50 },
             xAxis: {
               type: 'category',
+              name: "number of class",
+              nameTextStyle: {
+                  fontSize: 10
+              },
+              nameGap: 20,
+              nameLocation: 'middle',
               data: xAxisList,
               boundaryGap: false,
               axisLabel: {
@@ -23,9 +29,15 @@ class LineChartGenerator extends Component {
             },
             yAxis: {
               type: 'value',
-              show:false,
+              name: 'GVF',
+              nameTextStyle: {
+                  fontSize: 10
+              },
+              nameLocation: 'end',
+              nameGap: 5,
+              //show:false,
               splitLine: {
-                show: false
+                show: true
               }
             },
             series: series,
@@ -42,7 +54,7 @@ class LineChartGenerator extends Component {
     };
 
     extractFeatures = (features, elbowColor) => {
-        let featureList = features.featureList;
+        let featureList = features;
         let xAxisList = [];
 
         let GVF_list = [];
@@ -115,10 +127,10 @@ class LineChartGenerator extends Component {
            <div>
                 <ReactECharts
                     option={this.state.chartOption} 
-                    style={{height: 49, width: '100%'}}
+                    style={{height: 130, width: '100%'}}
                 />               
            </div> 
         );
     }
 }
-export default LineChartGenerator;
+export default SubLineChartGenerator;

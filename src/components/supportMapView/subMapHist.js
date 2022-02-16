@@ -118,7 +118,7 @@ class SubMapHistogram extends Component{
 
     render(){
         return(
-            <div style={{height: 110}} ref={this.canvasRef}> {/** 235px in 1080p */}
+            <div style={{height: 110, marginTop: 10}} ref={this.canvasRef}> {/** 235px in 1080p */}
                 <svg
                     style={{
                         width: '100%',

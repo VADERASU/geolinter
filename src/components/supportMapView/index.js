@@ -4,6 +4,7 @@ import embed from 'vega-embed';
 import SubMapGenerator from "./supportMapGen";
 import ScatterGenerator from "./scatterGenerator";
 import SubMapHistogram from "./subMapHist";
+import SubLineChartGenerator from "./subLineChart";
 
 class SupportMapView extends Component {
     constructor(props){
@@ -114,6 +115,9 @@ class SupportMapView extends Component {
                     }
                 });
 
+                // prepare the line chart
+                let featureList = this.props.selectedCaseData.features[keyName];
+
                 return(
                     <Card
                     size='small'
@@ -140,7 +144,7 @@ class SupportMapView extends Component {
                                 />
                             </Col>
                             <Col span={12}>
-                                <Row>
+                                <Row gutter={[8, 8]}>
                                     {/** Histogram for the submap */}
                                     <Col span={24}>
                                         <SubMapHistogram 
@@ -152,7 +156,12 @@ class SupportMapView extends Component {
                                         />
                                     </Col>
                                     {/** Line chart for the select classification */}
-                                    <Col span={24}></Col>
+                                    <Col span={24}>
+                                        <SubLineChartGenerator 
+                                            features={featureList}
+                                            colorRange={colorRange}
+                                        />
+                                    </Col>
                                 </Row>
                             </Col>
                         </Row>
