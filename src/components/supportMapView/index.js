@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {Card, Row, Col, Divider, Empty } from 'antd';
 import embed from 'vega-embed';
 import SubMapGenerator from "./supportMapGen";
+import ScatterGenerator from "./scatterGenerator";
+import SubMapHistogram from "./subMapHist";
 
 class SupportMapView extends Component {
     constructor(props){
@@ -94,6 +96,24 @@ class SupportMapView extends Component {
                 let subMapSpec = JSON.parse(JSON.stringify(this.props.vegaLiteSpec));
                 //set new breaks with the selected k and color range
                 subMapSpec.encoding.color.scale.domain = breaks;
+
+                // parpare the scatter plot
+                let scatterData = [];
+                let features = this.props.selectedCaseData.features;
+                //console.log(features);
+                features.classification_methods.forEach((e, i)=>{
+                    let scatterPointData = [];
+                    let methodFeature = features[e].filter(element => element.k === k);
+                    if(methodFeature.length !== 0){
+                        //!!!!! NOW IS ADCM!!!! REPLACE THIS WITH MORAN'S I SOON!!
+                        scatterPointData.push(Math.round(methodFeature[0].adcm * 100) / 100);
+                        // push GVF into the scatter data
+                        scatterPointData.push(Math.round(methodFeature[0].GVF * 100) / 100);
+                        scatterPointData.push(classification_methods_title[i]);
+                        scatterData.push(scatterPointData);
+                    }
+                });
+
                 return(
                     <Card
                     size='small'
@@ -115,6 +135,25 @@ class SupportMapView extends Component {
                         <Row>
                             <Col span={12}>
                                 {/** scatter plot for the measures - GVF and Moran */}
+                                <ScatterGenerator 
+                                    scatterData={scatterData}
+                                />
+                            </Col>
+                            <Col span={12}>
+                                <Row>
+                                    {/** Histogram for the submap */}
+                                    <Col span={24}>
+                                        <SubMapHistogram 
+                                            feature={subMapFeature}
+                                            dataList={features.data_list}
+                                            colorRange={colorRange}
+                                            maxVal={features.max}
+                                            minVal={features.min}
+                                        />
+                                    </Col>
+                                    {/** Line chart for the select classification */}
+                                    <Col span={24}></Col>
+                                </Row>
                             </Col>
                         </Row>
                     </Card>
