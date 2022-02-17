@@ -177,7 +177,11 @@ class SupportMapView extends Component {
                         height: 605,
                         marginBottom: -200
                     }}
-                    > <Empty /> </Card>
+                    >
+                        <Empty 
+                            style={{marginTop: 180}}
+                        />
+                    </Card>
                     
                 );
             }

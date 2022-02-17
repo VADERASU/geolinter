@@ -34,7 +34,8 @@ class MapGenerator extends Component {
                 console.log(re);
             })
             .catch((err)=>{
-                console.log(err);
+                this.props.onVegaParseError(err, true);
+                //console.log(err);
             });
         }  
         

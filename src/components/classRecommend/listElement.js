@@ -70,6 +70,7 @@ class ListRow extends Component{
                     <Col span={2}>
                         <Button
                             size="small"
+                            type="text"
                             value={features.methodName}
                             onClick={this.props.onClassificationPreviewClick}
                         >

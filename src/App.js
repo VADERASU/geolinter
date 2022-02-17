@@ -9,7 +9,7 @@ import CodeEditor from './components/codeEditor';
 import StatusBar from './components/statusBar';
 import MapLinter from './components/mapLinter';
 import LinterReport from './components/linterReport';
-import LinterCharts from './components/linterCharts';
+//import LinterCharts from './components/linterCharts';
 import SupportMapView from './components/supportMapView';
 import ClassRecommend from './components/classRecommend';
 
@@ -44,23 +44,33 @@ class App extends Component {
     this.state = {
       mapDataList: ['state_education','county_unemployment'],
       selectedCaseData: this.dataset['state_education'],
+
       /** vegalite script */
       selectRawCase: "state_education",
       vegaLiteSpec: JSON.parse(case_scripts["state_education"]),
+
       /** vegaLite raw code */
       rawScript: case_scripts["state_education"],
       specOld: "",
+
       /** Code Editor View controller */
       editorView: "Editor",
+
       /** for operation history map */
       specHistory: null,
       oldSelectRawCase: null,
       oldSelectedCaseData: null,
       showHistory: false,
+
       /** class recommendation selection */
       selectedClassificationFeature: null,
       defaultClassificationFeature: null,
       classificationMeasureList: ['GVF', 'Moran', 'ADCM', 'GADF'],
+
+      /** Hard rules detection */
+      hasHardRuleViolation: false,
+      hardRuleMsg:[],
+
     };
   }
 
@@ -77,7 +87,9 @@ class App extends Component {
       specOld: oldSpec,
       specHistory: specHistory,
       oldSelectRawCase: oldSelectRawCase,
-      oldSelectedCaseData: this.dataset[oldSelectRawCase]
+      oldSelectedCaseData: this.dataset[oldSelectRawCase],
+      hasHardRuleViolation: false,
+      hardRuleMsg: []
     });
     //parse the string spec into real Vega spec
     try{
@@ -86,7 +98,8 @@ class App extends Component {
         vegaLiteSpec: changedScript
       });
     }catch(err){
-      console.log(err);
+      //console.log(err);
+      this.handleVegaParseError(err, false);
     }
     //console.log(changedScript);
   };
@@ -132,10 +145,58 @@ class App extends Component {
     });
   };
 
+  handleVegaParseError = (err, isVegaSpec) => {
+    let hardRuleMsg = {
+      title: "",
+      type: "",
+      text: "",
+      lineNum: null
+    };
+    let hardRuleMsgList = [];
+    if(isVegaSpec){ // spec hard error
+      hardRuleMsg.title = "Invalid specification: ";
+      hardRuleMsg.type = "spec";
+      hardRuleMsg.text = ""; // replace with the msg in features.json
+
+      hardRuleMsgList.push(hardRuleMsg);
+      this.setState({
+        hasHardRuleViolation: true,
+        hardRuleMsg: hardRuleMsgList
+      });
+      
+    }else{ // json syntax error
+      hardRuleMsg.title = "SyntaxError: ";
+      hardRuleMsg.type = "syntax";
+      //hardRuleMsg.text = err.message;
+      // get line number of the error
+      let mseTemp = err.message.split(" ");
+      hardRuleMsg.lineNum = mseTemp[mseTemp.length - 7]-1;
+      // reconstruct the error msg
+      let errorMsg = "";
+      mseTemp.forEach((e, i)=>{
+        if(i !== mseTemp.length - 5 && i !== mseTemp.length - 6){
+          if(i === mseTemp.length - 7){
+            errorMsg = errorMsg + (e-1) + " ";
+          }else{
+            errorMsg = errorMsg + e + " ";
+          }
+        }
+      });
+      hardRuleMsg.text = errorMsg;
+      hardRuleMsgList.push(hardRuleMsg);
+      // update the the hard errors in the state
+      this.setState({
+        hasHardRuleViolation: true,
+        hardRuleMsg: hardRuleMsgList
+      });
+    }
+  };
+
   /** Render components for the main layout */
   render(){
     const { Content } = Layout;
     /** extract cases and data name */
+    //console.log(this.state.hardRuleMsg);
 
     return(
       <div className='App'>
@@ -190,6 +251,7 @@ class App extends Component {
                           selectRawCase={this.state.selectRawCase}
                           selectedCaseData={this.state.selectedCaseData}
                           vegaLiteSpec={this.state.vegaLiteSpec}
+                          onVegaParseError={this.handleVegaParseError}
                         />
                       </Col>
                       
@@ -211,8 +273,12 @@ class App extends Component {
                   <Col span={24}>
                     <Row gutter={6}>
                       <Col span={12}>
-                        <LinterReport />
+                        <LinterReport 
+                          hasHardRuleViolation={this.state.hasHardRuleViolation}
+                          hardRuleMsg={this.state.hardRuleMsg}
+                        />
                       </Col>
+
                       <Col span={12}>
                         <Row>
                           <Col span={24}>
@@ -233,31 +299,6 @@ class App extends Component {
                   </Col>
                 </Row>
               </Col>
-
-              {/** Right Main Col */}
-               {/**
-              <Col span={7}>
-                <LinterCharts />
-               
-                <Row gutter={[8,8]}>
-                  <Col span={24}>
-                    <SupportMapView 
-                      specHistory={this.state.specHistory}
-                      oldSelectRawCase={this.state.oldSelectRawCase}
-                      oldSelectedCaseData={this.state.oldSelectedCaseData}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <RecommendClassView />
-                  </Col>
-                  <Col span={24}>
-                    <FineTuningView />
-                  </Col>
-                </Row>
-                
-              </Col>
-               */}
-
             </Row>
           </Content>
         </Layout>

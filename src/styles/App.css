@@ -42,6 +42,10 @@
   /*height: 32vh;*/
 }
 
+.hiddenComponent{
+  display: none;
+}
+
 /** Redefine card style features */
 .ant-card-head-title{
   flex: none;

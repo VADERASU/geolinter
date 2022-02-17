@@ -27,6 +27,7 @@ class MapLinter extends Component {
                     selectedCaseData={this.props.selectedCaseData}
                     vegaLiteSpec={this.props.vegaLiteSpec}
                     selectRawCase={this.props.selectRawCase}
+                    onVegaParseError={this.props.onVegaParseError}
                 />
 
                 <Divider

@@ -1,0 +1,25 @@
+.linterReport{
+    overflow: scroll;
+    padding-bottom: 5px;
+}
+
+.hardRuleCard{
+    border-style: solid;
+    border-color: #ffccc7;
+    border-width: 1px;
+}
+
+.hardRuleCard .ant-card-head{
+    background: #fff2f0;
+    border-bottom: 1px solid #ffccc7;
+}
+
+.hardRuleCard .cardGrid {
+    width: 100%;
+}
+
+.ant-card-grid{
+    border: none;
+    box-shadow: none;
+    padding: 8px;
+}
