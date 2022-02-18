@@ -57,29 +57,22 @@ class SupportMapView extends Component {
 
     render(){
         //prepare the submap data
-        if(this.props.showHistory){
+        if(this.props.hasHardRuleViolation){
             // if selected to show the history
             return(
                 <Card
-                size='small'
-                className='cardDetail'
-                style={{
-                    height: 605,
-                    marginBottom: -200
-                }}
-                > 
-                    <SubMapGenerator 
-                        
+                    size='small'
+                    className='cardDetail'
+                    style={{height: 605,
+                        marginBottom: -200}}
+                >
+                    <Empty
+                        style={{marginTop: 180}}
+                        description={
+                            <span>Please run the VEGA sript again
+                            after fixing the invalid scripts</span>
+                        }
                     />
-        
-                    <Divider
-                        style={{marginTop: 5, marginBottom: 5}}
-                    />
-                    <Row>
-                        <Col span={24}>
-                            
-                        </Col>
-                    </Row>
                 </Card>
             );
         }else{

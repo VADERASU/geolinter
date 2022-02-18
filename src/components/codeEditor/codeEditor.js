@@ -10,29 +10,50 @@ class EditorPanel extends Component{
         this.canvasRef = React.createRef();
     }
 
-    addAnnotation = () => {
+    addAnnotation = (hardRuleMsg) => {
         const editor = this.canvasRef.current.editor;
-        const annotations = [{
-            row: 19,
-            column: 0,
-            text: "Error or warning msg",
-            type: "warning" // also warning and information and error
-        }];
+        const annotations = [];
+        hardRuleMsg.forEach(e=>{
+            let anno = {
+                row: e.lineNum-1,
+                column: 0,
+                text: e.text,
+                type: "error" // also warning and information and error
+            }
+            annotations.push(anno);
+        });
+        
         editor.getSession().setAnnotations(annotations);
     };
 
     componentDidMount(){
         //console.log(this.props);
-        this.addAnnotation();
+        let hasHardRuleViolation = this.props.hasHardRuleViolation;
+        let hardRuleMsg = this.props.hardRuleMsg;
+        const editor = this.canvasRef.current.editor;
+        editor.getSession().setAnnotations([]);
+        if(hasHardRuleViolation)
+            this.addAnnotation(hardRuleMsg);
     }
 
     componentDidUpdate(){
-        this.addAnnotation();
+        let hasHardRuleViolation = this.props.hasHardRuleViolation;
+        let hardRuleMsg = this.props.hardRuleMsg;
+        //console.log(hasHardRuleViolation);
+        const editor = this.canvasRef.current.editor;
+        editor.getSession().setAnnotations([]);
+        if(hasHardRuleViolation)
+            this.addAnnotation(hardRuleMsg);
     }
 
     render(){
         let markers = [];
-        markers.push({startRow: 19, startCol: 4, endRow: 22, endCol: 50, className: 'myMarker', type: 'text' });
+        let hasHardRuleViolation = this.props.hasHardRuleViolation;
+        let hardRuleMsg = this.props.hardRuleMsg;
+        if(hasHardRuleViolation)
+            hardRuleMsg.forEach(e=>{
+                markers.push({startRow: e.lineNum-1, startCol: 0, endRow: e.lineNum-1, endCol: 300, className: 'myMarkerErr', type: 'text' });
+            });
         
         return(
             <div className={this.props.editorView}>

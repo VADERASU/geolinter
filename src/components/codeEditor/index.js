@@ -89,6 +89,8 @@ class CodeEditor extends Component {
                     onEditorChange={this.props.onEditorChange}
                     codeEditorOpt={this.state.codeEditorOpt}
                     editorView={this.props.editorView === "Editor" ? null : "hidden"}
+                    hasHardRuleViolation={this.props.hasHardRuleViolation}
+                    hardRuleMsg={this.props.hardRuleMsg}
                     //editorHeight={this.state.codeEditorHide ? "500px" : "750px"} // adjust the height
                 />
 

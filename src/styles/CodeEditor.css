@@ -17,7 +17,12 @@
     overflow: scroll;
 }
 
-.myMarker {
+.myMarkerErr {
+    position:absolute;
+    background:rgba(222,45,38,0.5);
+  }
+
+  .myMarkerWarn {
     position:absolute;
     background:rgba(100,200,100,0.5);
   }

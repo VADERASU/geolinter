@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 import "../../styles/LinterReport.css"
-import {Card, Alert, Button} from 'antd';
+import {Card, Alert, Button, Divider} from 'antd';
 
 class HardRulePanel extends Component {
 
     render(){
         let hasHardRuleViolation = this.props.hasHardRuleViolation;
         let hardRuleMsg = this.props.hardRuleMsg;
-        console.log(hardRuleMsg);
+        //console.log(hardRuleMsg);
         if(!hasHardRuleViolation){
             return(
                 <Alert
@@ -50,8 +50,9 @@ class HardRulePanel extends Component {
                   {hardRuleMsg.map((msg,i)=>{
                       return (
                         <Card.Grid hoverable={false} className='cardGrid' key={i}>
-                            {msg.title} <br/>
+                            <b>{msg.title}</b> <br/>
                             {msg.text}
+                            <Divider />
                         </Card.Grid>
                       )
                   })}

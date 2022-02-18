@@ -159,6 +159,7 @@ class App extends Component {
       hardRuleMsg.text = ""; // replace with the msg in features.json
 
       hardRuleMsgList.push(hardRuleMsg);
+      console.log(err);
       this.setState({
         hasHardRuleViolation: true,
         hardRuleMsg: hardRuleMsgList
@@ -192,22 +193,129 @@ class App extends Component {
     }
   };
 
+  getSpecLineNum = (specString, key) => {
+    let index = specString.indexOf(key);
+    let tempString = specString.substring(0, index);
+    let lineNumber = tempString.split('\n').length;
+
+    return lineNumber;
+  }
+
+  checkMapHardRule = (spec) => {
+    let hardRuleViolation = [];
+    spec.data.values = this.state.selectRawCase;
+    let hasHardRuleViolation = false;
+
+    //1. schema
+    if(!("$schema" in spec)){
+      let hardRuleMsg = {};
+      hardRuleMsg.lineNum = 1;
+      hardRuleMsg.title = "Invalid specification: ";
+      hardRuleMsg.type = "spec";
+      hardRuleMsg.text = "The specification should include the propertie <$schema>";
+      hardRuleMsg.fix = {
+        parent: 'root',
+        key: "$schema",
+        value: "https://vega.github.io/schema/vega-lite/v5.json"
+      };
+      hardRuleViolation.push(hardRuleMsg);
+      hasHardRuleViolation = true;
+    }
+    if(!("format" in spec["data"])){
+      let hardRuleMsg = {};
+      let specString = JSON.stringify(spec, null, 4);
+      let lineNum = this.getSpecLineNum(specString, "data");
+      hardRuleMsg.lineNum = lineNum;
+      hardRuleMsg.title = "Invalid specification: ";
+      hardRuleMsg.type = "spec";
+      hardRuleMsg.text = "The <data> property should include <format>";
+      hardRuleMsg.fix = {
+        parent: 'data',
+        key: "format",
+        value: {"property": "features"}
+      };
+      hardRuleViolation.push(hardRuleMsg);
+      hasHardRuleViolation = true;
+    }
+    if(!("mark" in spec)){
+      let hardRuleMsg = {};
+      hardRuleMsg.lineNum = 1;
+      hardRuleMsg.title = "Invalid specification: ";
+      hardRuleMsg.type = "spec";
+      hardRuleMsg.text = "The specification should include the propertie <mark: geoshape>";
+      hardRuleMsg.fix = {
+        parent: 'root',
+        key: "mark",
+        value: "geoshape"
+      };
+      hardRuleViolation.push(hardRuleMsg);
+      hasHardRuleViolation = true;
+    }
+    if(!("field" in spec["encoding"]["color"])){
+      let hardRuleMsg = {};
+      let specString = JSON.stringify(spec, null, 4);
+      let lineNum = this.getSpecLineNum(specString, "color");
+      hardRuleMsg.lineNum = lineNum;
+      hardRuleMsg.title = "Invalid specification: ";
+      hardRuleMsg.type = "spec";
+      hardRuleMsg.text = "The <encoding.color> property should have the property <field>";
+      hardRuleMsg.fix = {
+        parent: 'encoding.color',
+        key: "field",
+        value: "" //should be user-defined
+      };
+      hardRuleViolation.push(hardRuleMsg);
+      hasHardRuleViolation = true;
+    }
+    if(!("type" in spec["encoding"]["color"])){
+      let hardRuleMsg = {};
+      let specString = JSON.stringify(spec, null, 4);
+      let lineNum = this.getSpecLineNum(specString, "color");
+      hardRuleMsg.lineNum = lineNum;
+      hardRuleMsg.title = "Invalid specification: ";
+      hardRuleMsg.type = "spec";
+      hardRuleMsg.text = "The <encoding.color> property should have the property <type>";
+      hardRuleMsg.fix = {
+        parent: 'encoding.color',
+        key: "type",
+        value: "quantitative" //should be user-defined
+      };
+      hardRuleViolation.push(hardRuleMsg);
+      hasHardRuleViolation = true;
+    }else if(spec["encoding"]["color"]["type"] !== "quantitative"){
+      let hardRuleMsg = {};
+      let specString = JSON.stringify(spec, null, 4);
+      let lineNum = this.getSpecLineNum(specString, "color")+2;
+      hardRuleMsg.lineNum = lineNum;
+      hardRuleMsg.title = "Invalid specification: ";
+      hardRuleMsg.type = "spec";
+      hardRuleMsg.text = "Invalid <encoding.color.field> value, please use 'quantitative' as the property value";
+      hardRuleMsg.fix = {
+        parent: 'encoding.color',
+        key: "type",
+        value: "quantitative" //should be user-defined
+      };
+      hardRuleViolation.push(hardRuleMsg);
+      hasHardRuleViolation = true;
+    }
+
+    return {hardRuleViolation, hasHardRuleViolation};
+  };
+
   /** Render components for the main layout */
   render(){
     const { Content } = Layout;
-    /** extract cases and data name */
-    //console.log(this.state.hardRuleMsg);
+    /** Hard rule check for the spec properties */
+    let spec = this.state.vegaLiteSpec;
+    let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
+    console.log(hardRuleViolation);
+    //console.log(hasHardRuleViolation);
+    let hardErrFlag = (this.state.hasHardRuleViolation || hasHardRuleViolation) ? true : false; 
+    let hardErrMsg = this.state.hardRuleMsg.concat(hardRuleViolation);
 
     return(
       <div className='App'>
         <Layout className='mainContainer'>
-          {/** Nav bar, may deprecated */}
-          {/**
-           * <Header className='headContainer'>
-            <NavBar />
-          </Header>
-           */}
-
           {/** Main layout of the system */}
           <Content className='vastContainer'>
             {/** Row #1 */}
@@ -231,6 +339,8 @@ class App extends Component {
                       specOld={this.state.specOld}
                       editorView={this.state.editorView}
                       onEditorViewSwitch={this.handleEditorViewSwitch}
+                      hasHardRuleViolation={hardErrFlag}
+                      hardRuleMsg={hardErrMsg}
                     />
                   </Col>
                   <Col span={24}>
@@ -252,6 +362,7 @@ class App extends Component {
                           selectedCaseData={this.state.selectedCaseData}
                           vegaLiteSpec={this.state.vegaLiteSpec}
                           onVegaParseError={this.handleVegaParseError}
+                          hasHardRuleViolation={hardErrFlag}
                         />
                       </Col>
                       
@@ -265,6 +376,7 @@ class App extends Component {
                           vegaLiteSpec={this.state.vegaLiteSpec}
                           selectedClassificationFeature={this.state.selectedClassificationFeature}
                           showHistory={this.state.showHistory}
+                          hasHardRuleViolation={hardErrFlag}
                         />
                       </Col>
                     </Row>
@@ -274,8 +386,8 @@ class App extends Component {
                     <Row gutter={6}>
                       <Col span={12}>
                         <LinterReport 
-                          hasHardRuleViolation={this.state.hasHardRuleViolation}
-                          hardRuleMsg={this.state.hardRuleMsg}
+                           hasHardRuleViolation={hardErrFlag}
+                           hardRuleMsg={hardErrMsg}
                         />
                       </Col>
 
@@ -286,6 +398,7 @@ class App extends Component {
                           </Col>
                           <Col span={24}>
                             <ClassRecommend
+                              hasHardRuleViolation={hardErrFlag}
                               selectedCaseData={this.state.selectedCaseData}
                               vegaLiteSpec={this.state.vegaLiteSpec}
                               classificationMeasureList={this.state.classificationMeasureList}
