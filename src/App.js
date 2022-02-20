@@ -41,6 +41,9 @@ class App extends Component {
       }
     };
 
+    this.initCaseObj = JSON.parse(case_scripts["state_education"]);
+    this.initCaseObjString = JSON.stringify(this.initCaseObj, null, 4);
+
     this.state = {
       mapDataList: ['state_education','county_unemployment'],
       selectedCaseData: this.dataset['state_education'],
@@ -50,7 +53,8 @@ class App extends Component {
       vegaLiteSpec: JSON.parse(case_scripts["state_education"]),
 
       /** vegaLite raw code */
-      rawScript: case_scripts["state_education"],
+      //rawScript: case_scripts["state_education"],
+      rawScript: this.initCaseObjString,
       specOld: "",
 
       /** Code Editor View controller */
@@ -265,7 +269,7 @@ class App extends Component {
       hardRuleMsg.fix = {
         parent: ['encoding', 'color'],
         key: "field",
-        value: "" //should be user-defined
+        value: "properties.higher_education_rate" //should be user-defined
       };
       hardRuleMsg.fixSuggestion = "Add <'field'> property with the corresponding data field from the GeoJSON data.";
       hardRuleViolation.push(hardRuleMsg);
@@ -309,8 +313,6 @@ class App extends Component {
   };
 
   handleHardRuleFixClick = () => {
-    console.log('sssssss');
-    
     let spec = this.state.vegaLiteSpec;
     let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
 
@@ -350,6 +352,8 @@ class App extends Component {
     //console.log(hasHardRuleViolation);
     let hardErrFlag = (this.state.hasHardRuleViolation || hasHardRuleViolation) ? true : false; 
     let hardErrMsg = this.state.hardRuleMsg.concat(hardRuleViolation);
+
+    //TODO: Soft rule check
 
     return(
       <div className='App'>
