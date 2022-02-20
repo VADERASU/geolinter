@@ -20,6 +20,7 @@ class LinterReport extends Component {
                     <HardRulePanel 
                         hasHardRuleViolation={this.props.hasHardRuleViolation}
                         hardRuleMsg={this.props.hardRuleMsg}
+                        onHardRuleFixClick={this.props.onHardRuleFixClick}
                     />                    
                 </div>   
               

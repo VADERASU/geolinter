@@ -212,12 +212,13 @@ class App extends Component {
       hardRuleMsg.lineNum = 1;
       hardRuleMsg.title = "Invalid specification: ";
       hardRuleMsg.type = "spec";
-      hardRuleMsg.text = "The specification should include the propertie <$schema>";
+      hardRuleMsg.text = "The specification should include the propertie <$schema>.";
       hardRuleMsg.fix = {
-        parent: 'root',
+        parent: [],
         key: "$schema",
         value: "https://vega.github.io/schema/vega-lite/v5.json"
       };
+      hardRuleMsg.fixSuggestion = "Add '$schema' with a value as a property of the specification.";
       hardRuleViolation.push(hardRuleMsg);
       hasHardRuleViolation = true;
     }
@@ -228,12 +229,13 @@ class App extends Component {
       hardRuleMsg.lineNum = lineNum;
       hardRuleMsg.title = "Invalid specification: ";
       hardRuleMsg.type = "spec";
-      hardRuleMsg.text = "The <data> property should include <format>";
+      hardRuleMsg.text = "The <data> property should include <format>.";
       hardRuleMsg.fix = {
-        parent: 'data',
+        parent: ['data'],
         key: "format",
         value: {"property": "features"}
       };
+      hardRuleMsg.fixSuggestion = "Add <'format': {'property': 'features'}> for the <data> property.";
       hardRuleViolation.push(hardRuleMsg);
       hasHardRuleViolation = true;
     }
@@ -242,12 +244,13 @@ class App extends Component {
       hardRuleMsg.lineNum = 1;
       hardRuleMsg.title = "Invalid specification: ";
       hardRuleMsg.type = "spec";
-      hardRuleMsg.text = "The specification should include the propertie <mark: geoshape>";
+      hardRuleMsg.text = "The specification should include the propertie <mark: geoshape>.";
       hardRuleMsg.fix = {
-        parent: 'root',
+        parent: [],
         key: "mark",
         value: "geoshape"
       };
+      hardRuleMsg.fixSuggestion = "Add <'mark': 'geoshape'> for the specification.";
       hardRuleViolation.push(hardRuleMsg);
       hasHardRuleViolation = true;
     }
@@ -258,12 +261,13 @@ class App extends Component {
       hardRuleMsg.lineNum = lineNum;
       hardRuleMsg.title = "Invalid specification: ";
       hardRuleMsg.type = "spec";
-      hardRuleMsg.text = "The <encoding.color> property should have the property <field>";
+      hardRuleMsg.text = "The <encoding.color> property should have the property <field>.";
       hardRuleMsg.fix = {
-        parent: 'encoding.color',
+        parent: ['encoding', 'color'],
         key: "field",
         value: "" //should be user-defined
       };
+      hardRuleMsg.fixSuggestion = "Add <'field'> property with the corresponding data field from the GeoJSON data.";
       hardRuleViolation.push(hardRuleMsg);
       hasHardRuleViolation = true;
     }
@@ -274,12 +278,13 @@ class App extends Component {
       hardRuleMsg.lineNum = lineNum;
       hardRuleMsg.title = "Invalid specification: ";
       hardRuleMsg.type = "spec";
-      hardRuleMsg.text = "The <encoding.color> property should have the property <type>";
+      hardRuleMsg.text = "The <encoding.color> property should have the property <type>.";
       hardRuleMsg.fix = {
-        parent: 'encoding.color',
+        parent: ['encoding', 'color'],
         key: "type",
         value: "quantitative" //should be user-defined
       };
+      hardRuleMsg.fixSuggestion = "Add <'type': 'quantitative'> property to the <color> property.";
       hardRuleViolation.push(hardRuleMsg);
       hasHardRuleViolation = true;
     }else if(spec["encoding"]["color"]["type"] !== "quantitative"){
@@ -289,17 +294,50 @@ class App extends Component {
       hardRuleMsg.lineNum = lineNum;
       hardRuleMsg.title = "Invalid specification: ";
       hardRuleMsg.type = "spec";
-      hardRuleMsg.text = "Invalid <encoding.color.field> value, please use 'quantitative' as the property value";
+      hardRuleMsg.text = "Invalid <encoding.color.type> value, please use 'quantitative' as the property value.";
       hardRuleMsg.fix = {
-        parent: 'encoding.color',
+        parent: ['encoding', 'color'],
         key: "type",
         value: "quantitative" //should be user-defined
       };
+      hardRuleMsg.fixSuggestion = "The value <encoding.color.type> property should be 'quantitative'.";
       hardRuleViolation.push(hardRuleMsg);
       hasHardRuleViolation = true;
     }
 
     return {hardRuleViolation, hasHardRuleViolation};
+  };
+
+  handleHardRuleFixClick = () => {
+    console.log('sssssss');
+    
+    let spec = this.state.vegaLiteSpec;
+    let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
+
+    let specString = JSON.stringify(spec, null, 4);
+    let rawObj = JSON.parse(specString);
+    hardRuleViolation.forEach(e=>{
+      let fix = e.fix;
+      let obj_temp = {};
+      if(fix.parent.length === 0){
+        rawObj[fix.key] = fix.value;
+      }else{
+        fix.parent.forEach((e,i)=>{
+          if(i === 0){
+            obj_temp = rawObj[e];
+          }else{
+            obj_temp = obj_temp[e]
+          }
+        });
+        obj_temp[fix.key] = fix.value;
+      }
+    });
+    console.log(rawObj);
+    // update the vega spec state and the spec string in code editor
+    this.setState({
+      rawScript: JSON.stringify(rawObj, null, 4),
+      vegaLiteSpec: rawObj
+    });
   };
 
   /** Render components for the main layout */
@@ -308,7 +346,7 @@ class App extends Component {
     /** Hard rule check for the spec properties */
     let spec = this.state.vegaLiteSpec;
     let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
-    console.log(hardRuleViolation);
+    //console.log(hardRuleViolation);
     //console.log(hasHardRuleViolation);
     let hardErrFlag = (this.state.hasHardRuleViolation || hasHardRuleViolation) ? true : false; 
     let hardErrMsg = this.state.hardRuleMsg.concat(hardRuleViolation);
@@ -388,6 +426,7 @@ class App extends Component {
                         <LinterReport 
                            hasHardRuleViolation={hardErrFlag}
                            hardRuleMsg={hardErrMsg}
+                           onHardRuleFixClick={this.handleHardRuleFixClick}
                         />
                       </Col>
 

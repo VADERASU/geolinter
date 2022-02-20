@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import "../../styles/LinterReport.css"
-import {Card, Alert, Button, Divider} from 'antd';
+import {Card, Alert, Button, Divider, Row, Col, Image} from 'antd';
+import arrow from "../../resource/arrow.png";
 
 class HardRulePanel extends Component {
 
@@ -40,6 +41,7 @@ class HardRulePanel extends Component {
                             marginTop: 7,
                             marginRight: 5
                         }}
+                        onClick={this.props.onHardRuleFixClick}
                         >
                             Fix
                         </Button>
@@ -50,9 +52,30 @@ class HardRulePanel extends Component {
                   {hardRuleMsg.map((msg,i)=>{
                       return (
                         <Card.Grid hoverable={false} className='cardGrid' key={i}>
-                            <b>{msg.title}</b> <br/>
-                            {msg.text}
-                            <Divider />
+                            <Row gutter={[5,5]}>
+                                <Col span={24}><b>{msg.title}</b>{msg.text}</Col>
+                                <Col span={24}>
+                                    <Row>
+                                        <Col span={1}>
+                                            <Image
+                                                width={15}
+                                                src={arrow}
+                                                preview={false}
+                                                style={{marginLeft: 5}}
+                                            />
+                                        </Col>
+                                        <Col span={23}>
+                                            <b>Fix suggestion: </b>{msg.fixSuggestion}
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Divider 
+                                style={{
+                                    marginTop: 8,
+                                    marginBottom: 0
+                                }}
+                            />
                         </Card.Grid>
                       )
                   })}
