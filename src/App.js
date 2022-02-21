@@ -334,13 +334,46 @@ class App extends Component {
         obj_temp[fix.key] = fix.value;
       }
     });
-    console.log(rawObj);
+    //console.log(rawObj);
     // update the vega spec state and the spec string in code editor
     this.setState({
       rawScript: JSON.stringify(rawObj, null, 4),
       vegaLiteSpec: rawObj
     });
   };
+
+  extractMapFeatures = (spec) => {
+    let mapFeature = {
+      width: spec.width,
+      height: spec.height,
+      background: spec.background,
+      //projection: spec.projection.type,
+      //border_stroke: spec.encoding.stroke.value,
+    };
+
+    // check the class breaks and color scheme
+    //default color scheme is viridis
+    if("scale" in spec['encoding']['color']){
+      mapFeature["color_scheme"] = spec.encoding.color.scale.range;
+      mapFeature["breaks"] = spec.encoding.color.scale.domain;
+      mapFeature['k'] = spec.encoding.color.scale.domain.length + 1;
+      mapFeature['ifClassed'] = true;
+    }else{
+      // unclassed map
+      mapFeature['ifClassed'] = false;
+    }
+
+    // check projection
+    // https://vega.github.io/vega-lite/docs/projection.html
+    if("projection" in spec){
+      mapFeature['projection'] = spec.projection.type;
+    }else{
+      mapFeature['projection'] = "equalEarth";
+    }
+
+    //check encoding.stroke
+    
+  }; 
 
   /** Render components for the main layout */
   render(){
@@ -354,6 +387,10 @@ class App extends Component {
     let hardErrMsg = this.state.hardRuleMsg.concat(hardRuleViolation);
 
     //TODO: Soft rule check
+    if(!hardErrFlag){
+      /** extract map features */
+      
+    }
 
     return(
       <div className='App'>

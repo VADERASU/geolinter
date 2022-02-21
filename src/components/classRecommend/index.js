@@ -5,6 +5,7 @@ import '../../styles/ClassRecommend.css';
 
 class ClassRecommend extends Component {
     render(){
+        
         const data = [];
         let maxGVF = '';
         let maxGVFindex = 0;
