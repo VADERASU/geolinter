@@ -365,7 +365,7 @@ class App extends Component {
             const responseMsg = json.msg;
             const measures = json.measures;
             
-            //console.log(measures);
+            console.log(measures);
           })
           .catch(error => {
             console.log(error);
@@ -402,7 +402,7 @@ class App extends Component {
     }
 
     //check encoding.stroke
-    //this.getMeasures(spec.encoding.color.scale.domain);
+    this.getMeasures(spec.encoding.color.scale.domain);
 
     // return extracted map features
     return mapFeature;

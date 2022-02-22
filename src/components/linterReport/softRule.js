@@ -37,7 +37,7 @@ class SoftRulePanel extends Component {
                 >
                     <div style={{padding: 8}}>
                     <Row gutter={[5,5]}>
-                        <Col span={24}><b>Too less classes, the recommendation of the number of class is 3 to 7.</b></Col>
+                        <Col span={24}><b>Too few classes, the recommendation of the number of class is 3 to 7.</b></Col>
                        
                         <Col span={24}>
                             <Row>
@@ -50,7 +50,7 @@ class SoftRulePanel extends Component {
                                     />
                                 </Col>
                                 <Col span={23}>
-                                    <b>Fix step 1: </b>select a class number in the recommended range (3 ~ 7):
+                                    <b>Fix step 1: </b>Select a class number in the recommended range (3 ~ 7):
                                     <InputNumber style={{marginLeft: 5}} size="small" min={3} max={7} defaultValue={3} />
                                 </Col>
                             </Row>
@@ -72,7 +72,7 @@ class SoftRulePanel extends Component {
                                         <b>Fix step 2: </b>
                                         </Col>
                                         <Col span={21}>
-                                        choose a recommended classification method or make your own class break*:
+                                        Choose a recommended classification method or make your own class break*:
                                         </Col>
                                         <Col span={16}>
                                         <Radio.Group defaultValue="recommend" size="small">
@@ -106,7 +106,7 @@ class SoftRulePanel extends Component {
                                                 <b>Fix step 3: </b>
                                             </Col>
                                             <Col span={21}>
-                                                choose a sequantial or diverging color scheme:
+                                                Choose a sequantial or diverging color scheme:
                                             </Col>
                                             </Row>
                                         </Col>

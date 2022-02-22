@@ -24,7 +24,6 @@ class ClassRecommend extends Component {
                 </Card>
             );
         }else{
-            console.log(this.props.recommend_color);
             const data = [];
             let maxGVF = '';
             let maxGVFindex = 0;
@@ -32,11 +31,11 @@ class ClassRecommend extends Component {
             let classification_methods = this.props.selectedCaseData.features.classification_methods;
             classification_methods.forEach((element, i) => {
                 let currentFeature = this.props.selectedCaseData.features[element];
-                let k = this.props.vegaLiteSpec.encoding.color.scale.range.length;
+                let k = this.props.recommend_k;
 
                 let feature = {
                     methodName: classification_methods_title[i],
-                    featureList: this.props.selectedCaseData.features[element],
+                    featureList: currentFeature,
                     dataList: this.props.selectedCaseData.features.data_list,
                     colorRange: this.props.vegaLiteSpec.encoding.color.scale.range,
                     maxVal: this.props.selectedCaseData.features.max,
@@ -45,8 +44,20 @@ class ClassRecommend extends Component {
                     recommend_color: this.props.recommend_color
                 };
                 
-                //get max GVF score
+                let featureWithCurrentK = currentFeature.filter(element => element.k === k);
+                if(featureWithCurrentK.length === 0){
+                    // dont have results in the current number of class
+                    feature.hasResult = false;
+                    feature.GVF = -1;
+                    feature.moran = -1;
+                }else{
+                    //sort the methods based on GVF
+                    feature.hasResult = true;
+                    feature.GVF = featureWithCurrentK[0].GVF;
+                    feature.moran = featureWithCurrentK[0].moran;
+                }
 
+                //get max GVF score
                 currentFeature.forEach(j=>{
                     let name = classification_methods_title[i];
                     if(j.k === k){
@@ -57,9 +68,27 @@ class ClassRecommend extends Component {
                     }
                 });
 
-                data.push(feature);
+                if(data.length === 0){
+                    data.push(feature);    
+                }else{
+                    let max_i = -1;
+                    let flag = true;
+                    data.forEach((e,i)=>{
+                        if(feature.GVF > e.GVF && flag === true){
+                            max_i = i;
+                            flag = false;
+                        }
+                    });
+
+                    if(max_i !== -1){
+                        data.splice(max_i, 0, feature);
+                    }else{
+                        data.push(feature);
+                    } 
+                }
+                
             });
-            //console.log(maxGVF);
+            console.log(data);
     
             const { Option } = Select;
             const measureOption = [];
