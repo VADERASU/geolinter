@@ -47,6 +47,7 @@ class App extends Component {
     this.state = {
       mapDataList: ['state_education','county_unemployment'],
       selectedCaseData: this.dataset['state_education'],
+      userMeasures: {},
 
       /** vegalite script */
       selectRawCase: "state_education",
@@ -69,11 +70,15 @@ class App extends Component {
       /** class recommendation selection */
       selectedClassificationFeature: null,
       defaultClassificationFeature: null,
-      classificationMeasureList: ['GVF', 'Moran', 'ADCM', 'GADF'],
+      classificationMeasureList: ['GVF', 'Moran'],
 
       /** Hard rules detection */
       hasHardRuleViolation: false,
       hardRuleMsg:[],
+
+      /** recommendation k and color */
+      recommend_k: (JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length >= 3 || JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length <= 7) ? JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length : 3,
+      recommend_color: (JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length >= 3 || JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length <= 7) ? JSON.parse(case_scripts["state_education"]).encoding.color.scale.range : ['#e5f5e0','#a1d99b','#31a354'],
 
     };
   }
@@ -342,6 +347,31 @@ class App extends Component {
     });
   };
 
+  getMeasures = (breaks) => {
+    // make request options
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+          class_breaks: breaks,
+          data_list: this.state.selectedCaseData.features.data_list,
+          case_name: this.state.selectRawCase,
+          key_prop: this.state.selectedCaseData.features.key_prop
+      })
+    };
+    fetch('http://127.0.0.1:5000/getfeature', requestOptions)
+        .then(response => response.json())
+        .then(json => {
+            const responseMsg = json.msg;
+            const measures = json.measures;
+            
+            //console.log(measures);
+          })
+          .catch(error => {
+            console.log(error);
+    });
+  };
+
   extractMapFeatures = (spec) => {
     let mapFeature = {
       width: spec.width,
@@ -372,7 +402,10 @@ class App extends Component {
     }
 
     //check encoding.stroke
-    
+    //this.getMeasures(spec.encoding.color.scale.domain);
+
+    // return extracted map features
+    return mapFeature;
   }; 
 
   /** Render components for the main layout */
@@ -387,9 +420,10 @@ class App extends Component {
     let hardErrMsg = this.state.hardRuleMsg.concat(hardRuleViolation);
 
     //TODO: Soft rule check
+    let mapFeatureReady = null;
     if(!hardErrFlag){
       /** extract map features */
-      
+      mapFeatureReady = this.extractMapFeatures(spec);
     }
 
     return(
@@ -468,6 +502,9 @@ class App extends Component {
                            hasHardRuleViolation={hardErrFlag}
                            hardRuleMsg={hardErrMsg}
                            onHardRuleFixClick={this.handleHardRuleFixClick}
+                           mapFeatureReady={mapFeatureReady}
+                           selectedCaseData={this.state.selectedCaseData}
+                           selectRawCase={this.state.selectRawCase}
                         />
                       </Col>
 
@@ -483,6 +520,8 @@ class App extends Component {
                               vegaLiteSpec={this.state.vegaLiteSpec}
                               classificationMeasureList={this.state.classificationMeasureList}
                               onClassificationPreviewClick={this.handldClassificationPreviewClick}
+                              recommend_k={this.state.recommend_k}
+                              recommend_color={this.state.recommend_color}
                             />
                           </Col>
                         </Row>

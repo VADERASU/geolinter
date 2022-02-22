@@ -18,6 +18,21 @@
     width: 100%;
 }
 
+.softRuleCard{
+    border-style: solid;
+    border-color: #ffe58f;
+    border-width: 1px;
+}
+
+.softRuleCard .ant-card-head{
+    background: #fffbe6;
+    border-bottom: 1px solid #ffe58f;
+}
+
+.softRuleCard .cardGrid {
+    width: 100%;
+}
+
 .ant-card-grid{
     border: none;
     box-shadow: none;

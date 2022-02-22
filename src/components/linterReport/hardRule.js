@@ -14,6 +14,7 @@ class HardRulePanel extends Component {
                 <Alert
                     message="No parsing error"
                     type="success"
+                    style={{marginBottom: 5}}
                     showIcon
                     closable
                 />
@@ -24,7 +25,7 @@ class HardRulePanel extends Component {
                 title='Parsing errors'
                 size='small'
                 className='hardRuleCard'
-                //style={{height: 450}}
+                style={{marginBottom: 5}}
                 extra={
                     <div
                         style={{
