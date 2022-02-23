@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import { Typography, Card, Row, Col, Button } from 'antd';
-import { csvParse } from "d3";
 import RecommendHistogram from "./histoGenerator";
 import '../../styles/ClassRecommend.css';
 import LineChartGenerator from "./lineGenerator";
@@ -9,9 +8,9 @@ import BarChartGenerator from "./barGenerator";
 class ListRow extends Component{
     
     render(){
-        const { Text } = Typography;
-        let features = this.props.dataFeatures;
 
+        let features = this.props.dataFeatures;
+        
         let colorRange = features.colorRange;
         let k = colorRange.length;
         let feature = features.featureList.filter(element => element.k === k);
@@ -20,7 +19,7 @@ class ListRow extends Component{
         if(features.methodName === maxGVF){
             ifMaxGVF = true;
         }
-        // TODO: if feature.length is 0, make some spatial marks on the corresponding list
+
         return(
             <Card
                 size='small'

@@ -4,6 +4,24 @@ import ListRow from "./listElement";
 import '../../styles/ClassRecommend.css';
 
 class ClassRecommend extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            sortMeasure: "GVF"
+        };
+    }
+
+    handleSortMeasure = (value) => {
+        //console.log(value);
+        this.setState({
+            sortMeasure: value
+        });
+    };
+
+    componentDidMount() {}
+
+    componentWillReceiveProps(nextProps, nextContext){}
+
     render(){
         let hasHardRuleViolation = this.props.hasHardRuleViolation;
 
@@ -27,6 +45,8 @@ class ClassRecommend extends Component {
             const data = [];
             let maxGVF = '';
             let maxGVFindex = 0;
+            let maxMoran = '';
+            let maxMoranIndex = 0;
             let classification_methods_title = this.props.selectedCaseData.features.classification_methods_title;
             let classification_methods = this.props.selectedCaseData.features.classification_methods;
             classification_methods.forEach((element, i) => {
@@ -57,7 +77,7 @@ class ClassRecommend extends Component {
                     feature.moran = featureWithCurrentK[0].moran;
                 }
 
-                //get max GVF score
+                //get max GVF score and max Moran's I
                 currentFeature.forEach(j=>{
                     let name = classification_methods_title[i];
                     if(j.k === k){
@@ -65,30 +85,56 @@ class ClassRecommend extends Component {
                             maxGVFindex = j.GVF;
                             maxGVF = name;
                         }
+
+                        if(j.moran > maxMoranIndex){
+                            maxMoranIndex = j.moran;
+                            maxMoran = name;
+                        }
                     }
                 });
 
-                if(data.length === 0){
-                    data.push(feature);    
-                }else{
-                    let max_i = -1;
-                    let flag = true;
-                    data.forEach((e,i)=>{
-                        if(feature.GVF > e.GVF && flag === true){
-                            max_i = i;
-                            flag = false;
-                        }
-                    });
-
-                    if(max_i !== -1){
-                        data.splice(max_i, 0, feature);
+                if(this.state.sortMeasure === "GVF"){
+                    if(data.length === 0){
+                        data.push(feature);    
                     }else{
-                        data.push(feature);
-                    } 
+                        let max_i = -1;
+                        let flag = true;
+                        data.forEach((e,i)=>{
+                            if(feature.GVF > e.GVF && flag === true){
+                                max_i = i;
+                                flag = false;
+                            }
+                        });
+    
+                        if(max_i !== -1){
+                            data.splice(max_i, 0, feature);
+                        }else{
+                            data.push(feature);
+                        } 
+                    }
+                }else{
+                    if(data.length === 0){
+                        data.push(feature);    
+                    }else{
+                        let max_i = -1;
+                        let flag = true;
+                        data.forEach((e,i)=>{
+                            if(feature.moran > e.moran && flag === true){
+                                max_i = i;
+                                flag = false;
+                            }
+                        });
+    
+                        if(max_i !== -1){
+                            data.splice(max_i, 0, feature);
+                        }else{
+                            data.push(feature);
+                        } 
+                    }
                 }
-                
+
             });
-            console.log(data);
+            //console.log(data);
     
             const { Option } = Select;
             const measureOption = [];
@@ -110,21 +156,23 @@ class ClassRecommend extends Component {
                             fontSize: 12
                         }}
                     >
+                        <span
+                            style={{
+                                float:'left',
+                                marginTop: 10,
+                                marginRight: 5
+                            }}
+                        >Sort by: </span>
                         <Select
-                            mode="multiple"
                             size="small"
-                            allowClear
                             style={{
                                 float: 'left',
                                 marginTop: '8px',
                                 marginRight: '5px',
-                                width: '100%'
+                                width: 100
                             }}
-                            defaultValue={[
-                                'GVF', 
-                                'Moran'
-                            ]}
-                            placeholder="Please select measures"
+                            defaultValue="GVF"
+                            onChange={this.handleSortMeasure}
                         >
                             {measureOption}
                         </Select>
@@ -137,6 +185,7 @@ class ClassRecommend extends Component {
                         <List.Item>
                             <ListRow
                                 maxGVF={maxGVF}
+                                maxMoran={maxMoran}
                                 dataFeatures={item}
                                 onClassificationPreviewClick={this.props.onClassificationPreviewClick}
                             />

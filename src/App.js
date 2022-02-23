@@ -47,7 +47,128 @@ class App extends Component {
     this.state = {
       mapDataList: ['state_education','county_unemployment'],
       selectedCaseData: this.dataset['state_education'],
-      userMeasures: {},
+      colorList: {
+        3: {
+          sequential_name: [
+            'Sequential: viridis (vega default)', 
+            'Sequential: reds', 
+            'Sequential: greens', 
+            'Sequential: YlGnBu',
+            'Sequential: OrRd',
+          ],
+          sequential_color: [
+            ['#5dc963', '#21918d', '#3b528b'],
+            ['#fee0d2','#fc9272','#de2d26'],
+            ['#e5f5e0','#a1d99b','#31a354'],
+            ['#edf8b1','#7fcdbb','#2c7fb8'],
+            ['#fee8c8','#fdbb84','#e34a33']
+          ],
+          diverging_name: [
+            'Diverging: RdBu', 
+            'Diverging: PiYG',
+          ],
+          diverging_color: [
+            ['#ef8a62','#f7f7f7','#67a9cf'],
+            ['#e9a3c9','#f7f7f7','#a1d76a']
+          ],
+        },
+        4: {
+          sequential_name: [
+            'Sequential: viridis (vega default)', 
+            'Sequential: reds', 
+            'Sequential: greens', 
+            'Sequential: YlGnBu',
+            'Sequential: OrRd',
+          ],
+          sequential_color: [
+            ['#7ad151', '#22a884', '#2a788e', '#414487'],
+            ['#fee5d9','#fcae91','#fb6a4a','#cb181d'],
+            ['#edf8e9','#bae4b3','#74c476','#238b45'],
+            ['#ffffcc','#a1dab4','#41b6c4','#225ea8'],
+            ['#fef0d9','#fdcc8a','#fc8d59','#d7301f']
+          ],
+          diverging_name: [
+            'Diverging: RdBu', 
+            'Diverging: PiYG',
+          ],
+          diverging_color: [
+            ['#ca0020','#f4a582','#92c5de','#0571b0'],
+            ['#d01c8b','#f1b6da','#b8e186','#4dac26']
+          ],
+        },
+        5: {
+          sequential_name: [
+            'Sequential: viridis (vega default)', 
+            'Sequential: reds', 
+            'Sequential: greens', 
+            'Sequential: YlGnBu',
+            'Sequential: OrRd',
+          ],
+          sequential_color: [
+            ['#8fd744', '#35b779', '#21918d', '#31688e', '#443a83'],
+            ['#fee5d9','#fcae91','#fb6a4a','#de2d26','#a50f15'],
+            ['#edf8e9','#bae4b3','#74c476','#31a354','#006d2c'],
+            ['#ffffcc','#a1dab4','#41b6c4','#2c7fb8','#253494'],
+            ['#fef0d9','#fdcc8a','#fc8d59','#e34a33','#b30000']
+          ],
+          diverging_name: [
+            'Diverging: RdBu', 
+            'Diverging: PiYG',
+          ],
+          diverging_color: [
+            ['#ca0020','#f4a582','#f7f7f7','#92c5de','#0571b0'],
+            ['#d01c8b','#f1b6da','#f7f7f7','#b8e186','#4dac26']
+          ],
+        },
+        6: {
+          sequential_name: [
+            'Sequential: viridis (vega default)', 
+            'Sequential: reds', 
+            'Sequential: greens', 
+            'Sequential: YlGnBu',
+            'Sequential: OrRd',
+          ],
+          sequential_color: [
+            ['#9fda3a', '#4ac26d', '#1fa187', '#27808e', '#375c8d', '#46327f'],
+            ['#fee5d9','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15'],
+            ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c'],
+            ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494'],
+            ['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#e34a33','#b30000']
+          ],
+          diverging_name: [
+            'Diverging: RdBu', 
+            'Diverging: PiYG',
+          ],
+          diverging_color: [
+            ['#b2182b','#ef8a62','#fddbc7','#d1e5f0','#67a9cf','#2166ac'],
+            ['#c51b7d','#e9a3c9','#fde0ef','#e6f5d0','#a1d76a','#4d9221']
+          ],
+        },
+        7: {
+          sequential_name: [
+            'Sequential: viridis (vega default)', 
+            'Sequential: reds', 
+            'Sequential: greens', 
+            'Sequential: YlGnBu',
+            'Sequential: OrRd',
+          ],
+          sequential_color: [
+            ['#abdc32', '#5dc963', '#28ae80', '#21918d', '#2c728e', '#3b528b', '#472d7b'],
+            ['#fee5d9','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#99000d'],
+            ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#41ab5d','#238b45','#005a32'],
+            ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#0c2c84'],
+            ['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#990000'],
+          ],
+          diverging_name: [
+            'Diverging: RdBu', 
+            'Diverging: PiYG', 
+          ],
+          diverging_color: [
+            ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'],
+            ['#c51b7d','#e9a3c9','#fde0ef','#f7f7f7','#e6f5d0','#a1d76a','#4d9221']
+          ],
+        },
+      },
 
       /** vegalite script */
       selectRawCase: "state_education",
@@ -78,7 +199,7 @@ class App extends Component {
 
       /** recommendation k and color */
       recommend_k: (JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length >= 3 || JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length <= 7) ? JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length : 3,
-      recommend_color: (JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length >= 3 || JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length <= 7) ? JSON.parse(case_scripts["state_education"]).encoding.color.scale.range : ['#e5f5e0','#a1d99b','#31a354'],
+      recommend_color: (JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length >= 3 || JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length <= 7) ? JSON.parse(case_scripts["state_education"]).encoding.color.scale.range : ['#5dc963', '#21918d', '#3b528b'],
 
     };
   }
@@ -365,7 +486,7 @@ class App extends Component {
             const responseMsg = json.msg;
             const measures = json.measures;
             
-            console.log(measures);
+            //console.log(measures);
           })
           .catch(error => {
             console.log(error);
@@ -402,7 +523,7 @@ class App extends Component {
     }
 
     //check encoding.stroke
-    this.getMeasures(spec.encoding.color.scale.domain);
+    //this.getMeasures(spec.encoding.color.scale.domain);
 
     // return extracted map features
     return mapFeature;
