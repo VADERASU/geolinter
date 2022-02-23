@@ -197,10 +197,6 @@ class App extends Component {
       hasHardRuleViolation: false,
       hardRuleMsg:[],
 
-      /** recommendation k and color */
-      recommend_k: (JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length >= 3 || JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length <= 7) ? JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length : 3,
-      recommend_color: (JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length >= 3 || JSON.parse(case_scripts["state_education"]).encoding.color.scale.range.length <= 7) ? JSON.parse(case_scripts["state_education"]).encoding.color.scale.range : ['#5dc963', '#21918d', '#3b528b'],
-
     };
   }
 
@@ -210,14 +206,7 @@ class App extends Component {
   handleScriptRunClick = () => {
     // store the old spec string for the last step
     this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
-    let specHistory = this.state.vegaLiteSpec;
-    let oldSelectRawCase = this.state.selectRawCase;
-    let oldSpec = JSON.stringify(this.state.vegaLiteSpec, null, 4);
     this.setState({
-      specOld: oldSpec,
-      specHistory: specHistory,
-      oldSelectRawCase: oldSelectRawCase,
-      oldSelectedCaseData: this.dataset[oldSelectRawCase],
       hasHardRuleViolation: false,
       hardRuleMsg: []
     });
@@ -239,7 +228,6 @@ class App extends Component {
     this.setState({
         rawScript: newValue
     });
-    
   };
 
   // When select a new case study
@@ -507,7 +495,7 @@ class App extends Component {
     if("scale" in spec['encoding']['color']){
       mapFeature["color_scheme"] = spec.encoding.color.scale.range;
       mapFeature["breaks"] = spec.encoding.color.scale.domain;
-      mapFeature['k'] = spec.encoding.color.scale.domain.length + 1;
+      mapFeature['k'] = spec.encoding.color.scale.range.length;
       mapFeature['ifClassed'] = true;
     }else{
       // unclassed map
@@ -542,9 +530,14 @@ class App extends Component {
 
     //TODO: Soft rule check
     let mapFeatureReady = null;
+    let recommend_k = null;
+    let recommend_color = null;
     if(!hardErrFlag){
       /** extract map features */
       mapFeatureReady = this.extractMapFeatures(spec);
+      // determine color scheme and k for the recommend charts
+      recommend_k = (mapFeatureReady.k >= 3 || mapFeatureReady.k <= 7) ? mapFeatureReady.k : 3;
+      recommend_color = (mapFeatureReady.k >= 3 || mapFeatureReady.k <= 7) ? mapFeatureReady.color_scheme : ['#5dc963', '#21918d', '#3b528b'];
     }
 
     return(
@@ -602,14 +595,10 @@ class App extends Component {
                       
                       <Col span={12}>
                         <SupportMapView 
-                          specHistory={this.state.specHistory}
-                          oldSelectRawCase={this.state.oldSelectRawCase}
-                          oldSelectedCaseData={this.state.oldSelectedCaseData}
                           selectRawCase={this.state.selectRawCase}
                           selectedCaseData={this.state.selectedCaseData}
                           vegaLiteSpec={this.state.vegaLiteSpec}
                           selectedClassificationFeature={this.state.selectedClassificationFeature}
-                          showHistory={this.state.showHistory}
                           hasHardRuleViolation={hardErrFlag}
                         />
                       </Col>
@@ -641,8 +630,9 @@ class App extends Component {
                               vegaLiteSpec={this.state.vegaLiteSpec}
                               classificationMeasureList={this.state.classificationMeasureList}
                               onClassificationPreviewClick={this.handldClassificationPreviewClick}
-                              recommend_k={this.state.recommend_k}
-                              recommend_color={this.state.recommend_color}
+                              recommend_k={recommend_k}
+                              recommend_color={recommend_color}
+                              colorList={this.state.colorList}
                             />
                           </Col>
                         </Row>

@@ -12,49 +12,6 @@ class SupportMapView extends Component {
         this.canvasRef = React.createRef();
     }
 
-    drawVegaMapHistory = (selectedCaseData, spec, selectRawCase) => {
-        if(selectRawCase === 'county_unemployment'){
-
-            spec.data.values = selectedCaseData.geo;
-            spec.transform[0].from.data.values = selectedCaseData.data.data;
-            //console.log(spec);
-            spec.height = 200;
-            spec.width = 400;
-            spec.encoding.color.legend = null;
-            const result = embed(this.canvasRef.current, spec)
-            .then((re)=>{
-                // result should be stored into the state
-                console.log(re);
-            });
-        }else{
-            /** Preprocess the vega spec */
-            spec.data.values = selectedCaseData;
-            spec.height = 200;
-            spec.width = 400;
-            if(spec.encoding.hasOwnProperty('color')) spec.encoding.color.legend = null;
-            const result = embed(this.canvasRef.current, spec)
-            .then((re)=>{
-                // result should be stored into the state
-                console.log(re);
-            });
-        }  
-    };
-
-    /** class function section */
-    componentDidMount(){
-        if(this.props.oldSelectRawCase !== null){
-            //this.drawVegaMapHistory(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
-        }
-        
-        //console.log(this.props);
-    }
-
-    componentDidUpdate(){
-        if(this.props.oldSelectRawCase !== null){
-            //this.drawVegaMapHistory(this.props.oldSelectedCaseData, this.props.specHistory, this.props.oldSelectRawCase);
-        }
-    }
-
     render(){
         //prepare the submap data
         if(this.props.hasHardRuleViolation){

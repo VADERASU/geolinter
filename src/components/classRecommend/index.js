@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, List, Select, Empty} from 'antd';
+import {Card, List, Select, Empty, Slider, InputNumber} from 'antd';
 import ListRow from "./listElement";
 import '../../styles/ClassRecommend.css';
 
@@ -7,7 +7,9 @@ class ClassRecommend extends Component {
     constructor(props){
         super(props);
         this.state = {
-            sortMeasure: "GVF"
+            sortMeasure: "GVF",
+            recommend_k: 3,
+            recommend_color: ['#5dc963', '#21918d', '#3b528b']
         };
     }
 
@@ -18,9 +20,19 @@ class ClassRecommend extends Component {
         });
     };
 
-    componentDidMount() {}
+    componentDidMount() {
+        this.setState({
+            recommend_k: this.props.recommend_k,
+            recommend_color: this.props.recommend_color
+        });
+    }
 
-    componentWillReceiveProps(nextProps, nextContext){}
+    componentWillReceiveProps(nextProps, nextContext){
+        this.setState({
+            recommend_k: nextProps.recommend_k,
+            recommend_color: nextProps.recommend_color
+        });
+    }
 
     render(){
         let hasHardRuleViolation = this.props.hasHardRuleViolation;
@@ -42,16 +54,20 @@ class ClassRecommend extends Component {
                 </Card>
             );
         }else{
+            const { inputValue } = this.state.recommend_k;
             const data = [];
+
             let maxGVF = '';
             let maxGVFindex = 0;
             let maxMoran = '';
             let maxMoranIndex = 0;
+
             let classification_methods_title = this.props.selectedCaseData.features.classification_methods_title;
             let classification_methods = this.props.selectedCaseData.features.classification_methods;
+            
             classification_methods.forEach((element, i) => {
                 let currentFeature = this.props.selectedCaseData.features[element];
-                let k = this.props.recommend_k;
+                let k = this.state.recommend_k;
 
                 let feature = {
                     methodName: classification_methods_title[i],
@@ -60,8 +76,8 @@ class ClassRecommend extends Component {
                     colorRange: this.props.vegaLiteSpec.encoding.color.scale.range,
                     maxVal: this.props.selectedCaseData.features.max,
                     minVal: this.props.selectedCaseData.features.min,
-                    recommend_k: this.props.recommend_k,
-                    recommend_color: this.props.recommend_color
+                    recommend_k: this.state.recommend_k,
+                    recommend_color: this.state.recommend_color
                 };
                 
                 let featureWithCurrentK = currentFeature.filter(element => element.k === k);
@@ -156,6 +172,14 @@ class ClassRecommend extends Component {
                             fontSize: 12
                         }}
                     >
+                        <span
+                            style={{
+                                float:'left',
+                                marginTop: 10,
+                                marginRight: 5
+                            }}
+                        ># of class: </span>
+                        
                         <span
                             style={{
                                 float:'left',
