@@ -567,6 +567,7 @@ class App extends Component {
                           <Col span={24}>
                             <ClassRecommend
                               hasHardRuleViolation={hardErrFlag}
+                              selectRawCase={this.state.selectRawCase}
                               selectedCaseData={this.state.selectedCaseData}
                               vegaLiteSpec={this.state.vegaLiteSpec}
                               classificationMeasureList={this.state.classificationMeasureList}

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Card, List, Select, Empty, InputNumber, Row, Col, Drawer} from 'antd';
 import ListRow from "./listElement";
 import '../../styles/ClassRecommend.css';
+import RecommendationPreviewMap from "./mapGenerator";
 
 class ClassRecommend extends Component {
     constructor(props){
@@ -12,6 +13,7 @@ class ClassRecommend extends Component {
             recommend_color: ['#5dc963', '#21918d', '#3b528b'],
             recommend_color_name: "Sequential: viridis",
             selectedClassificationFeature: null,
+            previewMapSpec: null,
             drawerVisible: false,
         };
     }
@@ -65,10 +67,22 @@ class ClassRecommend extends Component {
     // handle the classifiation recommendation preview click
     handldClassificationPreviewClick = (e) => {
         let selectedClassificationPreview = e.target.offsetParent.attributes.value.nodeValue;
-        console.log(selectedClassificationPreview);
+        let classification_methods_title = this.props.selectedCaseData.features.classification_methods_title;
+        let classificationIndex = classification_methods_title.indexOf(selectedClassificationPreview);
+        let keyName = this.props.selectedCaseData.features.classification_methods[classificationIndex];
+        let k = this.state.recommend_k;
+        let subMapFeature = this.props.selectedCaseData.features[keyName].filter(element => element.k === k);
+        let breaks = subMapFeature[0].breaks;
+        let subMapSpec = JSON.parse(JSON.stringify(this.props.vegaLiteSpec));
+        subMapSpec.encoding.color.scale.domain = breaks;
+        subMapSpec.encoding.color.scale.range = this.state.recommend_color;
+        subMapSpec.height = 200
+        subMapSpec.width = 400
+        //console.log(selectedClassificationPreview);
         this.setState({
-            //selectedClassificationFeature: selectedClassificationPreview
+            selectedClassificationFeature: selectedClassificationPreview,
             drawerVisible: true,
+            previewMapSpec: subMapSpec
         });
     };
 
@@ -343,9 +357,14 @@ class ClassRecommend extends Component {
                     getContainer={false}
                     width={500}
                     style={{ position: 'absolute' }}
-                    headerStyle={{height: 20}}
+                    headerStyle={{height: 20, backgroundColor: "#F3F8FB"}}
+                    bodyStyle={{padding: 5, backgroundColor: "#F3F8FB"}}
                     >
-                    <p>Some contents...</p>
+                    <RecommendationPreviewMap 
+                        subMapSpec={this.state.previewMapSpec}
+                        selectRawCase={this.props.selectRawCase}
+                        selectedCaseData={this.props.selectedCaseData}
+                    />
                 </Drawer>
     
               </Card>
