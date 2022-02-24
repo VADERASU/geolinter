@@ -59,6 +59,7 @@ class ListRow extends Component{
                                 colorRange={colorRange}
                                 maxVal={features.maxVal}
                                 minVal={features.minVal}
+                                height={44}
                             />
                         </Col>
                         <Col span={5}>
@@ -89,7 +90,7 @@ class ListRow extends Component{
                                 value={features.methodName}
                                 onClick={this.props.onClassificationPreviewClick}
                             >
-                                <img src={preview} width="20" height="20" />
+                                <img src={preview} alt="Preview the map" width="20" height="20" />
                             </Button>
                         </Col>
                     </Row>

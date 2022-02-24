@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Card, List, Select, Empty, InputNumber, Row, Col, Drawer} from 'antd';
+import {Card, List, Select, Empty, InputNumber, Row, Col, Drawer, Divider} from 'antd';
 import ListRow from "./listElement";
 import '../../styles/ClassRecommend.css';
 import RecommendationPreviewMap from "./mapGenerator";
+import RecommendHistogram from "./histoGenerator";
 
 class ClassRecommend extends Component {
     constructor(props){
@@ -364,6 +365,9 @@ class ClassRecommend extends Component {
                         subMapSpec={this.state.previewMapSpec}
                         selectRawCase={this.props.selectRawCase}
                         selectedCaseData={this.props.selectedCaseData}
+                    />
+                    <Divider
+                        style={{marginTop: 5, marginBottom: 5}}
                     />
                 </Drawer>
     

@@ -117,7 +117,7 @@ class RecommendHistogram extends Component{
 
     render(){
         return(
-            <div style={{height: 44}} ref={this.canvasRef}> {/** 235px in 1080p */}
+            <div style={{height: this.props.height}} ref={this.canvasRef}> {/** 235px in 1080p */}
                 <svg
                     style={{
                         width: '100%',
