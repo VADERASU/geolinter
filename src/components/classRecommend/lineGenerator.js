@@ -11,14 +11,19 @@ class LineChartGenerator extends Component {
 
     setEchartOption = (xAxisList, series) => {
         const options = {
-            grid: { top: 3, right: 8, bottom: 22, left: 10 },
+            grid: { top: 4, right: 10, bottom: 16, left: 10 },
             xAxis: {
               type: 'category',
               data: xAxisList,
               boundaryGap: false,
               axisLabel: {
-                  fontSize: 10
+                  fontSize: 9,
+                  margin: 5
               },
+              axisTick: {
+                  length: 2
+              },
+              axisLine: {show: false},
               //axisLine: {show: false}
             },
             yAxis: {
@@ -83,6 +88,22 @@ class LineChartGenerator extends Component {
                 type: 'line',
                 data: GVF_list,
                 //symbol: 'circle',
+                markArea: {
+                    itemStyle: {
+                      color: 'rgba(55, 214, 122, 0.3)'
+                    },
+                    data: [
+                      [
+                        {
+                          name: 'Recommend # of class',
+                          xAxis: GVF_elbow_index
+                        },
+                        {
+                          xAxis: 7
+                        }
+                      ]
+                    ]
+                }
             }
         ];
         
@@ -115,7 +136,7 @@ class LineChartGenerator extends Component {
            <div>
                 <ReactECharts
                     option={this.state.chartOption} 
-                    style={{height: 49, width: '100%'}}
+                    style={{height: 44, width: '100%'}}
                 />               
            </div> 
         );

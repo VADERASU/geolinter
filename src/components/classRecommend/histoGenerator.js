@@ -19,7 +19,7 @@ class RecommendHistogram extends Component{
             height: scrollHeight-15,
             margin: {
                 top: 0,
-                right: 10,
+                right: 15,
                 bottom: 0,
                 left: 5, //60
             },
@@ -94,7 +94,7 @@ class RecommendHistogram extends Component{
 
     extractFeatures = (propData) => {
         let colorRange = propData.colorRange;
-        let k = colorRange.length;
+        //let k = colorRange.length;
         let feature = propData.feature;
         let data = propData.dataList;
         let breaks = feature[0].breaks;
@@ -117,7 +117,7 @@ class RecommendHistogram extends Component{
 
     render(){
         return(
-            <div style={{height: 49}} ref={this.canvasRef}> {/** 235px in 1080p */}
+            <div style={{height: 44}} ref={this.canvasRef}> {/** 235px in 1080p */}
                 <svg
                     style={{
                         width: '100%',

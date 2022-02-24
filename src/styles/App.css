@@ -79,3 +79,16 @@
 .ant-list-item{
   padding: 0;
 }
+
+.colorDIV-container {
+  display: flex;
+  -moz-box-align: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.colorDIV-container .colorCube{
+  display: block;
+  width: 10px;
+  height: 10px;
+}

@@ -9,29 +9,40 @@ class BarChartGenerator extends Component {
         }
     }
 
-    setEchartOption = (yAxisList, series) => {
+    setEchartOption = (yAxisList, series, measure) => {
         const options = {
-            grid: { top: 3, right: 8, bottom: 22, left: 30 },
+            grid: { top: 3, right: 8, bottom: 25, left:  (measure==="GVF")?30:50 },
             yAxis: {
               type: 'category',
               data: yAxisList,
               //boundaryGap: false,
               axisLabel: {
-                  fontSize: 10
+                  fontSize: 9
               },
               axisLine: {show: false},
-              axisTick: {show: false},
+              axisTick: {
+                  show: false
+                },
             },
             xAxis: {
               type: 'value',
               min: 0,
-              max: 1,
+              max: (measure==="GVF") ? 1 : 0.6,
               axisLabel: {
-                fontSize: 10
+                fontSize: 9,
+                margin: 5
             },
             axisLine: {show: false},
-            axisTick: {show: true},
+            axisTick: {
+                show: true,
+                length: 2
+            },
+            splitNumber: (measure==="GVF") ? 5 : 2
               //show:false,
+            },
+            tooltip: {
+                trigger: 'axis',
+                //formatter: '# of class: {c}'
             },
             series: series
         };
@@ -42,15 +53,21 @@ class BarChartGenerator extends Component {
         });
     };
 
-    extractFeatures = (feature, ifMaxGVF) => {
-        let yAxisList = ['GVF'];
-        let GVFScore = feature[0].GVF;
+    extractFeatures = (feature, ifMaxGVF, measure) => {
+        let yAxisList = [measure];
+        let GVFScore = (measure==="GVF") ? feature[0].GVF : feature[0].moran;
         let series = [{
-            name: 'GVF',
+            name: measure,
             type: 'bar',
+            label: {
+                show: true,
+                position: (measure==="GVF") ? 'insideRight' : 'right',
+                fontSize: 10,
+                distance: 2
+            },
             data: [{
                 value: Math.round(GVFScore * 100) / 100,
-                itemStyle: ifMaxGVF ? {color: 'green'} : {color: '#76ccd7'}
+                itemStyle: ifMaxGVF ? {color: '#37d67a'} : {color: '#76ccd7'}
             }]
         }];
 
@@ -60,20 +77,22 @@ class BarChartGenerator extends Component {
     componentDidMount() {
         let feature = this.props.feature;
         let ifMaxGVF = this.props.ifMaxGVF;
-        let {yAxisList, series} = this.extractFeatures(feature, ifMaxGVF);
+        let measure = this.props.measure;
+        let {yAxisList, series} = this.extractFeatures(feature, ifMaxGVF, measure);
         
         //console.log(this.extractFeatures(features));
-        this.setEchartOption(yAxisList, series);
+        this.setEchartOption(yAxisList, series, measure);
     }
 
     /** Update the canvas if props change */
     componentWillReceiveProps(nextProps, nextContext){
         let feature = nextProps.feature;
         let ifMaxGVF = nextProps.ifMaxGVF;
-        let {yAxisList, series} = this.extractFeatures(feature, ifMaxGVF);
+        let measure = nextProps.measure;
+        let {yAxisList, series} = this.extractFeatures(feature, ifMaxGVF, measure);
         
         //console.log(this.extractFeatures(features));
-        this.setEchartOption(yAxisList, series);
+        this.setEchartOption(yAxisList, series, measure);
     }
 
     render(){
