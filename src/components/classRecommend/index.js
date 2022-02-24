@@ -15,6 +15,12 @@ class ClassRecommend extends Component {
             recommend_color_name: "Sequential: viridis",
             selectedClassificationFeature: null,
             previewMapSpec: null,
+            histProp: {
+                subMapFeature: null,
+                dataList: null,
+                minVal: null,
+                maxVal: null
+            },
             drawerVisible: false,
         };
     }
@@ -80,10 +86,21 @@ class ClassRecommend extends Component {
         subMapSpec.height = 200
         subMapSpec.width = 400
         //console.log(selectedClassificationPreview);
+        // generate histogram data
+        let data_list = this.props.selectedCaseData.features.data_list;
+        let maxVal = this.props.selectedCaseData.features.max;
+        let minVal = this.props.selectedCaseData.features.min;
+
         this.setState({
             selectedClassificationFeature: selectedClassificationPreview,
             drawerVisible: true,
-            previewMapSpec: subMapSpec
+            previewMapSpec: subMapSpec,
+            histProp: {
+                subMapFeature: subMapFeature,
+                dataList: data_list,
+                minVal: maxVal,
+                maxVal: minVal
+            }
         });
     };
 
@@ -368,6 +385,9 @@ class ClassRecommend extends Component {
                     />
                     <Divider
                         style={{marginTop: 5, marginBottom: 5}}
+                    />
+                    <RecommendHistogram 
+                        histProp={this.state.histProp}
                     />
                 </Drawer>
     
