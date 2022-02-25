@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import * as d3 from 'd3';
 
-class RecommendHistogram extends Component{
+class HistPreview extends Component{
     constructor(props){
         super(props);
         this.canvasRef = React.createRef();
@@ -12,16 +12,16 @@ class RecommendHistogram extends Component{
         const format = d3.format(".02f");
 
         const dataBins = d3.bin().thresholds(d3.thresholdFreedmanDiaconis)(data);
-
+        //console.log(dataBins.length);
         // Chart dimensions
         let dimensions = {
             width: scrollWidth,
-            height: scrollHeight-15,
+            height: scrollHeight-50,
             margin: {
                 top: 0,
-                right: 15,
+                right: 30,
                 bottom: 0,
-                left: 5, //60
+                left: 20, //60
             },
         };
         dimensions.boundedWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right;
@@ -59,7 +59,9 @@ class RecommendHistogram extends Component{
         const colorBinGroup = histGroup.append('g').attr('class', 'colorBins');
         const breakerLinesGroup = histGroup.append('g').attr('class', 'breakerLines');
         let colorBinList = [minVal];
+        //console.log(colorBinList);
         colorBinList = colorBinList.concat(breaks, maxVal);
+        
         breaks.forEach((binBreak) => {
             const breakerLines = histGroup.append('line')
                 .attr("x1", xScale(binBreak))  //<<== change your code here
@@ -79,11 +81,40 @@ class RecommendHistogram extends Component{
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height + 3)
-                    .attr('height', 5)
-                    .attr('fill', colorScale(binBreak))
+                    .attr('y', dimensions.height+20)
+                    .attr('height', 12)
+                    .attr('fill', colorScale(binBreak));
+
+                const colorText = colorBinGroup.append('text')
+                .attr('x', xScale(binBreak)-10)
+                .attr('y', dimensions.height+50)
+                .style('font-size', 15)
+                .text(i!==0 ? binBreak : "");
             }
         });
+
+        /** render x-axis */
+        const xAxisGroup = histGroup.append('g')
+        .attr("transform", `translate(0, ${dimensions.height - dimensions.margin.bottom})`)
+        .call(d3.axisBottom(xScale).ticks(dimensions.width / 80 ).tickSizeOuter(0))
+        .call(g => g.append("text")
+            .attr("x", dimensions.width - dimensions.margin.right)
+            .attr("y", -4)
+            .attr("fill", "currentColor")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "end")
+            .text(data.x));
+
+        /** render y-axis */
+        const yAxisGroup = histGroup.append('g')
+        .attr("transform", `translate(${dimensions.margin.left},0)`)
+        .call(d3.axisLeft(yScale).ticks(dimensions.height / 40))
+        .call(g => g.select(".domain").remove())
+        .call(g => g.select(".tick:last-of-type text").clone()
+            .attr("x", 4)
+            .attr("text-anchor", "start")
+            .attr("font-weight", "bold")
+            .text(data.y));
 
     };
 
@@ -92,12 +123,21 @@ class RecommendHistogram extends Component{
         rootGroup.selectAll('g').remove();
     };
 
+    round = (num) => {
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        return Math.round(m) / 100 * Math.sign(num);
+    };
+
     extractFeatures = (propData) => {
         let colorRange = propData.colorRange;
         //let k = colorRange.length;
         let feature = propData.feature;
         let data = propData.dataList;
-        let breaks = feature[0].breaks;
+        let breaks = [];
+        feature[0].breaks.forEach(e=>{
+            breaks.push(this.round(e));
+        });
+        //console.log(breaks);
         let maxVal = propData.maxVal;
         let minVal = propData.minVal;
 
@@ -134,4 +174,4 @@ class RecommendHistogram extends Component{
         );
     }
 }
-export default RecommendHistogram;
+export default HistPreview;

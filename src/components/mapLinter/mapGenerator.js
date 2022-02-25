@@ -31,7 +31,7 @@ class MapGenerator extends Component {
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
                 // result should be stored into the state
-                console.log(re);
+                console.log('Choropleth Map with Deceptive Designs');
             })
             .catch((err)=>{
                 this.props.onVegaParseError(err, true);

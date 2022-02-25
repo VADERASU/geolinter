@@ -37,9 +37,10 @@ class MapLinter extends Component {
         }else{
             return(
                 <Card
+                    title='Choropleth Map with Deceptive Designs'
                     size='small'
                     className='cardDetail'
-                    style={{height: 500}}
+                    style={{height: 370}}
                 >
                     <MapGenerator
                         selectedCaseData={this.props.selectedCaseData}
@@ -47,8 +48,8 @@ class MapLinter extends Component {
                         selectRawCase={this.props.selectRawCase}
                         onVegaParseError={this.props.onVegaParseError}
                     />
-    
-                    <Divider
+                    {/** 
+                        <Divider
                         style={{marginTop: 5, marginBottom: 5}}
                     />
     
@@ -75,6 +76,8 @@ class MapLinter extends Component {
                             
                         </Col>
                     </Row>
+                     */}
+                    
                     
                 </Card>
             );

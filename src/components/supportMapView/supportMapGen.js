@@ -40,12 +40,12 @@ class SubMapGenerator extends Component {
 
     /** class function section */
     componentDidMount(){
-        this.drawVegaMap(this.props.selectedCaseData, this.props.subMapSpec, this.props.selectRawCase);
+        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
         //console.log(this.props);
     }
 
     componentDidUpdate(){
-        this.drawVegaMap(this.props.selectedCaseData, this.props.subMapSpec, this.props.selectRawCase);
+        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
     }
 
     /** render components */

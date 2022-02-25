@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {Card, Row, Col, Divider, Empty } from 'antd';
-import embed from 'vega-embed';
 import SubMapGenerator from "./supportMapGen";
 import ScatterGenerator from "./scatterGenerator";
 import SubMapHistogram from "./subMapHist";
@@ -21,7 +20,8 @@ class SupportMapView extends Component {
                     size='small'
                     className='cardDetail'
                     style={{height: 605,
-                        marginBottom: -200}}
+                        //marginBottom: -200
+                    }}
                 >
                     <Empty
                         style={{marginTop: 180}}
@@ -33,22 +33,21 @@ class SupportMapView extends Component {
                 </Card>
             );
         }else{
-            // show selected map preview
-            if(this.props.selectedClassificationFeature !== null){
-                let classification_methods_title = this.props.selectedCaseData.features.classification_methods_title;
-                //let classification_methods = this.props.selectedCaseData.features.classification_methods;
-                let classificationIndex = classification_methods_title.indexOf(this.props.selectedClassificationFeature);
-                let keyName = this.props.selectedCaseData.features.classification_methods[classificationIndex];
-                let colorRange = this.props.vegaLiteSpec.encoding.color.scale.range;
-                let k = colorRange.length;
+            // show soft fixed (updated) map preview
+            let classification_methods_title = this.props.selectedCaseData.features.classification_methods_title;
+            //let classificationIndex = classification_methods_title.indexOf(this.props.selectedClassificationFeature);
+            //let keyName = this.props.selectedCaseData.features.classification_methods[classificationIndex];
+            //let colorRange = this.props.vegaLiteSpec.encoding.color.scale.range;
+            //let k = colorRange.length;
                 //get the features with the given k
-                let subMapFeature = this.props.selectedCaseData.features[keyName].filter(element => element.k === k);
-                let breaks = subMapFeature[0].breaks;
-                let subMapSpec = JSON.parse(JSON.stringify(this.props.vegaLiteSpec));
+            //let subMapFeature = this.props.selectedCaseData.features[keyName].filter(element => element.k === k);
+            //let breaks = subMapFeature[0].breaks;
+            //let subMapSpec = JSON.parse(JSON.stringify(this.props.vegaLiteSpec));
                 //set new breaks with the selected k and color range
-                subMapSpec.encoding.color.scale.domain = breaks;
+            //subMapSpec.encoding.color.scale.domain = breaks;
 
                 // parpare the scatter plot
+                /*
                 let scatterData = [];
                 let features = this.props.selectedCaseData.features;
                 //console.log(features);
@@ -64,38 +63,39 @@ class SupportMapView extends Component {
                         scatterData.push(scatterPointData);
                     }
                 });
-
+                */
                 // prepare the line chart
-                let featureList = this.props.selectedCaseData.features[keyName];
+                //let featureList = this.props.selectedCaseData.features[keyName];
 
                 return(
                     <Card
+                    title='Choropleth Map After Soft Fix'
                     size='small'
                     className='cardDetail'
                     style={{
                         height: 605,
-                        marginBottom: -200
+                        //marginBottom: -200
                     }}
                     > 
                         <SubMapGenerator 
-                            subMapSpec={subMapSpec}
+                            vegaLiteSpec={this.props.vegaLiteSpec}
                             selectRawCase={this.props.selectRawCase}
                             selectedCaseData={this.props.selectedCaseData}
                         />
-            
-                        <Divider
+                        {/**
+                         <Divider
                             style={{marginTop: 5, marginBottom: 5}}
                         />
                         <Row>
                             <Col span={12}>
-                                {/** scatter plot for the measures - GVF and Moran */}
+                                {//scatter plot for the measures - GVF and Moran}
                                 <ScatterGenerator 
                                     scatterData={scatterData}
                                 />
                             </Col>
                             <Col span={12}>
                                 <Row gutter={[8, 8]}>
-                                    {/** Histogram for the submap */}
+                                    {// Histogram for the submap }
                                     <Col span={24}>
                                         <SubMapHistogram 
                                             feature={subMapFeature}
@@ -105,7 +105,7 @@ class SupportMapView extends Component {
                                             minVal={features.min}
                                         />
                                     </Col>
-                                    {/** Line chart for the select classification */}
+                                    {// Line chart for the select classification}
                                     <Col span={24}>
                                         <SubLineChartGenerator 
                                             features={featureList}
@@ -115,26 +115,10 @@ class SupportMapView extends Component {
                                 </Row>
                             </Col>
                         </Row>
+                         */}
+                        
                     </Card>
                 );
-            }else{
-                // not selected preview yet
-                return(
-                    <Card
-                    size='small'
-                    className='cardDetail'
-                    style={{
-                        height: 605,
-                        marginBottom: -200
-                    }}
-                    >
-                        <Empty 
-                            style={{marginTop: 180}}
-                        />
-                    </Card>
-                    
-                );
-            }
             
         }
 

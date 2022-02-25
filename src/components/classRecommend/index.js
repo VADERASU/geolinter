@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {Card, List, Select, Empty, InputNumber, Row, Col, Drawer, Divider} from 'antd';
+import {Card, List, Select, Empty, InputNumber, Row, Col, Drawer, Divider, Slider} from 'antd';
 import ListRow from "./listElement";
 import '../../styles/ClassRecommend.css';
 import RecommendationPreviewMap from "./mapGenerator";
-import RecommendHistogram from "./histoGenerator";
+import HistPreview from "./histPreview";
 
 class ClassRecommend extends Component {
     constructor(props){
@@ -22,6 +22,8 @@ class ClassRecommend extends Component {
                 maxVal: null
             },
             drawerVisible: false,
+            drawerHide: "none",
+            binSize: 'thresholdFreedmanDiaconis'
         };
     }
 
@@ -71,6 +73,11 @@ class ClassRecommend extends Component {
         return colorDIV
     };
 
+    round = (num) => {
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        return Math.round(m) / 100 * Math.sign(num);
+    };
+
     // handle the classifiation recommendation preview click
     handldClassificationPreviewClick = (e) => {
         let selectedClassificationPreview = e.target.offsetParent.attributes.value.nodeValue;
@@ -79,11 +86,14 @@ class ClassRecommend extends Component {
         let keyName = this.props.selectedCaseData.features.classification_methods[classificationIndex];
         let k = this.state.recommend_k;
         let subMapFeature = this.props.selectedCaseData.features[keyName].filter(element => element.k === k);
-        let breaks = subMapFeature[0].breaks;
+        let breaks = [];
+        subMapFeature[0].breaks.forEach(e=>{
+            breaks.push(this.round(e));
+        });
         let subMapSpec = JSON.parse(JSON.stringify(this.props.vegaLiteSpec));
         subMapSpec.encoding.color.scale.domain = breaks;
         subMapSpec.encoding.color.scale.range = this.state.recommend_color;
-        subMapSpec.height = 200
+        subMapSpec.height = 230
         subMapSpec.width = 400
         //console.log(selectedClassificationPreview);
         // generate histogram data
@@ -94,12 +104,13 @@ class ClassRecommend extends Component {
         this.setState({
             selectedClassificationFeature: selectedClassificationPreview,
             drawerVisible: true,
+            drawerHide: "block",
             previewMapSpec: subMapSpec,
             histProp: {
                 subMapFeature: subMapFeature,
                 dataList: data_list,
-                minVal: maxVal,
-                maxVal: minVal
+                minVal: minVal,
+                maxVal: maxVal
             }
         });
     };
@@ -107,6 +118,7 @@ class ClassRecommend extends Component {
     onDrawerClose = () => {
         this.setState({
             drawerVisible: false,
+            drawerHide: "none",
         });
     };
 
@@ -374,7 +386,7 @@ class ClassRecommend extends Component {
                     visible={this.state.drawerVisible}
                     getContainer={false}
                     width={500}
-                    style={{ position: 'absolute' }}
+                    style={{ position: 'absolute', display: this.state.drawerHide}}
                     headerStyle={{height: 20, backgroundColor: "#F3F8FB"}}
                     bodyStyle={{padding: 5, backgroundColor: "#F3F8FB"}}
                     >
@@ -386,8 +398,13 @@ class ClassRecommend extends Component {
                     <Divider
                         style={{marginTop: 5, marginBottom: 5}}
                     />
-                    <RecommendHistogram 
-                        histProp={this.state.histProp}
+                    <HistPreview 
+                        feature={this.state.histProp.subMapFeature}
+                        dataList={this.state.histProp.dataList}
+                        colorRange={this.state.recommend_color}
+                        maxVal={this.state.histProp.maxVal}
+                        minVal={this.state.histProp.minVal}
+                        height={120}
                     />
                 </Drawer>
     

@@ -34,6 +34,27 @@ class SoftRulePanel extends Component {
                 title='Class Number Warning'
                 size='small'
                 className='softRuleCard'
+                extra={
+                    <div
+                        style={{
+                            display: 'inline-block',
+                            height: 40,
+                            fontSize: 12
+                        }}
+                    >
+                        <Button
+                         size="small" 
+                         style={{
+                            float:'left',
+                            marginTop: 7,
+                            marginRight: 5
+                        }}
+                        
+                        >
+                            Fix
+                        </Button>
+                    </div>
+                }
                 >
                     <div style={{padding: 8}}>
                     <Row gutter={[5,5]}>

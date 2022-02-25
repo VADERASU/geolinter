@@ -112,6 +112,7 @@ class App extends Component {
       /** vegalite script */
       selectRawCase: "state_education",
       vegaLiteSpec: JSON.parse(case_scripts["state_education"]),
+      originVegaFlag: true,
 
       /** vegaLite raw code */
       //rawScript: case_scripts["state_education"],
@@ -128,7 +129,6 @@ class App extends Component {
       showHistory: false,
 
       /** class recommendation selection */
-      selectedClassificationFeature: null,
       classificationMeasureList: ['GVF', 'Moran'],
 
       /** Hard rules detection */
@@ -194,15 +194,6 @@ class App extends Component {
       editorView: newView
     });
   }
-
-  // handle the classifiation recommendation preview click
-  handldClassificationPreviewClick = (e) => {
-    let selectedClassificationPreview = e.target.offsetParent.attributes.value.nodeValue;
-    //console.log(e.target.offsetParent.attributes.value.nodeValue);
-    this.setState({
-      selectedClassificationFeature: selectedClassificationPreview
-    });
-  };
 
   handleVegaParseError = (err, isVegaSpec) => {
     let hardRuleMsg = {
@@ -473,7 +464,13 @@ class App extends Component {
     let mapFeatureReady = null;
     let recommend_k = null;
     let recommend_color = null;
+    let originVegaSpec = null;
     if(!hardErrFlag){
+      /** record the original map spec with deceptive designs */
+      let originVegaFlag = this.state.originVegaFlag;
+      if(originVegaFlag){
+        originVegaSpec = spec;
+      }
       /** extract map features */
       mapFeatureReady = this.extractMapFeatures(spec);
       // determine color scheme and k for the recommend charts
@@ -517,71 +514,59 @@ class App extends Component {
                 </Row>
               </Col>
 
-              {/** Right Main Col */}
-              <Col span={17}>
+              {/** Middle Col */}
+              <Col span={8}>
                 <Row gutter={[6,6]}>
-
+                  {/** 1st Row at the middle column - show original map */}
                   <Col span={24}>
-                    <Row gutter={6}>
-                      {/** Main Map*/}
-                      <Col span={12}>
-                        <MapLinter
-                          selectRawCase={this.state.selectRawCase}
-                          selectedCaseData={this.state.selectedCaseData}
-                          vegaLiteSpec={this.state.vegaLiteSpec}
-                          onVegaParseError={this.handleVegaParseError}
-                          hasHardRuleViolation={hardErrFlag}
-                        />
-                      </Col>
-                      
-                      <Col span={12}>
-                        <SupportMapView 
-                          selectRawCase={this.state.selectRawCase}
-                          selectedCaseData={this.state.selectedCaseData}
-                          vegaLiteSpec={this.state.vegaLiteSpec}
-                          selectedClassificationFeature={this.state.selectedClassificationFeature}
-                          hasHardRuleViolation={hardErrFlag}
-                        />
-                      </Col>
-                    </Row>
+                    <MapLinter
+                      vegaLiteSpec={originVegaSpec}
+                      selectRawCase={this.state.selectRawCase}
+                      selectedCaseData={this.state.selectedCaseData}
+                      onVegaParseError={this.handleVegaParseError}
+                      hasHardRuleViolation={hardErrFlag}
+                    />
                   </Col>
-                  {/** Linter Components */}
+                  {/** Linter Report */}
                   <Col span={24}>
-                    <Row gutter={6}>
-                      <Col span={12}>
-                        <LinterReport 
-                           hasHardRuleViolation={hardErrFlag}
-                           hardRuleMsg={hardErrMsg}
-                           onHardRuleFixClick={this.handleHardRuleFixClick}
-                           mapFeatureReady={mapFeatureReady}
-                           selectedCaseData={this.state.selectedCaseData}
-                           selectRawCase={this.state.selectRawCase}
-                        />
-                      </Col>
+                    <LinterReport 
+                      hasHardRuleViolation={hardErrFlag}
+                      hardRuleMsg={hardErrMsg}
+                      onHardRuleFixClick={this.handleHardRuleFixClick}
+                      mapFeatureReady={mapFeatureReady}
+                      selectedCaseData={this.state.selectedCaseData}
+                      selectRawCase={this.state.selectRawCase}
+                    />
+                  </Col>
+                </Row>
+              </Col>
 
-                      <Col span={12}>
-                        <Row>
-                          <Col span={24}>
-                            <div style={{height: 105}}></div>
-                          </Col>
-                          <Col span={24}>
-                            <ClassRecommend
-                              hasHardRuleViolation={hardErrFlag}
-                              selectRawCase={this.state.selectRawCase}
-                              selectedCaseData={this.state.selectedCaseData}
-                              vegaLiteSpec={this.state.vegaLiteSpec}
-                              classificationMeasureList={this.state.classificationMeasureList}
-                              onClassificationPreviewClick={this.handldClassificationPreviewClick}
-                              recommend_k={recommend_k}
-                              recommend_color={recommend_color}
-                              colorList={this.state.colorList}
-                              color_scheme_name={this.state.color_scheme_name}
-                            />
-                          </Col>
-                        </Row>
-                        
-                      </Col>
-                    </Row>
+              {/** Right Col */}
+              <Col span={9}>
+                <Row gutter={[6,6]}>
+                  <Col span={24}>
+                    <SupportMapView 
+                      selectRawCase={this.state.selectRawCase}
+                      selectedCaseData={this.state.selectedCaseData}
+                      vegaLiteSpec={this.state.vegaLiteSpec}
+                      
+                      hasHardRuleViolation={hardErrFlag}
+                    />
+                  </Col>
+                  <Col span={24}>
+                    <ClassRecommend
+                      hasHardRuleViolation={hardErrFlag}
+                      selectRawCase={this.state.selectRawCase}
+                      selectedCaseData={this.state.selectedCaseData}
+                      vegaLiteSpec={this.state.vegaLiteSpec}
+                      classificationMeasureList={this.state.classificationMeasureList}
+                      onClassificationPreviewClick={this.handldClassificationPreviewClick}
+                      recommend_k={recommend_k}
+                      recommend_color={recommend_color}
+                      colorList={this.state.colorList}
+                      color_scheme_name={this.state.color_scheme_name}
+                    />
+                    
                   </Col>
                 </Row>
               </Col>
