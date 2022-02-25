@@ -37,7 +37,7 @@ class MapLinter extends Component {
         }else{
             return(
                 <Card
-                    title='Choropleth Map with Deceptive Designs'
+                    title='Original Choropleth Map'
                     size='small'
                     className='cardDetail'
                     style={{height: 370}}
