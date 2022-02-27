@@ -31,7 +31,8 @@ class MapGenerator extends Component {
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
                 // result should be stored into the state
-                console.log('Choropleth Map with Deceptive Designs');
+                //console.log('Original Choropleth Map');
+                
             })
             .catch((err)=>{
                 this.props.onVegaParseError(err, true);
@@ -41,14 +42,20 @@ class MapGenerator extends Component {
         
     };
 
+
     /** class function section */
     componentDidMount(){
-        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
-        //console.log(this.props);
+        if(this.props.selectRawCase !== null){
+            this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
+        }
+        
     }
 
-    componentDidUpdate(){
-        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
+    componentWillReceiveProps(nextProps, nextContext){
+        if(nextProps.selectRawCase !== null){
+            this.drawVegaMap(nextProps.selectedCaseData, nextProps.vegaLiteSpec, nextProps.selectRawCase);
+        }
+        
     }
 
     /** render components */

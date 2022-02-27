@@ -25,11 +25,11 @@ class MainMapHistogram extends Component {
         // Chart dimensions
         let dimensions = {
             width: scrollWidth,
-            height: scrollHeight-30,
+            height: scrollHeight-60,
             margin: {
                 top: 5,
                 right: 40,
-                bottom: 30,
+                bottom: 10,
                 left: 20, //60
             },
         };
@@ -88,9 +88,15 @@ class MainMapHistogram extends Component {
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height)
-                    .attr('height', 20)
-                    .attr('fill', colorScale(binBreak))
+                    .attr('y', dimensions.height + 15)
+                    .attr('height', 15)
+                    .attr('fill', colorScale(binBreak));
+
+                const colorText = colorBinGroup.append('text')
+                    .attr('x', xScale(binBreak)-10)
+                    .attr('y', dimensions.height+50)
+                    .style('font-size', 12)
+                    .text(i!==0 ? binBreak : "");
             }
         });
         //console.log(xScale(breaks[0].x1));
@@ -139,25 +145,29 @@ class MainMapHistogram extends Component {
     };
 
     componentDidMount() {
-        let dataFeatures = this.props.selectedCaseData.features;
-        let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
-        if(dataFeatures !== null) {
-            this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
+        if(this.props.selectedCaseData !== null){
+            let dataFeatures = this.props.selectedCaseData.features;
+            let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
+            if(dataFeatures !== null ) {
+             this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
+            }
         }
     }
 
     componentDidUpdate() {
         this.clearCanvas();
-        let dataFeatures = this.props.selectedCaseData.features;
-        let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
-        if(dataFeatures !== null) {
-            this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
+        if(this.props.selectedCaseData !== null){
+            let dataFeatures = this.props.selectedCaseData.features;
+            let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
+            if(dataFeatures !== null ) {
+             this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
+            }
         }
     }
 
     render(){
         return(
-            <div style={{height: 158}} ref={this.canvasRef}> {/** 235px in 1080p */}
+            <div style={{height: 150}} ref={this.canvasRef}> {/** 235px in 1080p */}
                 <svg
                     style={{
                         width: '100%',

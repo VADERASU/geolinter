@@ -5,13 +5,50 @@ import MapGenerator from "./mapGenerator";
 import MainMapHistogram from "./mainMapHist";
 
 class MapLinter extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            propsSpec: null,
+            selectedRawCase: null,
+            selectedCaseData: null
+        };
+    }
 
     componentDidMount() {
-
+        if(this.state.selectedRawCase === null){
+            this.setState({
+                propsSpec: this.props.vegaLiteSpec,
+                selectedRawCase: this.props.selectRawCase,
+                selectedCaseData: this.props.selectedCaseData
+            });
+        }else if(this.state.selectedRawCase !== this.props.selectRawCase){ //when user select a new case
+            let selectRawCase = this.props.selectRawCase;
+            this.setState({
+                propsSpec: this.props.vegaLiteSpec,
+                selectedRawCase: this.props.selectRawCase,
+                selectedCaseData: this.props.selectedCaseData
+            });
+        } 
     }
 
     componentWillReceiveProps(nextProps, nextContext){
-        
+        if(this.state.selectedRawCase === null){
+            let selectRawCase = nextProps.selectRawCase;
+            this.setState({
+                propsSpec: nextProps.vegaLiteSpec,
+                selectedRawCase: selectRawCase,
+                selectedCaseData: nextProps.selectedCaseData
+            });
+            
+        }else if(this.state.selectedRawCase !== this.props.selectRawCase){ //when user select a new case
+            let selectRawCase = nextProps.selectRawCase;
+            this.setState({
+                propsSpec: nextProps.vegaLiteSpec,
+                selectedRawCase: selectRawCase,
+                selectedCaseData: nextProps.selectedCaseData
+            });
+            
+        }
     }
 
     /** render components */
@@ -40,44 +77,23 @@ class MapLinter extends Component {
                     title='Original Choropleth Map'
                     size='small'
                     className='cardDetail'
-                    style={{height: 370}}
+                    style={{height: 550}}
                 >
                     <MapGenerator
-                        selectedCaseData={this.props.selectedCaseData}
-                        vegaLiteSpec={this.props.vegaLiteSpec}
-                        selectRawCase={this.props.selectRawCase}
+                        selectedCaseData={this.state.selectedCaseData}
+                        vegaLiteSpec={this.state.propsSpec}
+                        selectRawCase={this.state.selectedRawCase}
                         onVegaParseError={this.props.onVegaParseError}
                     />
-                    {/** 
-                        <Divider
+                    
+                    <Divider
                         style={{marginTop: 5, marginBottom: 5}}
                     />
     
-                    <Row>
-                        <Col span={18}>
-                        <MainMapHistogram
-                            selectedCaseData={this.props.selectedCaseData}
-                            vegaLiteSpec={this.props.vegaLiteSpec}
-                        />
-                        </Col>
-                        <Col span={6}>
-                            <Row>
-                                <Col span={12}>
-                                <span className="main-map-text-title"># of class: </span>
-                                </Col>
-                                <Col span={12}><b>5</b></Col>
-                            </Row>
-                            <Row>
-                                <Col span={12}>
-                                <span className="main-map-text-title">Data distribution info: </span>
-                                </Col>
-                                <Col span={12}><b>skewed distribution</b></Col>
-                            </Row>
-                            
-                        </Col>
-                    </Row>
-                     */}
-                    
+                    <MainMapHistogram
+                        selectedCaseData={this.state.selectedCaseData}
+                        vegaLiteSpec={this.state.propsSpec}
+                    />
                     
                 </Card>
             );

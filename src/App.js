@@ -112,7 +112,6 @@ class App extends Component {
       /** vegalite script */
       selectRawCase: "state_education",
       vegaLiteSpec: JSON.parse(case_scripts["state_education"]),
-      originVegaFlag: true,
 
       /** vegaLite raw code */
       //rawScript: case_scripts["state_education"],
@@ -467,10 +466,7 @@ class App extends Component {
     let originVegaSpec = null;
     if(!hardErrFlag){
       /** record the original map spec with deceptive designs */
-      let originVegaFlag = this.state.originVegaFlag;
-      if(originVegaFlag){
-        originVegaSpec = spec;
-      }
+      originVegaSpec = JSON.parse(JSON.stringify(spec));
       /** extract map features */
       mapFeatureReady = this.extractMapFeatures(spec);
       // determine color scheme and k for the recommend charts
