@@ -4,7 +4,7 @@ import {Card, Alert, Button, Space} from 'antd';
 import 'd3-color';
 import * as d3jnd from "d3-jnd";
 import HardRulePanel from "./hardRule";
-import SoftRulePanel from "./softRule";
+import ClassNumErr from "./classNumErr";
 
 class LinterReport extends Component {
     constructor(props){
@@ -45,7 +45,7 @@ class LinterReport extends Component {
         // check # of class
         let k = mapSoftProp.k;
         if(k < 3){
-            let errTitle = "Too Few Class Warning";
+            let errTitle = "Too Few Classes Warning";
             this.setState({
                 numOfClass: {
                     style: "block",
@@ -53,7 +53,7 @@ class LinterReport extends Component {
                 }
             });
         }else if(k > 7){
-            let errTitle = "Too Many Class Warning";
+            let errTitle = "Too Many Classes Warning";
             this.setState({
                 numOfClass: {
                     style: "block",
@@ -64,8 +64,23 @@ class LinterReport extends Component {
 
         // color scheme
         let color_scheme = mapSoftProp.color_scheme;
-        console.log(color_scheme);
-        
+        let jndList = [];
+        color_scheme.forEach((e,i)=>{
+            if(i < color_scheme.length-1){
+                let isJND = d3jnd.noticeablyDifferent(color_scheme[i], color_scheme[i+1], 0.5, 0.5);
+                jndList.push(isJND);
+            }
+        });
+        if(jndList.includes(false)){
+            let errTitle = "Colors are not noticeably different";
+            this.setState({
+                fillColorScheme: {
+                    style: "block",
+                    errTitle: errTitle
+                }
+            });
+        }
+
         // classification accuracy
 
         
@@ -74,15 +89,19 @@ class LinterReport extends Component {
     componentDidMount() {
         let mapSoftProp = this.props.mapFeatureReady;
         console.log(mapSoftProp);
-        // check soft rule violations
-        this.checkSoftViolations(mapSoftProp);
+        if(mapSoftProp !== null){
+            // check soft rule violations
+            this.checkSoftViolations(mapSoftProp);
+        }
 
     }
 
     componentWillReceiveProps(nextProps, nextContext){
         let mapSoftProp = nextProps.mapFeatureReady;
-        // check soft rule violations
-        this.checkSoftViolations(mapSoftProp);
+        if(mapSoftProp !== null){
+            // check soft rule violations
+            this.checkSoftViolations(mapSoftProp);
+        }
     }
     
     render(){
@@ -104,9 +123,14 @@ class LinterReport extends Component {
                     />
 
                     {/** # of class fix */}
-                    <div style={{display: this.state.numOfClass}}>
-                        <SoftRulePanel 
+                    <div style={{display: this.state.numOfClass.style}}>
+                        <ClassNumErr 
                             mapFeatureReady={this.props.mapFeatureReady}
+                            errProp={this.state.numOfClass.errTitle}
+                            currentMapFeature={this.props.currentMapFeature}
+                            colorList={this.props.colorList}
+                            selectedCaseData={this.props.selectedCaseData}
+                            onSoftFix={this.props.onSoftFix}
                         />   
                     </div>
                                   

@@ -79,7 +79,7 @@ class ListRow extends Component{
                             <BarChartGenerator 
                                 measure={"Moran's I"}
                                 feature={feature}
-                                ifMaxGVF={ifMaxGVF}
+                                ifMaxGVF={ifMaxMoran}
                             />
                         </Col>
                         {/** preview BTN */}

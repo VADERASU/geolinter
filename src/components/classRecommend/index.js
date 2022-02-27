@@ -44,6 +44,9 @@ class ClassRecommend extends Component {
             recommend_k: value,
             recommend_color: color
         });
+        
+        this.props.onCurrentKChange(k);
+        this.props.onCurrentColorChange(color, recommend_color_name);
     };
 
     handleColorChange = (value) => {
@@ -56,6 +59,8 @@ class ClassRecommend extends Component {
             recommend_color: color,
             recommend_color_name: recommend_color_name
         });
+        // synchornize the color state in APP.js
+        this.props.onCurrentColorChange(color, recommend_color_name);
     };
 
     makeColor = (recommend_color_name) => {
@@ -129,6 +134,8 @@ class ClassRecommend extends Component {
             recommend_color: this.props.recommend_color,
             recommend_color_name: (color_scheme !== null) ? color_scheme : "Sequential: viridis"
         });
+        //this.props.onCurrentKChange(this.state.recommend_k);
+        //this.props.onCurrentColorChange(this.state.recommend_color, this.state.recommend_color_name);
     }
 
     componentWillReceiveProps(nextProps, nextContext){
@@ -138,11 +145,13 @@ class ClassRecommend extends Component {
             recommend_color: nextProps.recommend_color,
             recommend_color_name: (color_scheme !== null) ? color_scheme : "Sequential: viridis"
         });
+        //this.props.onCurrentKChange(nextProps.recommend_k);
+        //this.props.onCurrentColorChange(nextProps.recommend_color, nextProps.recommend_color_name);
     }
 
     render(){
         let hasHardRuleViolation = this.props.hasHardRuleViolation;
-        console.log(this.state);
+        //console.log(this.state);
         if(hasHardRuleViolation){
             return(
                 <Card
@@ -256,6 +265,9 @@ class ClassRecommend extends Component {
 
             });
             //console.log(data);
+            this.props.onCurrentKChange(this.state.recommend_k);
+            this.props.onCurrentColorChange(this.state.recommend_color, this.state.recommend_color_name);
+            this.props.onCurrentMeasuresChange(maxGVF, maxMoran);
     
             const { Option } = Select;
             const measureOption = [];

@@ -44,6 +44,16 @@ class App extends Component {
     this.initCaseObj = JSON.parse(case_scripts["state_education"]);
     this.initCaseObjString = JSON.stringify(this.initCaseObj, null, 4);
 
+    
+    this.currentMapFeature = {
+      k: null,
+      color_scheme: null,
+      color_scheme_name: null,
+      high_GVF_name:null,
+      high_moran_name: null,
+      user_define_name: null
+    };
+
     this.state = {
       mapDataList: ['state_education','county_unemployment'],
       selectedCaseData: this.dataset['state_education'],
@@ -141,6 +151,37 @@ class App extends Component {
   }
 
   /** class functions */
+
+  // dynamically set selected recommendations
+  handldCurrentRecommendChange = (k, color, color_name, gvfName, moranName) => {
+    this.setState({
+      currentMapFeature:{
+        k: k,
+        color_scheme: color,
+        color_scheme_name: color_name,
+        high_GVF_name: gvfName,
+        high_moran_name: moranName
+      }
+    });
+  };
+
+  handleCurrentMeasuresChange = (gvfName, moranName) => {
+    this.currentMapFeature.high_GVF_name = gvfName;
+    this.currentMapFeature.high_moran_name = moranName;
+  };
+
+  handleCurrentColorChange = (color, color_name) => {
+    this.currentMapFeature.color_scheme = color;
+    this.currentMapFeature.color_scheme_name = color_name;
+  };
+
+  handleCurrentKChange = (k) => {
+    this.currentMapFeature.k = k
+  };
+
+  handleSoftFix = (info) => {
+    console.log(this.currentMapFeature);
+  };
 
   // When click the "Run Script" btn
   handleScriptRunClick = () => {
@@ -399,8 +440,6 @@ class App extends Component {
           key_prop: this.state.selectedCaseData.features.key_prop
       })
     };
-
-    return requestOptions;
     fetch('http://127.0.0.1:5000/getfeature', requestOptions)
         .then(response => response.json())
         .then(json => {
@@ -412,6 +451,9 @@ class App extends Component {
           .catch(error => {
             console.log(error);
           });
+
+    //return requestOptions;
+    
   };
 
   extractMapFeatures = (spec) => {
@@ -444,7 +486,7 @@ class App extends Component {
     }
 
     //check encoding.stroke
-    mapFeature['API_request'] = this.getMeasures(spec.encoding.color.scale.domain);
+    //mapFeature['API_request'] = this.getMeasures(spec.encoding.color.scale.domain);
 
     // return extracted map features
     return mapFeature;
@@ -453,6 +495,7 @@ class App extends Component {
   /** Render components for the main layout */
   render(){
     const { Content } = Layout;
+
     /** Hard rule check for the spec properties */
     let spec = this.state.vegaLiteSpec;
     let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
@@ -534,6 +577,9 @@ class App extends Component {
                       mapFeatureReady={mapFeatureReady}
                       selectedCaseData={this.state.selectedCaseData}
                       selectRawCase={this.state.selectRawCase}
+                      currentMapFeature={this.currentMapFeature}
+                      colorList={this.state.colorList}
+                      onSoftFix={this.handleSoftFix}
                     />
                   </Col>
                 </Row>
@@ -563,6 +609,9 @@ class App extends Component {
                       recommend_color={recommend_color}
                       colorList={this.state.colorList}
                       color_scheme_name={this.state.color_scheme_name}
+                      onCurrentKChange={this.handleCurrentKChange}
+                      onCurrentColorChange={this.handleCurrentColorChange}
+                      onCurrentMeasuresChange={this.handleCurrentMeasuresChange}
                     />
                     
                   </Col>
