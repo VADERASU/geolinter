@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import "../../styles/LinterReport.css"
 import {Card, Alert, Button, Space} from 'antd';
+import 'd3-color';
+import * as d3jnd from "d3-jnd";
 import HardRulePanel from "./hardRule";
 import SoftRulePanel from "./softRule";
 
@@ -63,7 +65,7 @@ class LinterReport extends Component {
         // color scheme
         let color_scheme = mapSoftProp.color_scheme;
         console.log(color_scheme);
-
+        
         // classification accuracy
 
         
