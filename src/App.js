@@ -399,6 +399,8 @@ class App extends Component {
           key_prop: this.state.selectedCaseData.features.key_prop
       })
     };
+
+    return requestOptions;
     fetch('http://127.0.0.1:5000/getfeature', requestOptions)
         .then(response => response.json())
         .then(json => {
@@ -409,7 +411,7 @@ class App extends Component {
           })
           .catch(error => {
             console.log(error);
-    });
+          });
   };
 
   extractMapFeatures = (spec) => {
@@ -442,7 +444,7 @@ class App extends Component {
     }
 
     //check encoding.stroke
-    //this.getMeasures(spec.encoding.color.scale.domain);
+    mapFeature['API_request'] = this.getMeasures(spec.encoding.color.scale.domain);
 
     // return extracted map features
     return mapFeature;
