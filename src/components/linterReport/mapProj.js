@@ -41,25 +41,6 @@ class MapProjection extends Component {
         this.props.onMapScaleChange(val);
     };
 
-    componentDidMount() {
-        let mapFeatureReady = this.props.mapFeatureReady;
-        if(mapFeatureReady !== null){
-            this.setState({
-                selectProjType: mapFeatureReady.projection
-            });
-        }
-        
-    }
-
-    componentWillReceiveProps(nextProps, nextContext){
-        let mapFeatureReady = nextProps.mapFeatureReady;
-        if(mapFeatureReady !== null){
-            this.setState({
-                selectProjType: mapFeatureReady.projection
-            });
-        }
-        
-    }
 
     render(){
         let mapFeatureReady = this.props.mapFeatureReady;
@@ -143,6 +124,10 @@ class MapProjection extends Component {
                 </div>
 
                 </Card>
+            );
+        }else{
+            return(
+                <div></div>
             );
         }
     }
