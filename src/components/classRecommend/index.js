@@ -66,6 +66,7 @@ class ClassRecommend extends Component {
     makeColor = (recommend_color_name) => {
         let colorList = this.props.colorList;
         let k = this.state.recommend_k;
+        //console.log(k);
         let index = colorList.name.indexOf(recommend_color_name);
         let color = colorList[k][index];
         let colorCube = [];

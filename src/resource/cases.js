@@ -13,7 +13,9 @@ export const case_scripts = {
     },
     "mark": "geoshape",
     "projection": {
-        "type": "albersUsa"
+        "type": "equalEarth",
+        "center": [0,0],
+        "scale": 100
     },
     "encoding": {
         "stroke": {
@@ -23,9 +25,9 @@ export const case_scripts = {
             "field": "properties.higher_education_rate",
             "type": "quantitative",
             "scale": {
-                "range": ["#edf8e9","#bae4b3","#74c476","#31a354","#006d2c"],
+                "range": ["#edf8e9","#edfce9"],
                 "type": "threshold",
-                "domain": [0.16, 0.21, 0.26, 0.32]
+                "domain": [0.16]
             },
             "legend": {
                 "title": null

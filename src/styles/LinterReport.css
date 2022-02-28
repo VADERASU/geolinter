@@ -1,6 +1,7 @@
 .linterReport{
     overflow: scroll;
     padding-bottom: 5px;
+    height: 400;
 }
 
 .hardRuleCard{

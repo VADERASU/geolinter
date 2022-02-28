@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import '../../styles/MapLinter.css';
 import * as d3 from 'd3';
+import 'd3-color';
+import * as d3jnd from "d3-jnd";
 
 class MainMapHistogram extends Component {
     constructor(props){
@@ -29,7 +31,7 @@ class MainMapHistogram extends Component {
             margin: {
                 top: 5,
                 right: 40,
-                bottom: 10,
+                bottom: 30,
                 left: 20, //60
             },
         };
@@ -51,6 +53,14 @@ class MainMapHistogram extends Component {
             .range([dimensions.height - dimensions.margin.bottom, dimensions.margin.top]);
 
         const colorScale = d3.scaleThreshold().domain(breaks).range(colorRange);
+
+        let jndList = [];
+        colorRange.forEach((e,i)=>{
+            if(i < colorRange.length-1){
+                let isJND = d3jnd.noticeablyDifferent(colorRange[i], colorRange[i+1], 0.5, 0.5);
+                jndList.push(isJND);
+            }
+        });
 
         /** render bars for the hist */
         const barsGroup = histGroup.append('g').attr('class', 'bars');
@@ -88,15 +98,24 @@ class MainMapHistogram extends Component {
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height + 15)
+                    .attr('y', dimensions.height)
                     .attr('height', 15)
                     .attr('fill', colorScale(binBreak));
 
                 const colorText = colorBinGroup.append('text')
                     .attr('x', xScale(binBreak)-10)
-                    .attr('y', dimensions.height+50)
+                    .attr('y', dimensions.height+30)
                     .style('font-size', 12)
                     .text(i!==0 ? binBreak : "");
+
+                if(i >0){ // TODO: Visual Design needed!!!
+                    const colorJndErrText = colorBinGroup.append('text')
+                        .attr('x', xScale(binBreak)-70)
+                        .attr('y', dimensions.height+45)
+                        .style('font-size', 12)
+                        .attr('fill', "red")
+                        .text(jndList[i-1] ? "" : "Not noticeably different colors");
+                }
             }
         });
         //console.log(xScale(breaks[0].x1));
@@ -167,7 +186,7 @@ class MainMapHistogram extends Component {
 
     render(){
         return(
-            <div style={{height: 150}} ref={this.canvasRef}> {/** 235px in 1080p */}
+            <div style={{height: 170}} ref={this.canvasRef}> {/** 235px in 1080p */}
                 <svg
                     style={{
                         width: '100%',

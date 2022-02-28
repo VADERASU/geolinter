@@ -16,12 +16,12 @@ class SubMapHistogram extends Component{
         // Chart dimensions
         let dimensions = {
             width: scrollWidth,
-            height: scrollHeight-15,
+            height: scrollHeight-50,
             margin: {
                 top: 0,
-                right: 10,
+                right: 20,
                 bottom: 0,
-                left: 5, //60
+                left: 15, //60
             },
         };
         dimensions.boundedWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right;
@@ -79,11 +79,40 @@ class SubMapHistogram extends Component{
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height + 3)
-                    .attr('height', 5)
-                    .attr('fill', colorScale(binBreak))
+                    .attr('y', dimensions.height + 20)
+                    .attr('height', 10)
+                    .attr('fill', colorScale(binBreak));
+
+                const colorText = colorBinGroup.append('text')
+                    .attr('x', xScale(binBreak)-10)
+                    .attr('y', dimensions.height+50)
+                    //.attr('font-size', 13)
+                    .text(i!==0 ? binBreak : "");
             }
         });
+
+        /** render x-axis */
+        const xAxisGroup = histGroup.append('g')
+        .attr("transform", `translate(0, ${dimensions.height - dimensions.margin.bottom})`)
+        .call(d3.axisBottom(xScale).ticks(dimensions.width / 80 ).tickSizeOuter(0))
+        .call(g => g.append("text")
+            .attr("x", dimensions.width - dimensions.margin.right)
+            .attr("y", -4)
+            .attr("fill", "currentColor")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "end")
+            .text(data.x));
+
+        /** render y-axis */
+        const yAxisGroup = histGroup.append('g')
+        .attr("transform", `translate(${dimensions.margin.left},0)`)
+        .call(d3.axisLeft(yScale).ticks(dimensions.height / 40))
+        .call(g => g.select(".domain").remove())
+        .call(g => g.select(".tick:last-of-type text").clone()
+            .attr("x", 4)
+            .attr("text-anchor", "start")
+            .attr("font-weight", "bold")
+            .text(data.y));
 
     };
 
@@ -118,7 +147,7 @@ class SubMapHistogram extends Component{
 
     render(){
         return(
-            <div style={{height: 110, marginTop: 10}} ref={this.canvasRef}> {/** 235px in 1080p */}
+            <div style={{height: 130, marginTop: 10}} ref={this.canvasRef}> {/** 235px in 1080p */}
                 <svg
                     style={{
                         width: '100%',

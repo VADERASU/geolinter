@@ -88,7 +88,7 @@ class HistPreview extends Component{
                 const colorText = colorBinGroup.append('text')
                 .attr('x', xScale(binBreak)-10)
                 .attr('y', dimensions.height+50)
-                .style('font-size', 15)
+                //.style('font-size', 15)
                 .text(i!==0 ? binBreak : "");
             }
         });

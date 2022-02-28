@@ -5,64 +5,133 @@ import 'd3-color';
 import * as d3jnd from "d3-jnd";
 import HardRulePanel from "./hardRule";
 import ClassNumErr from "./classNumErr";
+import ClassAccuErr from "./classAccuErr";
+import FillColorErr from "./fillColorScheme";
+import MapProjection from "./mapProj";
 
 class LinterReport extends Component {
     constructor(props){
         super(props);
         this.state = {
             numOfClass: {
-                style: "block",
+                style: "none",
+                has: false,
                 errTitle: null
             },
             classificationAcc: {
                 style: "none",
+                has: false,
                 errTitle: null
             },
             fillColorScheme: {
                 style: "none",
+                has: false,
                 errTitle: null
             },
             mapProjection: {
                 style: "none",
+                has: false,
                 errTitle: null
             },
             borderColor: {
                 style: "none",
+                has: false,
                 errTitle: null
             },
             borderBorderWidth: {
                 style: "none",
+                has: false,
                 errTitle: null
             },
             backgroundColor: {
                 style: "none",
+                has: false,
                 errTitle: null
             },
+            originalGVF: 0.32,
+            originalMoran: 0.3,
         };
     }
 
-    checkSoftViolations = (mapSoftProp) => {
+    checkSoftViolations = (mapSoftProp, selectedCaseData) => {
+        let dictTemp = {
+            numOfClass: {
+                style: "none",
+                has: false,
+                errTitle: null
+            },
+            classificationAcc: {
+                style: "none",
+                has: false,
+                errTitle: null
+            },
+            fillColorScheme: {
+                style: "none",
+                has: false,
+                errTitle: null
+            },
+            mapProjection: {
+                style: "none",
+                has: false,
+                errTitle: null
+            },
+            borderColor: {
+                style: "none",
+                has: false,
+                errTitle: null
+            },
+            borderBorderWidth: {
+                style: "none",
+                has: false,
+                errTitle: null
+            },
+            backgroundColor: {
+                style: "none",
+                has: false,
+                errTitle: null
+            },
+            originalGVF: 0.32,
+            originalMoran: 0.3,
+        };
+
         // check # of class
         let k = mapSoftProp.k;
         if(k < 3){
-            let errTitle = "Too Few Classes Warning";
-            this.setState({
-                numOfClass: {
-                    style: "block",
-                    errTitle: errTitle
-                }
-            });
+            let errTitle = "Too Few Classes";
+            dictTemp.numOfClass.style = "block";
+            dictTemp.numOfClass.has = true;
+            dictTemp.numOfClass.errTitle = errTitle;
+            
         }else if(k > 7){
-            let errTitle = "Too Many Classes Warning";
-            this.setState({
-                numOfClass: {
-                    style: "block",
-                    errTitle: errTitle
-                }
-            });
+            let errTitle = "Too Many Classes";
+            dictTemp.numOfClass.style = "block";
+            dictTemp.numOfClass.has = true;
+            dictTemp.numOfClass.errTitle = errTitle;
         }
 
-        // color scheme
+         // classification accuracy
+         let originGVF = this.state.originalGVF;
+         let GVFsum = 0;
+         let methodNum = 0;
+         let classification_methods_title = selectedCaseData.features.classification_methods_title;
+         classification_methods_title.forEach((element, i)=>{
+             let keyName = selectedCaseData.features.classification_methods[i];
+             let currentFeature = selectedCaseData.features[keyName];
+             let featureWithCurrentK = currentFeature.filter(element => element.k === k);
+             if(featureWithCurrentK.length > 0){
+                 GVFsum = featureWithCurrentK[0].GVF + GVFsum;
+                 methodNum = methodNum + 1;
+             }
+         });
+         let GVFavg = GVFsum / methodNum;
+         if(originGVF < GVFavg){
+             let errTitle = "Classification accuracy is low";
+             dictTemp.classificationAcc.style = dictTemp.numOfClass.has ? "none" : "block";
+             dictTemp.classificationAcc.has = true;
+             dictTemp.classificationAcc.errTitle = errTitle;
+         }
+
+         // color scheme
         let color_scheme = mapSoftProp.color_scheme;
         let jndList = [];
         color_scheme.forEach((e,i)=>{
@@ -73,49 +142,55 @@ class LinterReport extends Component {
         });
         if(jndList.includes(false)){
             let errTitle = "Colors are not noticeably different";
-            this.setState({
-                fillColorScheme: {
-                    style: "block",
-                    errTitle: errTitle
-                }
-            });
+            let displayFlag = true;
+            if(dictTemp.numOfClass.has || dictTemp.classificationAcc.has){
+                displayFlag = false;
+            }
+    
+            dictTemp.fillColorScheme.style = displayFlag ? "block" : "none";
+            dictTemp.fillColorScheme.has = true;
+            dictTemp.fillColorScheme.errTitle = errTitle;
         }
 
-        // classification accuracy
-
-        
+        //console.log(dictTemp);
+        this.setState({
+            numOfClass: dictTemp.numOfClass,
+            classificationAcc: dictTemp.classificationAcc,
+            fillColorScheme: dictTemp.fillColorScheme,
+        });
     };
 
     componentDidMount() {
         let mapSoftProp = this.props.mapFeatureReady;
+        let selectedCaseData = this.props.selectedCaseData;
         console.log(mapSoftProp);
         if(mapSoftProp !== null){
             // check soft rule violations
-            this.checkSoftViolations(mapSoftProp);
+            this.checkSoftViolations(mapSoftProp, selectedCaseData);
         }
 
     }
 
     componentWillReceiveProps(nextProps, nextContext){
         let mapSoftProp = nextProps.mapFeatureReady;
+        let selectedCaseData = nextProps.selectedCaseData;
         if(mapSoftProp !== null){
             // check soft rule violations
-            this.checkSoftViolations(mapSoftProp);
+            this.checkSoftViolations(mapSoftProp, selectedCaseData);
         }
     }
     
     render(){
-        
+        console.log(this.state);
         return(
             <Card
                 title='Detected Violations'
                 size='small'
                 className='cardDetail'
                 style={{height: 505}}
+                bodyStyle={{overflow: "scroll"}}
             >
-                <div
-                    className="linterReport"
-                >
+                
                     <HardRulePanel 
                         hasHardRuleViolation={this.props.hasHardRuleViolation}
                         hardRuleMsg={this.props.hardRuleMsg}
@@ -127,14 +202,52 @@ class LinterReport extends Component {
                         <ClassNumErr 
                             mapFeatureReady={this.props.mapFeatureReady}
                             errProp={this.state.numOfClass.errTitle}
+                            errColor={this.state.fillColorScheme.errTitle}
+                            errAccu={this.state.classificationAcc.errTitle}
                             currentMapFeature={this.props.currentMapFeature}
                             colorList={this.props.colorList}
                             selectedCaseData={this.props.selectedCaseData}
                             onSoftFix={this.props.onSoftFix}
                         />   
                     </div>
+
+                    {/** classificationAcc fix */}
+                    <div style={{display: this.state.classificationAcc.style}}>
+                        <ClassAccuErr 
+                            hasErr={this.state.classificationAcc.style}
+                            mapFeatureReady={this.props.mapFeatureReady}
+                            errProp={this.state.classificationAcc.errTitle}
+                            currentMapFeature={this.props.currentMapFeature}
+                            colorList={this.props.colorList}
+                            selectedCaseData={this.props.selectedCaseData}
+                            onSoftFix={this.props.onSoftFix}
+                        />
+                    </div>
+
+                    {/** fillColorScheme fix */}
+                    <div style={{display: this.state.fillColorScheme.style}}>
+                        <FillColorErr 
+                            hasErr={this.state.fillColorScheme.style}
+                            mapFeatureReady={this.props.mapFeatureReady}
+                            errProp={this.state.fillColorScheme.errTitle}
+                            currentMapFeature={this.props.currentMapFeature}
+                            colorList={this.props.colorList}
+                            onSoftFix={this.props.onSoftFix}
+                        />
+                    </div>
+
+                    {/** map projection adjustment */}
+                    <div style={{marginTop: 5}}>
+                        <MapProjection 
+                            mapFeatureReady={this.props.mapFeatureReady}
+                            onMapProjChange={this.props.onMapProjChange}
+                            onMapCenter0Change={this.props.onMapCenter0Change}
+                            onMapCenter1Change={this.props.onMapCenter1Change}
+                            onMapScaleChange={this.props.onMapScaleChange}
+                        />
+                    </div>
                                   
-                </div>   
+                
               
             </Card>
         );

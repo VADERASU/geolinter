@@ -146,11 +146,40 @@ class App extends Component {
 
       /** linter features */
       color_scheme_name: "Sequential: greens",
-
+      softFixSpec: null,
+      // map projection props
+      selectProjType: "equalEarth",
+      center0: 0,
+      center1: 0,
+      scale: 150,
     };
   }
 
   /** class functions */
+
+  handleMapProjChange = (value) => {
+    this.setState({
+        selectProjType: value
+    });
+  };
+
+  handleMapCenter0Change = (val) => {
+      this.setState({
+          center0: val
+      });
+  };
+
+  handleMapCenter1Change = (val) => {
+      this.setState({
+          center1: val
+      });
+  };
+
+  handleMapScaleChange = (val) => {
+      this.setState({
+          scale: val
+      });
+  };
 
   // dynamically set selected recommendations
   handldCurrentRecommendChange = (k, color, color_name, gvfName, moranName) => {
@@ -180,7 +209,13 @@ class App extends Component {
   };
 
   handleSoftFix = (info) => {
-    console.log(this.currentMapFeature);
+    //console.log(info);
+    // deep cope map spec
+    //let newVegaSpec = JSON.parse(JSON.stringify(this.state.vegaLiteSpec));
+    this.setState({
+      softFixSpec: info
+    });
+
   };
 
   // When click the "Run Script" btn
@@ -495,7 +530,7 @@ class App extends Component {
   /** Render components for the main layout */
   render(){
     const { Content } = Layout;
-
+    //console.log(this.state);
     /** Hard rule check for the spec properties */
     let spec = this.state.vegaLiteSpec;
     let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
@@ -515,8 +550,8 @@ class App extends Component {
       /** extract map features */
       mapFeatureReady = this.extractMapFeatures(spec);
       // determine color scheme and k for the recommend charts
-      recommend_k = (mapFeatureReady.k >= 3 || mapFeatureReady.k <= 7) ? mapFeatureReady.k : 3;
-      recommend_color = (mapFeatureReady.k >= 3 || mapFeatureReady.k <= 7) ? mapFeatureReady.color_scheme : ['#5dc963', '#21918d', '#3b528b'];
+      recommend_k = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.k : 3;
+      recommend_color = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.color_scheme : ['#5dc963', '#21918d', '#3b528b'];
     }
 
     return(
@@ -580,6 +615,10 @@ class App extends Component {
                       currentMapFeature={this.currentMapFeature}
                       colorList={this.state.colorList}
                       onSoftFix={this.handleSoftFix}
+                      onMapProjChange={this.handleMapProjChange}
+                      onMapCenter0Change={this.handleMapCenter0Change}
+                      onMapCenter1Change={this.handleMapCenter1Change}
+                      onMapScaleChange={this.handleMapScaleChange}
                     />
                   </Col>
                 </Row>
@@ -593,8 +632,12 @@ class App extends Component {
                       selectRawCase={this.state.selectRawCase}
                       selectedCaseData={this.state.selectedCaseData}
                       vegaLiteSpec={this.state.vegaLiteSpec}
-                      
+                      softFixSpec={this.state.softFixSpec}
                       hasHardRuleViolation={hardErrFlag}
+                      selectProjType={this.state.selectProjType}
+                      center0={this.state.center0}
+                      center1={this.state.center1}
+                      scale={this.state.scale}
                     />
                   </Col>
                   <Col span={24}>

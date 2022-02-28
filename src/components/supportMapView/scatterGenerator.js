@@ -10,9 +10,9 @@ class ScatterGenerator extends Component {
         }
     }
 
-    setEchartOption = (scatterGenerator) => {
+    setEchartOption = (scatterGenerator, currentScatter, originScatter) => {
         const options = {
-            grid: { top: 25, right: 8, bottom: 27, left: 30 },
+            grid: { top: 25, right: 12, bottom: 30, left: 30 },
             xAxis: {
                 type: 'value',
                 name: "Moran's I",
@@ -43,6 +43,7 @@ class ScatterGenerator extends Component {
                 axisLabel: {
                     fontSize: 10
                 },
+                scale: true
                 //axisLine: {show: false},
                 //axisTick: {show: false},
             },
@@ -57,14 +58,27 @@ class ScatterGenerator extends Component {
                             + "Moran's I: " + value[0];
                 }
             },
-            series: [{
-                type: 'scatter',
-                symbolSize: 15,
-                data: scatterGenerator,
-                emphasis: {
-                    focus: 'self'
+            series: [
+                {
+                    type: 'scatter',
+                    symbolSize: 14,
+                    data: originScatter,
+                    color: '#F00',
                 },
-            }]
+                {
+                    type: 'effectScatter',
+                    symbolSize: 14,
+                    data: currentScatter,
+                },
+                {
+                    type: 'scatter',
+                    symbolSize: 14,
+                    data: scatterGenerator,
+                    emphasis: {
+                        focus: 'self'
+                    },
+                }
+            ]
         };
 
         //set the option
@@ -75,12 +89,12 @@ class ScatterGenerator extends Component {
 
     componentDidMount() {
         //console.log(this.extractFeatures(features));
-        this.setEchartOption(this.props.scatterData);
+        this.setEchartOption(this.props.scatterData, this.props.currentScatter, this.props.originScatter);
     }
 
     /** Update the canvas if props change */
     componentWillReceiveProps(nextProps, nextContext){
-
+        this.setEchartOption(nextProps.scatterData, nextProps.currentScatter, nextProps.originScatter);
     }
 
     render(){
@@ -90,7 +104,7 @@ class ScatterGenerator extends Component {
            >
                 <ReactECharts
                     option={this.state.chartOption} 
-                    style={{height: 255, width: '100%'}}
+                    style={{height: 220, width: '100%'}}
                 />               
            </div> 
         );

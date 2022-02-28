@@ -17,7 +17,6 @@ class ClassNumErr extends Component {
             selectedCaseData: null,
             originalGVF: 0.32,
             originalMoran: 0.3,
-            
         };
     }
 
@@ -182,6 +181,17 @@ class ClassNumErr extends Component {
         });
     };
 
+    handleFix = () => {
+        let fixObj = {
+            k: this.state.k,
+            color_scheme: this.state.color_scheme,
+            color_scheme_name: this.state.color_scheme_name,
+            selectClassification: this.state.selectClassification,
+            fixType: "classNum"
+        };
+        this.props.onSoftFix(fixObj);
+    };
+
     componentDidMount() {
         //let currentMapFeature = this.props.currentMapFeature;
         let selectedCaseData = this.props.selectedCaseData;
@@ -223,12 +233,20 @@ class ClassNumErr extends Component {
             });
         }
 
-        console.log(this.state);
+        let ErrMsg = this.props.errProp;
+        if(this.props.errColor !== null){
+            ErrMsg = ErrMsg + ", " + this.props.errColor;
+        }
+        if(this.props.errAccu !== null){
+            ErrMsg = ErrMsg + ", " + this.props.errAccu;
+        }
+
+        //console.log(this.state);
         if(mapFeatureReady !== null){
             return(
                 <div>
                 <Card
-                title={this.props.errProp}
+                title={ErrMsg}
                 size='small'
                 className='softRuleCard'
                 extra={
@@ -246,7 +264,7 @@ class ClassNumErr extends Component {
                             marginTop: 7,
                             marginRight: 5
                         }}
-                        onClick={this.props.onSoftFix}
+                        onClick={this.handleFix}
                         >
                             Fix
                         </Button>

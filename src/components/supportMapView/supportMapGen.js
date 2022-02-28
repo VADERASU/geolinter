@@ -8,7 +8,7 @@ class SubMapGenerator extends Component {
         this.canvasRef = React.createRef();
     }
 
-    drawVegaMap = (selectedCaseData, spec, selectRawCase) => {
+    drawVegaMap = (selectedCaseData, spec, selectRawCase, selectProjType, center0, center1, scale) => {
         if(selectRawCase === 'county_unemployment'){
 
             spec.data.values = selectedCaseData.geo;
@@ -26,7 +26,22 @@ class SubMapGenerator extends Component {
         }else if(selectRawCase === 'state_education'){
             /** Preprocess the vega spec */
             spec.data.values = selectedCaseData.geo;
-            
+
+            //change map proj
+            let center = [center0, center1];
+            if(selectProjType === "albersUsa"){
+                spec.projection = {
+                    "type": "albersUsa"
+                };
+            }else{
+                spec.projection = {
+                    "type": selectProjType,
+                    "center": center,
+                    "scale": scale
+                };
+            }
+
+
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
                 // result should be stored into the state
@@ -40,12 +55,28 @@ class SubMapGenerator extends Component {
 
     /** class function section */
     componentDidMount(){
-        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
+        this.drawVegaMap(
+            this.props.selectedCaseData, 
+            this.props.vegaLiteSpec, 
+            this.props.selectRawCase,
+            this.props.selectProjType,
+            this.props.center0,
+            this.props.center1,
+            this.props.scale
+        );
         //console.log(this.props);
     }
 
     componentDidUpdate(){
-        this.drawVegaMap(this.props.selectedCaseData, this.props.vegaLiteSpec, this.props.selectRawCase);
+        this.drawVegaMap(
+            this.props.selectedCaseData, 
+            this.props.vegaLiteSpec, 
+            this.props.selectRawCase,
+            this.props.selectProjType,
+            this.props.center0,
+            this.props.center1,
+            this.props.scale
+        );
     }
 
     /** render components */
