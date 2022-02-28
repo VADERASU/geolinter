@@ -11,12 +11,13 @@ class ClassNumErr extends Component {
             k: 3,
             color_scheme: ['#5dc963', '#21918d', '#3b528b'],
             color_scheme_name: "Sequential: viridis",
-            //sortMeasure: "GVF",
+            sortMeasure: "GVF",
             selectClassification: null,
             classificationList: null,
             selectedCaseData: null,
             originalGVF: 0.32,
-            originalMoran: 0.3
+            originalMoran: 0.3,
+            
         };
     }
 
@@ -73,6 +74,7 @@ class ClassNumErr extends Component {
             k: value,
             color_scheme: color
         });
+        this.generateClassificationList(this.state.selectedCaseData, k, this.state.sortMeasure);
     };
 
     handleColorChange = (value) => {
@@ -90,19 +92,25 @@ class ClassNumErr extends Component {
     handleClassificationChange = (value) => {
         let measure = value.target.value;
         if(measure === "maxGVF"){
-            this.generateClassificationList(this.state.selectedCaseData, "GVF");
+            this.generateClassificationList(this.state.selectedCaseData, this.state.k, "GVF");
+            this.setState({
+                sortMeasure: "GVF"
+            });
         }else{
-            this.generateClassificationList(this.state.selectedCaseData, "moran");
+            this.generateClassificationList(this.state.selectedCaseData, this.state.k, "moran");
+            this.setState({
+                sortMeasure: "moran"
+            });
         }
     };
 
-    generateClassificationList = (selectedCaseData, sortMeasure) => {
+    generateClassificationList = (selectedCaseData, numClass, sortMeasure) => {
         const data = [];
         let classification_methods_title = selectedCaseData.features.classification_methods_title;
         classification_methods_title.forEach((element, i)=>{
             let keyName = selectedCaseData.features.classification_methods[i];
             let currentFeature = selectedCaseData.features[keyName];
-            let k = this.state.k;
+            let k = numClass;
             let feature = {
                 methodName: element,
                 featureList: currentFeature,
@@ -177,7 +185,7 @@ class ClassNumErr extends Component {
     componentDidMount() {
         //let currentMapFeature = this.props.currentMapFeature;
         let selectedCaseData = this.props.selectedCaseData;
-        this.generateClassificationList(selectedCaseData, "GVF");
+        this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
             selectedCaseData: selectedCaseData
         });
@@ -186,7 +194,7 @@ class ClassNumErr extends Component {
     componentWillReceiveProps(nextProps, nextContext){
         //let currentMapFeature = nextProps.currentMapFeature;
         let selectedCaseData = nextProps.selectedCaseData;
-        this.generateClassificationList(selectedCaseData, "GVF");
+        this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
             selectedCaseData: selectedCaseData
         });
