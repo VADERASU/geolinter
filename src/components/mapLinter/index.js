@@ -55,6 +55,7 @@ class MapLinter extends Component {
     /** TODO: should add the vis design between two maps */
     render(){
         let hasHardRuleViolation = this.props.hasHardRuleViolation;
+        console.log(hasHardRuleViolation);
         if(hasHardRuleViolation){
             return(
                 <Card

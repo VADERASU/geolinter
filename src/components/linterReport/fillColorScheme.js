@@ -53,17 +53,23 @@ class FillColorErr extends Component {
     componentDidMount() {
         //let currentMapFeature = this.props.currentMapFeature;
         let mapFeatureReady = this.props.mapFeatureReady;
-        this.setState({
-            k: mapFeatureReady.k,
-        });
+        if(mapFeatureReady !== null){
+            this.setState({
+                k: mapFeatureReady.k,
+            });
+        }
+        
     }
 
     componentWillReceiveProps(nextProps, nextContext){
         //let currentMapFeature = nextProps.currentMapFeature;
         let mapFeatureReady = nextProps.mapFeatureReady;
-        this.setState({
-            k: mapFeatureReady.k,
-        });
+        if(mapFeatureReady !== null){
+            this.setState({
+                k: mapFeatureReady.k,
+            });
+        }
+        
     }
 
     render(){

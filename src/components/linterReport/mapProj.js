@@ -43,16 +43,22 @@ class MapProjection extends Component {
 
     componentDidMount() {
         let mapFeatureReady = this.props.mapFeatureReady;
-        this.setState({
-            selectProjType: mapFeatureReady.projection
-        });
+        if(mapFeatureReady !== null){
+            this.setState({
+                selectProjType: mapFeatureReady.projection
+            });
+        }
+        
     }
 
     componentWillReceiveProps(nextProps, nextContext){
         let mapFeatureReady = nextProps.mapFeatureReady;
-        this.setState({
-            selectProjType: mapFeatureReady.projection
-        });
+        if(mapFeatureReady !== null){
+            this.setState({
+                selectProjType: mapFeatureReady.projection
+            });
+        }
+        
     }
 
     render(){

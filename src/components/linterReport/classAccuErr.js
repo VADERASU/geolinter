@@ -196,22 +196,28 @@ class ClassAccuErr extends Component {
         //let currentMapFeature = this.props.currentMapFeature;
         let selectedCaseData = this.props.selectedCaseData;
         let mapFeatureReady = this.props.mapFeatureReady;
-        this.generateClassificationList(selectedCaseData, mapFeatureReady.k, "GVF");
-        this.setState({
-            k: mapFeatureReady.k,
-            selectedCaseData: selectedCaseData
-        });
+        if(mapFeatureReady !== null){
+            this.generateClassificationList(selectedCaseData, mapFeatureReady.k, "GVF");
+            this.setState({
+                k: mapFeatureReady.k,
+                selectedCaseData: selectedCaseData
+            });
+        }
+        
     }
 
     componentWillReceiveProps(nextProps, nextContext){
         //let currentMapFeature = nextProps.currentMapFeature;
         let selectedCaseData = nextProps.selectedCaseData;
         let mapFeatureReady = nextProps.mapFeatureReady;
-        this.generateClassificationList(selectedCaseData, mapFeatureReady.k, "GVF");
-        this.setState({
-            k: mapFeatureReady.k,
-            selectedCaseData: selectedCaseData
-        });
+        if(mapFeatureReady !== null){
+            this.generateClassificationList(selectedCaseData, mapFeatureReady.k, "GVF");
+            this.setState({
+                k: mapFeatureReady.k,
+                selectedCaseData: selectedCaseData
+            });
+        }
+       
     }
 
     render(){

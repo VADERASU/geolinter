@@ -15,7 +15,7 @@ class ClassNumErr extends Component {
             selectClassification: null,
             classificationList: null,
             selectedCaseData: null,
-            originalGVF: 0.32,
+            originalGVF: 0,
             originalMoran: 0.3,
         };
     }

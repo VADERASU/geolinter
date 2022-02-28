@@ -1,16 +1,17 @@
 import React, {Component} from "react";
-import {Card, Row, Col, Divider, Empty } from 'antd';
+import {Card, Row, Col, Divider, Empty, Statistic } from 'antd';
 import SubMapGenerator from "./supportMapGen";
 import ScatterGenerator from "./scatterGenerator";
 import SubMapHistogram from "./subMapHist";
 import SubLineChartGenerator from "./subLineChart";
+import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 
 class SupportMapView extends Component {
     constructor(props){
         super(props);
         this.canvasRef = React.createRef();
         this.state={
-            originalGVF: 0.32,
+            originalGVF: 0,
             originalMoran: 0.3,
         };
     }
@@ -143,6 +144,30 @@ class SupportMapView extends Component {
                                 </Col>
                                     
                                 <Col span={24}>
+                                    <Row gutter={5}>
+                                        <Col span={12}>
+                                        <Statistic
+                                            title="GVF Score"
+                                            value={11.28}
+                                            precision={2}
+                                            valueStyle={{ color: '#3f8600' }}
+                                            prefix={<ArrowUpOutlined />}
+                                            suffix="%"
+                                            style={{marginLeft: 10}}
+                                        />
+                                        </Col>
+
+                                        <Col span={12}>
+                                        <Statistic
+                                            title="Moran's I"
+                                            value={9.3}
+                                            precision={2}
+                                            valueStyle={{ color: '#cf1322' }}
+                                            prefix={<ArrowDownOutlined />}
+                                            suffix="%"
+                                        />
+                                        </Col>
+                                    </Row>
                                         {/*}
                                         <SubLineChartGenerator 
                                             features={featureList}
