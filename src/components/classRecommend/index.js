@@ -389,6 +389,7 @@ class ClassRecommend extends Component {
                     renderItem={item =>(
                         <List.Item>
                             <ListRow
+                                softFixSpec={this.props.softFixSpec}
                                 maxGVF={maxGVF}
                                 maxMoran={maxMoran}
                                 dataFeatures={item}

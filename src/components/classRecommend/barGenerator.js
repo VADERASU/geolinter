@@ -96,6 +96,16 @@ class BarChartGenerator extends Component {
     }
 
     render(){
+        if(this.props.feature[0].moran === -1 && this.props.measure !== "GVF"){
+            return(
+                <span
+                    style={{
+                        fontSize: 11
+                    }}
+                >Insignificant Moran's I
+                </span> 
+            );
+        }
         return(
            <div>
                 <ReactECharts

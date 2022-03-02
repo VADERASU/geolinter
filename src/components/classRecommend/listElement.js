@@ -29,6 +29,17 @@ class ListRow extends Component{
                 ifMaxMoran = true;
             }
 
+            let softFixSpec = this.props.softFixSpec;
+            let selectClassification = null;
+            let ifSelected = "#F3F8FB";
+            if(softFixSpec !== null){
+                selectClassification = softFixSpec.selectClassification;
+            }
+
+            if(selectClassification === features.methodName){
+                ifSelected = "#dee2e6";
+            }
+
             return(
                 <Card
                     size='small'
@@ -37,6 +48,7 @@ class ListRow extends Component{
                         height: 45,
                         width: 650,
                         borderStyle: 'none',
+                        backgroundColor: ifSelected,
                     }}
                 >
                     <Row>
@@ -133,7 +145,7 @@ class ListRow extends Component{
                                 marginTop: 8,
                                 fontSize: 15
                             }}
-                        >This classification method generates the rusults for k = {numOfK}
+                        >This classification method generates the results for k = {numOfK}
                         </span> 
                         </Col>
                     </Row>

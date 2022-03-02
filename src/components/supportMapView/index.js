@@ -57,6 +57,19 @@ class SupportMapView extends Component {
                             selectedCaseData={this.props.selectedCaseData}
                             selectProjType={this.props.selectProjType}
                         />
+
+                        <Divider
+                            style={{marginTop: 5, marginBottom: 5}}
+                        />
+
+                        <Empty
+                            style={{marginTop: 20}}
+                            description={
+                                <span>This panel will be updated during the soft rule fixing.</span>
+                            }
+                        />
+
+
                     </Card>
                 );
             }else{

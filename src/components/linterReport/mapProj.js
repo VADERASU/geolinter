@@ -30,18 +30,23 @@ class MapProjection extends Component {
                     className='softRuleCard'
                 >
                 <div style={{padding: 8}}>
-                    <Select
-                        size="small"
-                        style={{
-                            float: 'left',
-                            width: 225
-                        }}
-                        value={this.state.selectProjType}
-                        onChange={this.handleProjChange}
-                    >
-                        <Option key="equalEarth" value="equalEarth">equalEarth</Option>
-                        <Option key="albersUsa" value="albersUsa">albersUsa</Option>
-                    </Select>
+                <Row gutter={[8,8]}>
+                    <Col span={24}><b>Select a proper cartographic projection type.</b></Col>
+                    <Col span={24}>
+                        <Select
+                            size="small"
+                            style={{
+                                width: 225
+                            }}
+                            value={this.state.selectProjType}
+                            onChange={this.handleProjChange}
+                        >
+                            <Option key="equalEarth" value="equalEarth">equalEarth</Option>
+                            <Option key="albersUsa" value="albersUsa">albersUsa</Option>
+                        </Select>
+                    </Col>
+                </Row>
+                    
                 </div>
 
                 </Card>

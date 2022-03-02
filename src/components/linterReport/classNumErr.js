@@ -16,7 +16,7 @@ class ClassNumErr extends Component {
             classificationList: null,
             selectedCaseData: null,
             originalGVF: 0,
-            originalMoran: 0.3,
+            originalMoran: 0,
         };
     }
 
@@ -52,7 +52,9 @@ class ClassNumErr extends Component {
         }else if(newGVF < oriGVF){
             GVFdiv = <div key={classification.methodName+"GVF"} >GVF: {newGVF} <DownCircleTwoTone twoToneColor="#de2d26" /></div>    
         }
-        if(newMoran > oriMoran){
+        if(newMoran === -1){
+            Morandiv = <div key={classification.methodName+"MORAN"} style={{marginLeft:5, fontSize:10}}>Moran's I insignificant</div>
+        }else if(newMoran > oriMoran){
             Morandiv = <div key={classification.methodName+"MORAN"} style={{marginLeft:5}}>Moran's I: {newMoran} <UpCircleTwoTone twoToneColor="#52c41a" /></div>
         }else if(newMoran < oriMoran){
             Morandiv = <div key={classification.methodName+"MORAN"} style={{marginLeft:5}}>Moran's I: {newMoran} <DownCircleTwoTone twoToneColor="#de2d26" /></div>
@@ -201,10 +203,13 @@ class ClassNumErr extends Component {
 
     componentDidMount() {
         //let currentMapFeature = this.props.currentMapFeature;
+        
         let selectedCaseData = this.props.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
-            selectedCaseData: selectedCaseData
+            selectedCaseData: selectedCaseData,
+            originalGVF: this.props.originalGVF,
+            originalMoran: this.props.originalMoran
         });
     }
 
@@ -213,7 +218,9 @@ class ClassNumErr extends Component {
         let selectedCaseData = nextProps.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
-            selectedCaseData: selectedCaseData
+            selectedCaseData: selectedCaseData,
+            originalGVF: this.props.originalGVF,
+            originalMoran: this.props.originalMoran
         });
     }
 

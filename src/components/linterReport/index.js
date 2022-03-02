@@ -123,7 +123,7 @@ class LinterReport extends Component {
              }
          });
          let GVFavg = GVFsum / methodNum;
-         console.log(originGVF +", "+GVFavg);
+         //console.log(originGVF +", "+GVFavg);
          if(originGVF < GVFavg || originGVF === 0){
              let errTitle = "Classification accuracy is low";
              dictTemp.classificationAcc.style = dictTemp.numOfClass.has ? "none" : "block";
@@ -217,6 +217,8 @@ class LinterReport extends Component {
                             colorList={this.props.colorList}
                             selectedCaseData={this.props.selectedCaseData}
                             onSoftFix={this.props.onSoftFix}
+                            originalGVF={this.props.originalGVF}
+                            originalMoran={this.props.originalMoran}
                         />   
                     </div>
 

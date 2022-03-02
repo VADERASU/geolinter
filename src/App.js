@@ -158,7 +158,7 @@ class App extends Component {
         state_education: 0
       },
       originalMoran: {
-        state_education: 2.1
+        state_education: 0.21
       },
 
     };
@@ -169,6 +169,16 @@ class App extends Component {
   handleMapProjChange = (value) => {
     this.setState({
         selectProjType: value
+    });
+
+    this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
+    let specTemp = JSON.parse(JSON.stringify(this.state.vegaLiteSpec));
+    specTemp.projection = {
+      "type": value
+    };
+    this.setState({
+      //vegaLiteSpec: specTemp,
+      rawScript: JSON.stringify(specTemp, null, 4)
     });
   };
 
@@ -638,6 +648,7 @@ class App extends Component {
                   </Col>
                   <Col span={24}>
                     <ClassRecommend
+                      softFixSpec={this.state.softFixSpec}
                       hasHardRuleViolation={hardErrFlag}
                       selectRawCase={this.state.selectRawCase}
                       selectedCaseData={this.state.selectedCaseData}
