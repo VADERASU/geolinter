@@ -182,11 +182,18 @@ class ClassNumErr extends Component {
     };
 
     handleFix = () => {
+        let classification_methods_title = this.props.selectedCaseData.features.classification_methods_title;
+        let classificationIndex = classification_methods_title.indexOf(this.state.selectClassification);
+        let keyName = this.props.selectedCaseData.features.classification_methods[classificationIndex];
+        let subMapFeature = this.props.selectedCaseData.features[keyName].filter(element => element.k === this.state.k);
+        let breaks = subMapFeature[0].breaks;
+
         let fixObj = {
             k: this.state.k,
             color_scheme: this.state.color_scheme,
             color_scheme_name: this.state.color_scheme_name,
             selectClassification: this.state.selectClassification,
+            breaks: breaks,
             fixType: "classNum"
         };
         this.props.onSoftFix(fixObj);

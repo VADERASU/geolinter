@@ -36,8 +36,6 @@ class SubMapGenerator extends Component {
             }else{
                 spec.projection = {
                     "type": selectProjType,
-                    "center": center,
-                    "scale": scale
                 };
             }
 

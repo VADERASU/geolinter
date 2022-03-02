@@ -126,7 +126,8 @@ class App extends Component {
       /** vegaLite raw code */
       //rawScript: case_scripts["state_education"],
       rawScript: this.initCaseObjString,
-      specOld: "",
+      specOld: JSON.parse(case_scripts["state_education"]),
+      specOldText: this.initCaseObjString,
 
       /** Code Editor View controller */
       editorView: "Editor",
@@ -147,11 +148,19 @@ class App extends Component {
       /** linter features */
       color_scheme_name: "Sequential: greens",
       softFixSpec: null,
+      softRuleMsg:[],
+
       // map projection props
       selectProjType: "equalEarth",
-      center0: 0,
-      center1: 0,
-      scale: 150,
+
+      //original measures
+      originalGVF: {
+        state_education: 0
+      },
+      originalMoran: {
+        state_education: 2.1
+      },
+
     };
   }
 
@@ -161,24 +170,6 @@ class App extends Component {
     this.setState({
         selectProjType: value
     });
-  };
-
-  handleMapCenter0Change = (val) => {
-      this.setState({
-          center0: val
-      });
-  };
-
-  handleMapCenter1Change = (val) => {
-      this.setState({
-          center1: val
-      });
-  };
-
-  handleMapScaleChange = (val) => {
-      this.setState({
-          scale: val
-      });
   };
 
   // dynamically set selected recommendations
@@ -209,13 +200,19 @@ class App extends Component {
   };
 
   handleSoftFix = (info) => {
-    //console.log(info);
-    // deep cope map spec
-    //let newVegaSpec = JSON.parse(JSON.stringify(this.state.vegaLiteSpec));
     this.setState({
       softFixSpec: info
     });
+    this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
+    let specTemp = JSON.parse(JSON.stringify(this.state.vegaLiteSpec));
+    specTemp.encoding.color.scale.domain = info.breaks;
+    specTemp.encoding.color.scale.range = info.color_scheme;
 
+    this.setState({
+      //vegaLiteSpec: specTemp,
+      rawScript: JSON.stringify(specTemp, null, 4)
+    });
+    
   };
 
   // When click the "Run Script" btn
@@ -459,7 +456,9 @@ class App extends Component {
     // update the vega spec state and the spec string in code editor
     this.setState({
       rawScript: JSON.stringify(rawObj, null, 4),
-      vegaLiteSpec: rawObj
+      vegaLiteSpec: rawObj,
+      specOld: rawObj,
+      specOldText: JSON.stringify(rawObj, null, 4)
     });
   };
 
@@ -481,7 +480,7 @@ class App extends Component {
             const responseMsg = json.msg;
             const measures = json.measures;
             
-            //console.log(measures);
+            console.log(measures);
           })
           .catch(error => {
             console.log(error);
@@ -521,7 +520,7 @@ class App extends Component {
     }
 
     //check encoding.stroke
-    //mapFeature['API_request'] = this.getMeasures(spec.encoding.color.scale.domain);
+    //this.getMeasures(spec.encoding.color.scale.domain);
 
     // return extracted map features
     return mapFeature;
@@ -578,6 +577,7 @@ class App extends Component {
                       onScriptRunClick={this.handleScriptRunClick}
                       onEditorChange={this.handleEditorChange}
                       specOld={this.state.specOld}
+                      specOldText={this.state.specOldText}
                       editorView={this.state.editorView}
                       onEditorViewSwitch={this.handleEditorViewSwitch}
                       hasHardRuleViolation={hardErrFlag}
@@ -596,7 +596,7 @@ class App extends Component {
                   {/** 1st Row at the middle column - show original map */}
                   <Col span={24}>
                     <MapLinter
-                      vegaLiteSpec={originVegaSpec}
+                      vegaLiteSpec={this.state.specOld}
                       selectRawCase={this.state.selectRawCase}
                       selectedCaseData={this.state.selectedCaseData}
                       onVegaParseError={this.handleVegaParseError}
@@ -605,7 +605,9 @@ class App extends Component {
                   </Col>
                   {/** Linter Report */}
                   <Col span={24}>
-                    <LinterReport 
+                    <LinterReport
+                      originalGVF={this.state.originalGVF[this.state.selectRawCase]}
+                      originalMoran={this.state.originalMoran[this.state.selectRawCase]}
                       hasHardRuleViolation={hardErrFlag}
                       hardRuleMsg={hardErrMsg}
                       onHardRuleFixClick={this.handleHardRuleFixClick}
@@ -616,9 +618,6 @@ class App extends Component {
                       colorList={this.state.colorList}
                       onSoftFix={this.handleSoftFix}
                       onMapProjChange={this.handleMapProjChange}
-                      onMapCenter0Change={this.handleMapCenter0Change}
-                      onMapCenter1Change={this.handleMapCenter1Change}
-                      onMapScaleChange={this.handleMapScaleChange}
                     />
                   </Col>
                 </Row>
@@ -635,9 +634,6 @@ class App extends Component {
                       softFixSpec={this.state.softFixSpec}
                       hasHardRuleViolation={hardErrFlag}
                       selectProjType={this.state.selectProjType}
-                      center0={this.state.center0}
-                      center1={this.state.center1}
-                      scale={this.state.scale}
                     />
                   </Col>
                   <Col span={24}>

@@ -99,6 +99,12 @@ class ClassRecommend extends Component {
         let subMapSpec = JSON.parse(JSON.stringify(this.props.vegaLiteSpec));
         subMapSpec.encoding.color.scale.domain = breaks;
         subMapSpec.encoding.color.scale.range = this.state.recommend_color;
+        if(this.props.selectRawCase === "state_education"){
+            subMapSpec.projection = {
+                "type": "albersUsa"
+            };
+        }
+        
         subMapSpec.height = 230
         subMapSpec.width = 400
         //console.log(selectedClassificationPreview);

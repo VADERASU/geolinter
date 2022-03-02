@@ -4,7 +4,7 @@ import ReactDiffViewer from 'react-diff-viewer';
 
 class CodeDiffer extends Component{
     render(){
-        const oldCode = this.props.specOld;
+        const oldCode = this.props.specOldText;
         
         const newCode = this.props.vagaLiteSpecText;
 

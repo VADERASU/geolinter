@@ -13,9 +13,7 @@ export const case_scripts = {
     },
     "mark": "geoshape",
     "projection": {
-        "type": "equalEarth",
-        "center": [0,0],
-        "scale": 100
+        "type": "equalEarth"
     },
     "encoding": {
         "stroke": {
@@ -27,7 +25,7 @@ export const case_scripts = {
             "scale": {
                 "range": ["#edf8e9","#edfce9"],
                 "type": "threshold",
-                "domain": [0.16]
+                "domain": [0.2]
             },
             "legend": {
                 "title": null

@@ -48,12 +48,12 @@ class LinterReport extends Component {
                 has: false,
                 errTitle: null
             },
-            originalGVF: 0.32,
-            originalMoran: 0.3,
+            originalGVF: 0,
+            originalMoran: 0,
         };
     }
 
-    checkSoftViolations = (mapSoftProp, selectedCaseData) => {
+    checkSoftViolations = (mapSoftProp, selectedCaseData, originGVF) => {
         let dictTemp = {
             numOfClass: {
                 style: "none",
@@ -90,27 +90,25 @@ class LinterReport extends Component {
                 has: false,
                 errTitle: null
             },
-            originalGVF: 0.32,
-            originalMoran: 0.3,
         };
 
         // check # of class
         let k = mapSoftProp.k;
         if(k < 3){
-            let errTitle = "Too Few Classes";
+            let errTitle = "Too few classes";
             dictTemp.numOfClass.style = "block";
             dictTemp.numOfClass.has = true;
             dictTemp.numOfClass.errTitle = errTitle;
             
         }else if(k > 7){
-            let errTitle = "Too Many Classes";
+            let errTitle = "Too many classes";
             dictTemp.numOfClass.style = "block";
             dictTemp.numOfClass.has = true;
             dictTemp.numOfClass.errTitle = errTitle;
         }
 
          // classification accuracy
-         let originGVF = this.state.originalGVF;
+         //let originGVF = this.state.originalGVF;
          let GVFsum = 0;
          let methodNum = 0;
          let classification_methods_title = selectedCaseData.features.classification_methods_title;
@@ -118,13 +116,15 @@ class LinterReport extends Component {
              let keyName = selectedCaseData.features.classification_methods[i];
              let currentFeature = selectedCaseData.features[keyName];
              let featureWithCurrentK = currentFeature.filter(element => element.k === k);
+             
              if(featureWithCurrentK.length > 0){
                  GVFsum = featureWithCurrentK[0].GVF + GVFsum;
                  methodNum = methodNum + 1;
              }
          });
          let GVFavg = GVFsum / methodNum;
-         if(originGVF < GVFavg){
+         console.log(originGVF +", "+GVFavg);
+         if(originGVF < GVFavg || originGVF === 0){
              let errTitle = "Classification accuracy is low";
              dictTemp.classificationAcc.style = dictTemp.numOfClass.has ? "none" : "block";
              dictTemp.classificationAcc.has = true;
@@ -163,10 +163,14 @@ class LinterReport extends Component {
     componentDidMount() {
         let mapSoftProp = this.props.mapFeatureReady;
         let selectedCaseData = this.props.selectedCaseData;
-        console.log(mapSoftProp);
+        this.setState({
+            originalMoran: this.props.originalMoran,
+            originalGVF: this.props.originalGVF
+        });
+        //console.log(mapSoftProp);
         if(mapSoftProp !== null){
             // check soft rule violations
-            this.checkSoftViolations(mapSoftProp, selectedCaseData);
+            this.checkSoftViolations(mapSoftProp, selectedCaseData, this.props.originalGVF);
         }
 
     }
@@ -174,10 +178,15 @@ class LinterReport extends Component {
     componentWillReceiveProps(nextProps, nextContext){
         let mapSoftProp = nextProps.mapFeatureReady;
         let selectedCaseData = nextProps.selectedCaseData;
+        this.setState({
+            originalMoran: nextProps.originalMoran,
+            originalGVF: nextProps.originalGVF
+        });
         if(mapSoftProp !== null){
             // check soft rule violations
-            this.checkSoftViolations(mapSoftProp, selectedCaseData);
+            this.checkSoftViolations(mapSoftProp, selectedCaseData, nextProps.originalGVF);
         }
+        
     }
     
     render(){

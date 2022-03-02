@@ -96,7 +96,7 @@ class CodeEditor extends Component {
 
                 <CodeDiffer 
                     vagaLiteSpecText={this.props.vagaLiteSpecText}
-                    specOld={this.props.specOld}
+                    specOldText={this.props.specOldText}
                     codeDiffHide={this.props.codeDiffHide}
                     editorView={this.props.editorView === "Editor" ? "hidden" : null}
                 />

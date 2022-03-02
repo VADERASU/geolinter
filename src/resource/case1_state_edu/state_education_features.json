@@ -23,6 +23,8 @@
     "key_prop": "higher_education_rate",
     "max": 0.37,
     "min": 0.11,
+    "origin_GVF":0,
+    "origin_moran": 0.21,
     "data_list": [
         0.11,
         0.16,
