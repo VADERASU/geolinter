@@ -213,12 +213,13 @@ class LinterReport extends Component {
                             errProp={this.state.numOfClass.errTitle}
                             errColor={this.state.fillColorScheme.errTitle}
                             errAccu={this.state.classificationAcc.errTitle}
-                            currentMapFeature={this.props.currentMapFeature}
+                            currentSelectRecomm={this.props.currentSelectRecomm}
                             colorList={this.props.colorList}
                             selectedCaseData={this.props.selectedCaseData}
                             onSoftFix={this.props.onSoftFix}
                             originalGVF={this.props.originalGVF}
                             originalMoran={this.props.originalMoran}
+                            onRecommendMethodSelection={this.props.onRecommendMethodSelection}
                         />   
                     </div>
 
@@ -228,7 +229,7 @@ class LinterReport extends Component {
                             hasErr={this.state.classificationAcc.style}
                             mapFeatureReady={this.props.mapFeatureReady}
                             errProp={this.state.classificationAcc.errTitle}
-                            currentMapFeature={this.props.currentMapFeature}
+                            
                             colorList={this.props.colorList}
                             selectedCaseData={this.props.selectedCaseData}
                             onSoftFix={this.props.onSoftFix}
@@ -241,7 +242,7 @@ class LinterReport extends Component {
                             hasErr={this.state.fillColorScheme.style}
                             mapFeatureReady={this.props.mapFeatureReady}
                             errProp={this.state.fillColorScheme.errTitle}
-                            currentMapFeature={this.props.currentMapFeature}
+                            
                             colorList={this.props.colorList}
                             onSoftFix={this.props.onSoftFix}
                         />

@@ -75,7 +75,7 @@ class SupportMapView extends Component {
             }else{
                 let fitType = softFixSpec.fixType;
                 //let newVegaSpec = JSON.parse(JSON.stringify(this.props.vegaLiteSpec));
-                let newVegaSpec = this.props.vegaLiteSpec;
+                let newVegaSpec = JSON.parse(JSON.stringify(this.props.vegaLiteSpec));
                 let newcolorScheme = softFixSpec.color_scheme;
                 let newK = softFixSpec.k;
                 let selectClassification = softFixSpec.selectClassification;

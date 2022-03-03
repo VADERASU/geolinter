@@ -85,8 +85,9 @@ class ClassRecommend extends Component {
     };
 
     // handle the classifiation recommendation preview click
-    handldClassificationPreviewClick = (e) => {
-        let selectedClassificationPreview = e.target.offsetParent.attributes.value.nodeValue;
+    handldClassificationPreviewClick = (val) => {
+        let selectedClassificationPreview = val;
+        //console.log(selectedClassificationPreview);
         let classification_methods_title = this.props.selectedCaseData.features.classification_methods_title;
         let classificationIndex = classification_methods_title.indexOf(selectedClassificationPreview);
         let keyName = this.props.selectedCaseData.features.classification_methods[classificationIndex];
@@ -125,6 +126,21 @@ class ClassRecommend extends Component {
                 maxVal: maxVal
             }
         });
+    };
+
+    handleMethodSelection = (val) => {
+        //console.log(val);
+        let currentK = this.state.recommend_k;
+        let currentColor = this.state.recommend_color;
+        let currentColorName = this.state.recommend_color_name;
+        let selectClassification = val;
+        let currentSelectRecomm = {
+            k: currentK,
+            color_scheme: currentColor,
+            color_scheme_name: currentColorName,
+            selectClassification: selectClassification
+        };
+        this.props.onRecommendMethodSelection(currentSelectRecomm);
     };
 
     onDrawerClose = () => {
@@ -272,9 +288,9 @@ class ClassRecommend extends Component {
 
             });
             //console.log(data);
-            this.props.onCurrentKChange(this.state.recommend_k);
-            this.props.onCurrentColorChange(this.state.recommend_color, this.state.recommend_color_name);
-            this.props.onCurrentMeasuresChange(maxGVF, maxMoran);
+            //this.props.onCurrentKChange(this.state.recommend_k);
+            //this.props.onCurrentColorChange(this.state.recommend_color, this.state.recommend_color_name);
+            //this.props.onCurrentMeasuresChange(maxGVF, maxMoran);
     
             const { Option } = Select;
             const measureOption = [];
@@ -289,6 +305,7 @@ class ClassRecommend extends Component {
                 let option = <Option key={e} value={e} ><div style={{display: "flex"}}>{e}{this.makeColor(e)}</div></Option>;
                 colorOption.push(option);
             });
+
     
             return(
                 <Card
@@ -394,6 +411,7 @@ class ClassRecommend extends Component {
                                 maxMoran={maxMoran}
                                 dataFeatures={item}
                                 onClassificationPreviewClick={this.handldClassificationPreviewClick}
+                                onCurrentClassificationChange={this.handleMethodSelection}
                             />
                         </List.Item>
                     )}

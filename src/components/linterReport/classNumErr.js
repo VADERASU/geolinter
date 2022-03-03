@@ -173,7 +173,7 @@ class ClassNumErr extends Component {
         });
         this.setState({
             classificationList: data,
-            selectClassification: data[0].methodName
+            //selectClassification: data[0].methodName
         });
     };
 
@@ -198,11 +198,28 @@ class ClassNumErr extends Component {
             breaks: breaks,
             fixType: "classNum"
         };
+        //console.log(fixObj);
+        let currentSelectRecomm = {
+            k: this.state.k,
+            color_scheme: this.state.color_scheme,
+            color_scheme_name: this.state.color_scheme_name,
+            selectClassification: this.state.selectClassification
+        };
+        this.props.onRecommendMethodSelection(currentSelectRecomm);
         this.props.onSoftFix(fixObj);
     };
 
     componentDidMount() {
-        //let currentMapFeature = this.props.currentMapFeature;
+        let currentSelectRecomm = this.props.currentSelectRecomm;
+        //console.log(currentSelectRecomm);
+        if(currentSelectRecomm.k !== null){
+            this.setState({
+                k: currentSelectRecomm.k,
+                color_scheme: currentSelectRecomm.color_scheme,
+                color_scheme_name: currentSelectRecomm.color_scheme_name,
+                selectClassification: currentSelectRecomm.selectClassification
+            });    
+        }
         
         let selectedCaseData = this.props.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
@@ -214,7 +231,17 @@ class ClassNumErr extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext){
-        //let currentMapFeature = nextProps.currentMapFeature;
+        let currentSelectRecomm = nextProps.currentSelectRecomm;
+        //console.log(currentSelectRecomm);
+        if(currentSelectRecomm.k !== null){
+            this.setState({
+                k: currentSelectRecomm.k,
+                color_scheme: currentSelectRecomm.color_scheme,
+                color_scheme_name: currentSelectRecomm.color_scheme_name,
+                selectClassification: currentSelectRecomm.selectClassification
+            });    
+        }
+
         let selectedCaseData = nextProps.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
@@ -227,15 +254,12 @@ class ClassNumErr extends Component {
     render(){
         const { Option } = Select;
         let mapFeatureReady = this.props.mapFeatureReady;
-        let currentMapFeature = this.props.currentMapFeature;
-
+        
         const colorOption = [];
         this.props.colorList.name.forEach((e, i)=>{
             let option = <Option key={e} value={e} ><div style={{display: "flex"}}>{e}{this.makeColor(e)}</div></Option>;
             colorOption.push(option);
         });
-
-        
 
         // make dropdown list for classification recommendation
         const dataOption = [];
@@ -371,7 +395,7 @@ class ClassNumErr extends Component {
                                             </Radio.Group>
                                         </Col>
                                         <Col span={14}>
-                                            <Select value={this.state.selectClassification} size="small" style={{ width: 330 }} onChange={this.handleClassificationSelect}>
+                                            <Select value={(this.state.classificationList !== null)?((this.state.selectClassification === null) ? this.state.classificationList[0].methodName : this.state.selectClassification):""} size="small" style={{ width: 330 }} onChange={this.handleClassificationSelect}>
                                                 {dataOption}
                                             </Select>
                                         </Col>

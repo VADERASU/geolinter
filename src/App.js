@@ -51,7 +51,8 @@ class App extends Component {
       color_scheme_name: null,
       high_GVF_name:null,
       high_moran_name: null,
-      user_define_name: null
+      user_define_name: null,
+      selectClassification: null
     };
 
     this.state = {
@@ -140,6 +141,12 @@ class App extends Component {
 
       /** class recommendation selection */
       classificationMeasureList: ['GVF', 'Moran'],
+      currentSelectRecomm: {
+        k: null,
+        color_scheme: null,
+        color_scheme_name: null,
+        selectClassification: null
+      },
 
       /** Hard rules detection */
       hasHardRuleViolation: false,
@@ -165,6 +172,11 @@ class App extends Component {
   }
 
   /** class functions */
+  handleRecommendMethodSelection = (val) => {
+    this.setState({
+      currentSelectRecomm: val
+    });
+  };
 
   handleMapProjChange = (value) => {
     this.setState({
@@ -183,18 +195,6 @@ class App extends Component {
   };
 
   // dynamically set selected recommendations
-  handldCurrentRecommendChange = (k, color, color_name, gvfName, moranName) => {
-    this.setState({
-      currentMapFeature:{
-        k: k,
-        color_scheme: color,
-        color_scheme_name: color_name,
-        high_GVF_name: gvfName,
-        high_moran_name: moranName
-      }
-    });
-  };
-
   handleCurrentMeasuresChange = (gvfName, moranName) => {
     this.currentMapFeature.high_GVF_name = gvfName;
     this.currentMapFeature.high_moran_name = moranName;
@@ -206,7 +206,11 @@ class App extends Component {
   };
 
   handleCurrentKChange = (k) => {
-    this.currentMapFeature.k = k
+    this.currentMapFeature.k = k;
+  };
+
+  handleCurrentClassificationChange = (val) => {
+    this.currentMapFeature.selectClassification = val;
   };
 
   handleSoftFix = (info) => {
@@ -552,15 +556,24 @@ class App extends Component {
     let mapFeatureReady = null;
     let recommend_k = null;
     let recommend_color = null;
+    let color_scheme_name = "Sequential: viridis";
     let originVegaSpec = null;
+    let softFixSpec = this.state.softFixSpec;
     if(!hardErrFlag){
       /** record the original map spec with deceptive designs */
       originVegaSpec = JSON.parse(JSON.stringify(spec));
       /** extract map features */
       mapFeatureReady = this.extractMapFeatures(spec);
       // determine color scheme and k for the recommend charts
-      recommend_k = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.k : 3;
-      recommend_color = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.color_scheme : ['#5dc963', '#21918d', '#3b528b'];
+      if(softFixSpec !== null){
+        recommend_k = softFixSpec.k;
+        recommend_color = softFixSpec.color_scheme;
+        color_scheme_name = softFixSpec.color_scheme_name;
+      }else{
+        recommend_k = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.k : 3;
+        recommend_color = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.color_scheme : ['#5dc963', '#21918d', '#3b528b'];
+        
+      } 
     }
 
     return(
@@ -616,6 +629,7 @@ class App extends Component {
                   {/** Linter Report */}
                   <Col span={24}>
                     <LinterReport
+                      currentSelectRecomm={this.state.currentSelectRecomm}
                       originalGVF={this.state.originalGVF[this.state.selectRawCase]}
                       originalMoran={this.state.originalMoran[this.state.selectRawCase]}
                       hasHardRuleViolation={hardErrFlag}
@@ -624,10 +638,10 @@ class App extends Component {
                       mapFeatureReady={mapFeatureReady}
                       selectedCaseData={this.state.selectedCaseData}
                       selectRawCase={this.state.selectRawCase}
-                      currentMapFeature={this.currentMapFeature}
                       colorList={this.state.colorList}
                       onSoftFix={this.handleSoftFix}
                       onMapProjChange={this.handleMapProjChange}
+                      onRecommendMethodSelection={this.handleRecommendMethodSelection}
                     />
                   </Col>
                 </Row>
@@ -654,14 +668,15 @@ class App extends Component {
                       selectedCaseData={this.state.selectedCaseData}
                       vegaLiteSpec={this.state.vegaLiteSpec}
                       classificationMeasureList={this.state.classificationMeasureList}
-                      onClassificationPreviewClick={this.handldClassificationPreviewClick}
+                      
                       recommend_k={recommend_k}
                       recommend_color={recommend_color}
                       colorList={this.state.colorList}
-                      color_scheme_name={this.state.color_scheme_name}
+                      color_scheme_name={color_scheme_name}
                       onCurrentKChange={this.handleCurrentKChange}
                       onCurrentColorChange={this.handleCurrentColorChange}
                       onCurrentMeasuresChange={this.handleCurrentMeasuresChange}
+                      onRecommendMethodSelection={this.handleRecommendMethodSelection}
                     />
                     
                   </Col>

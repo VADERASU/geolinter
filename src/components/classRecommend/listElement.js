@@ -1,13 +1,27 @@
 import React, {Component} from "react";
-import { Typography, Card, Row, Col, Button, Image } from 'antd';
+import { Typography, Card, Row, Col, Button, Space } from 'antd';
 import RecommendHistogram from "./histoGenerator";
 import '../../styles/ClassRecommend.css';
 import LineChartGenerator from "./lineGenerator";
 import BarChartGenerator from "./barGenerator";
 import preview from "../../resource/preview.png";
+import selectIcon from "../../resource/select.png";
+import selectLight from "../../resource/selectLight.png";
 
 class ListRow extends Component{
-    
+
+    handldClassificationPreviewClick = () => {
+        let selectedClassificationPreview = this.props.dataFeatures.methodName;
+        //console.log(selectedClassificationPreview);
+        this.props.onClassificationPreviewClick(selectedClassificationPreview);
+    };
+
+    handleMethodSelection = () => {      
+        let selectedClassificationPreview = this.props.dataFeatures.methodName;
+        //console.log(this.props.dataFeatures.methodName);
+        this.props.onCurrentClassificationChange(selectedClassificationPreview);
+    };
+
     render(){
 
         let features = this.props.dataFeatures;
@@ -96,14 +110,30 @@ class ListRow extends Component{
                         </Col>
                         {/** preview BTN */}
                         <Col span={1}>
-                            <Button
+                            <Space>
+                                <Button
+                                    size="small"
+                                    type="text"
+                                    value={features.methodName}
+                                    onClick={this.handldClassificationPreviewClick}
+                                >
+                                    <img src={preview} alt="Preview the map" width="20" height="20" />
+                                </Button>
+
+                                <Button
                                 size="small"
                                 type="text"
                                 value={features.methodName}
-                                onClick={this.props.onClassificationPreviewClick}
-                            >
-                                <img src={preview} alt="Preview the map" width="20" height="20" />
-                            </Button>
+                                onClick={this.handleMethodSelection}
+                                >   
+                                    {
+                                        selectClassification === features.methodName ?
+                                        <img src={selectLight} alt="select this method" width="18" height="18" /> :
+                                        <img src={selectIcon} alt="select this method" width="18" height="18" />
+                                    }
+                                </Button>
+                            </Space>
+                            
                         </Col>
                     </Row>
                     
