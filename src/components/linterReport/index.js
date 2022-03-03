@@ -190,7 +190,52 @@ class LinterReport extends Component {
     }
     
     render(){
-        console.log(this.state);
+        let selectedCaseData = this.props.selectedCaseData;
+        const data = [];
+        let classification_methods_title = selectedCaseData.features.classification_methods_title;
+        classification_methods_title.forEach((element, i)=>{
+            let keyName = selectedCaseData.features.classification_methods[i];
+            let currentFeature = selectedCaseData.features[keyName];
+            let k = 3;
+            let feature = {
+                methodName: element,
+                featureList: currentFeature,
+                maxVal: selectedCaseData.features.max,
+                minVal: selectedCaseData.features.min,
+            };
+            let featureWithCurrentK = currentFeature.filter(element => element.k === k);
+            if(featureWithCurrentK.length === 0){
+                // dont have results in the current number of class
+                feature.hasResult = false;
+                feature.GVF = -1;
+                feature.moran = -1;
+            }else{
+                //sort the methods based on GVF
+                feature.hasResult = true;
+                feature.GVF = featureWithCurrentK[0].GVF;
+                feature.moran = featureWithCurrentK[0].moran;
+            }
+            if(data.length === 0){
+                data.push(feature);    
+            }else{
+                let max_i = -1;
+                let flag = true;
+                data.forEach((e,i)=>{
+                    if(feature.GVF > e.GVF && flag === true){
+                        max_i = i;
+                        flag = false;
+                    }
+                });
+
+                if(max_i !== -1){
+                    data.splice(max_i, 0, feature);
+                }else{
+                    data.push(feature);
+                } 
+            }
+
+        });
+
         return(
             <Card
                 title='Detected Violations'
@@ -213,7 +258,10 @@ class LinterReport extends Component {
                             errProp={this.state.numOfClass.errTitle}
                             errColor={this.state.fillColorScheme.errTitle}
                             errAccu={this.state.classificationAcc.errTitle}
+                            classificationList={data}
+
                             currentSelectRecomm={this.props.currentSelectRecomm}
+
                             colorList={this.props.colorList}
                             selectedCaseData={this.props.selectedCaseData}
                             onSoftFix={this.props.onSoftFix}

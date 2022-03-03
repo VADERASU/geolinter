@@ -42,7 +42,7 @@ class BarChartGenerator extends Component {
             },
             tooltip: {
                 trigger: 'axis',
-                //formatter: '# of class: {c}'
+                formatter: '{b} Score: {c}'
             },
             series: series
         };

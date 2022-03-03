@@ -36,7 +36,7 @@ class LineChartGenerator extends Component {
             series: series,
             tooltip: {
               trigger: 'axis',
-              formatter: '# of class: {c}'
+              formatter: 'Number of class: {b} <br/> GVF: {c}'
             },
         };
 
@@ -44,6 +44,11 @@ class LineChartGenerator extends Component {
         this.setState({
             chartOption: options
         });
+    };
+
+    round = (num) => {
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        return Math.round(m) / 100 * Math.sign(num);
     };
 
     extractFeatures = (features, elbowColor) => {
@@ -56,7 +61,7 @@ class LineChartGenerator extends Component {
         let elbowPoint = null;
         let GVF_elbow_index = 0;
         featureList.forEach((e,i)=>{
-            GVF_list.push(e.GVF);
+            GVF_list.push(this.round(e.GVF));
             adcm_list.push(e.adcm);
             gadf_list.push(e.gadf);
             xAxisList.push(e.k);

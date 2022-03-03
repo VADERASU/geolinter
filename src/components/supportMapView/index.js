@@ -16,6 +16,11 @@ class SupportMapView extends Component {
         };
     }
 
+    round = (num) => {
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        return Math.round(m) / 100 * Math.sign(num);
+    };
+
     render(){
         //prepare the submap data
         if(this.props.hasHardRuleViolation){
@@ -85,7 +90,11 @@ class SupportMapView extends Component {
                
                 //get the features with the given k
                 let subMapFeature = this.props.selectedCaseData.features[keyName].filter(element => element.k === newK);
-                let breaks = subMapFeature[0].breaks;
+                //let breaks = subMapFeature[0].breaks;
+                let breaks = [];
+                subMapFeature[0].breaks.forEach(e=>{
+                    breaks.push(this.round(e));
+                });
 
                 if(fitType === "classNum"){
                     newVegaSpec.encoding.color.scale.domain = breaks;
@@ -118,6 +127,14 @@ class SupportMapView extends Component {
                         
                     }
                 });
+
+                // GVF and Moran's I
+                let originalGVF = this.props.originalGVF;
+                let originalMoran = this.props.originalMoran;
+                let newGVF = subMapFeature[0].GVF;
+                let newMoran = subMapFeature[0].moran;
+                let GVFdiff = newGVF - originalGVF;
+                let morandiff = newMoran - originalMoran;
 
                 return(
                     <Card
@@ -158,24 +175,24 @@ class SupportMapView extends Component {
                                     <Row gutter={5}>
                                         <Col span={12}>
                                         <Statistic
-                                            title="GVF Score"
-                                            value={11.28}
+                                            title={"GVF: "+this.round(newGVF)}
+                                            value={GVFdiff > 0 ? GVFdiff : 0-GVFdiff}
                                             precision={2}
-                                            valueStyle={{ color: '#3f8600' }}
-                                            prefix={<ArrowUpOutlined />}
-                                            suffix="%"
+                                            valueStyle={GVFdiff > 0 ? { color: '#3f8600' } : { color: '#cf1322' }}
+                                            prefix={GVFdiff>0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                                            
                                             style={{marginLeft: 10}}
                                         />
                                         </Col>
 
                                         <Col span={12}>
                                         <Statistic
-                                            title="Moran's I"
-                                            value={9.3}
+                                            title={"Moran's I: "+this.round(newMoran)}
+                                            value={morandiff > 0 ? morandiff : 0-morandiff}
                                             precision={2}
-                                            valueStyle={{ color: '#cf1322' }}
-                                            prefix={<ArrowDownOutlined />}
-                                            suffix="%"
+                                            valueStyle={morandiff > 0 ? { color: '#3f8600' } : { color: '#cf1322' }}
+                                            prefix={morandiff>0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                                            
                                         />
                                         </Col>
                                     </Row>

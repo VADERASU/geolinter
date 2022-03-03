@@ -224,6 +224,7 @@ class ClassNumErr extends Component {
         let selectedCaseData = this.props.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
+            selectClassification: this.props.classificationList[0].methodName,
             selectedCaseData: selectedCaseData,
             originalGVF: this.props.originalGVF,
             originalMoran: this.props.originalMoran
@@ -245,6 +246,7 @@ class ClassNumErr extends Component {
         let selectedCaseData = nextProps.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
+            selectClassification: nextProps.classificationList[0].methodName,
             selectedCaseData: selectedCaseData,
             originalGVF: this.props.originalGVF,
             originalMoran: this.props.originalMoran
@@ -280,7 +282,7 @@ class ClassNumErr extends Component {
         }
 
         //console.log(this.state);
-        if(mapFeatureReady !== null){
+        if(mapFeatureReady !== null && this.state.classificationList !== null){
             return(
                 <div>
                 <Card
@@ -395,7 +397,7 @@ class ClassNumErr extends Component {
                                             </Radio.Group>
                                         </Col>
                                         <Col span={14}>
-                                            <Select value={(this.state.classificationList !== null)?((this.state.selectClassification === null) ? this.state.classificationList[0].methodName : this.state.selectClassification):""} size="small" style={{ width: 330 }} onChange={this.handleClassificationSelect}>
+                                            <Select value={this.state.selectClassification} size="small" style={{ width: 330 }} onChange={this.handleClassificationSelect}>
                                                 {dataOption}
                                             </Select>
                                         </Col>

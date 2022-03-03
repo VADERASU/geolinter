@@ -658,6 +658,8 @@ class App extends Component {
                       softFixSpec={this.state.softFixSpec}
                       hasHardRuleViolation={hardErrFlag}
                       selectProjType={this.state.selectProjType}
+                      originalGVF={this.state.originalGVF[this.state.selectRawCase]}
+                      originalMoran={this.state.originalMoran[this.state.selectRawCase]}
                     />
                   </Col>
                   <Col span={24}>

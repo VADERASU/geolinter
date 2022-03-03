@@ -121,12 +121,21 @@ class SubMapHistogram extends Component{
         rootGroup.selectAll('g').remove();
     };
 
+    round = (num) => {
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        return Math.round(m) / 100 * Math.sign(num);
+    };
+
     extractFeatures = (propData) => {
         let colorRange = propData.colorRange;
         let k = colorRange.length;
         let feature = propData.feature;
         let data = propData.dataList;
-        let breaks = feature[0].breaks;
+        //let breaks = feature[0].breaks;
+        let breaks = [];
+        feature[0].breaks.forEach(e=>{
+            breaks.push(this.round(e));
+        });
         let maxVal = propData.maxVal;
         let minVal = propData.minVal;
 
