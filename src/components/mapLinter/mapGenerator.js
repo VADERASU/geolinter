@@ -14,7 +14,7 @@ class MapGenerator extends Component {
         if(selectRawCase === 'county_unemployment'){
 
             spec.data.values = selectedCaseData.geo;
-            spec.transform[0].from.data.values = selectedCaseData.data.data;
+            //spec.transform[0].from.data.values = selectedCaseData.data.data;
             //console.log(spec);
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
@@ -22,8 +22,9 @@ class MapGenerator extends Component {
                 console.log(re);
             })
             .catch((err)=>{
-                console.log(err);
+                //console.log(err);
             });
+
         }else if(selectRawCase === 'state_education'){
             /** Preprocess the vega spec */
             spec.data.values = selectedCaseData.geo;
@@ -38,7 +39,23 @@ class MapGenerator extends Component {
                 this.props.onVegaParseError(err, true);
                 //console.log(err);
             });
-        }  
+
+        }else if(selectRawCase === 'montreal_pop_density'){
+            /** Preprocess the vega spec */
+            spec.data.values = selectedCaseData.geo;
+            //spec.projection.fit = selectedCaseData.geo.features;
+            const result = embed(this.canvasRef.current, spec)
+            .then((re)=>{
+                // result should be stored into the state
+                //console.log('Original Choropleth Map');
+                
+            })
+            .catch((err)=>{
+                //this.props.onVegaParseError(err, true);
+                //console.log(err);
+            });
+            
+        } 
         
     };
 

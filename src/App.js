@@ -2,6 +2,7 @@ import {Component} from 'react';
 import './styles/App.css';
 import {Layout} from 'antd';
 import {Row, Col, Card, Divider} from 'antd';
+import * as turf from "@turf/turf";
 //import {Select, Slider, Switch, Empty} from 'antd';
 /** import local components */
 import NavBar from './components/nav_bar';
@@ -17,9 +18,16 @@ import ClassRecommend from './components/classRecommend';
 // import case 1 data -> state-level education statics
 import state_education from './resource/case1_state_edu/state_education.json';
 import state_education_features from './resource/case1_state_edu/state_education_features.json';
+
 // import case 2 data -> county-level unemployment statics
-import us10m from './resource/us10m.json';
-import unemployment from './resource/unemployment.json';
+//import us10m from './resource/us10m.json';
+//import unemployment from './resource/unemployment.json';
+import county_unemployment from './resource/case2_county/county_unemployment.json';
+import county_unemployment_features from './resource/case2_county/county_unemployment_features.json';
+
+// import case 3 data -> montreal population density statics
+import montreal_density from './resource/case3_montreal/montreal_density.json';
+import montreal_density_features from './resource/case3_montreal/montreal_density_features.json'; 
 
 /** import case scripts */
 import { case_scripts } from './resource/cases';
@@ -35,9 +43,15 @@ class App extends Component {
         features: state_education_features
       },
       county_unemployment: {
-        geo: us10m,
-        data: unemployment,
-        features: null
+        //geo: us10m,
+        //data: unemployment,
+        //features: null
+        geo: county_unemployment,
+        features: county_unemployment_features
+      },
+      montreal_pop_density:{
+        geo: montreal_density,
+        features: montreal_density_features
       }
     };
 
@@ -55,8 +69,10 @@ class App extends Component {
       selectClassification: null
     };
 
+    this.externalGeoReverseFlag = true;
+
     this.state = {
-      mapDataList: ['state_education','county_unemployment'],
+      mapDataList: ['state_education','county_unemployment','montreal_pop_density'],
       selectedCaseData: this.dataset['state_education'],
       colorList: {
         name: [
@@ -135,8 +151,8 @@ class App extends Component {
 
       /** for operation history map */
       specHistory: null,
-      oldSelectRawCase: null,
-      oldSelectedCaseData: null,
+      oldSelectRawCase: "state_education",
+      oldSelectedCaseData: this.dataset['state_education'],
       showHistory: false,
 
       /** class recommendation selection */
@@ -162,16 +178,65 @@ class App extends Component {
 
       //original measures
       originalGVF: {
-        state_education: 0
+        state_education: 0,
+        county_unemployment: 0,
+        montreal_pop_density: 0
       },
       originalMoran: {
-        state_education: 0.21
+        state_education: 0.21,
+        county_unemployment: 0.21,
+        montreal_pop_density: 0.21
       },
 
     };
   }
 
   /** class functions */
+
+  // When select a new case study
+  handleCaseSelection = (selectedCase) => {
+    
+    this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
+    let selectedCaseData = this.dataset[selectedCase];
+    if(selectedCase === "montreal_pop_density" && this.externalGeoReverseFlag){
+      selectedCaseData.geo.features.forEach(e=>{
+        if(e.geometry.type === "Polygon"){
+          e.geometry.coordinates[0].reverse();
+        }else{
+          e.geometry.coordinates.forEach(j=>{
+            j[0].reverse();
+          });
+        }
+      });
+      this.externalGeoReverseFlag = false;
+    }
+    //console.log(selectedCaseData.geo.features[0].geometry.coordinates[0]);
+    
+    //console.log(selectedCaseData.geo.features[0].geometry.coordinates[0].reverse());
+    //console.log(selectedCaseData);
+    this.setState({
+      selectRawCase: selectedCase,
+      selectedCaseData: selectedCaseData,
+      rawScript: case_scripts[selectedCase],
+      vegaLiteSpec: JSON.parse(case_scripts[selectedCase]),
+      specOld: JSON.parse(case_scripts[selectedCase]),
+      oldSelectRawCase: selectedCase,
+      oldSelectedCaseData: selectedCaseData,
+      specOldText: case_scripts[selectedCase],
+      currentSelectRecomm: {
+        k: null,
+        color_scheme: null,
+        color_scheme_name: null,
+        selectClassification: null
+      },
+      hasHardRuleViolation: false,
+      hardRuleMsg:[],
+      softFixSpec: null,
+      selectProjType: "equalEarth"
+    });
+  };
+
+
   handleRecommendMethodSelection = (val) => {
     this.setState({
       currentSelectRecomm: val
@@ -254,22 +319,6 @@ class App extends Component {
   handleEditorChange =(newValue)=>{
     this.setState({
         rawScript: newValue
-    });
-  };
-
-  // When select a new case study
-  handleCaseSelection = (selectedCase) => {
-    let specHistory = this.state.vegaLiteSpec;
-    let oldSelectRawCase = this.state.selectRawCase;
-    //console.log(selectedCase);
-    this.setState({
-      selectRawCase: selectedCase,
-      selectedCaseData:this.dataset[selectedCase],
-      rawScript: case_scripts[selectedCase],
-      vegaLiteSpec: JSON.parse(case_scripts[selectedCase]),
-      specHistory: specHistory,
-      oldSelectRawCase: oldSelectRawCase,
-      oldSelectedCaseData: this.dataset[oldSelectRawCase]
     });
   };
 
@@ -620,8 +669,8 @@ class App extends Component {
                   <Col span={24}>
                     <MapLinter
                       vegaLiteSpec={this.state.specOld}
-                      selectRawCase={this.state.selectRawCase}
-                      selectedCaseData={this.state.selectedCaseData}
+                      selectRawCase={this.state.oldSelectRawCase}
+                      selectedCaseData={this.state.oldSelectedCaseData}
                       onVegaParseError={this.handleVegaParseError}
                       hasHardRuleViolation={hardErrFlag}
                     />

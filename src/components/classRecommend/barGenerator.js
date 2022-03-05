@@ -27,7 +27,7 @@ class BarChartGenerator extends Component {
             xAxis: {
               type: 'value',
               min: 0,
-              max: (measure==="GVF") ? 1 : 0.6,
+              max: (measure==="GVF") ? 1 : 1,
               axisLabel: {
                 fontSize: 9,
                 margin: 5

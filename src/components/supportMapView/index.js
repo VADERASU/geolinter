@@ -74,7 +74,6 @@ class SupportMapView extends Component {
                             }
                         />
 
-
                     </Card>
                 );
             }else{

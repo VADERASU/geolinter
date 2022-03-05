@@ -60,20 +60,16 @@ class LineChartGenerator extends Component {
         let gadf_list = [];
         let elbowPoint = null;
         let GVF_elbow_index = 0;
+        let elbowFlag = true;
         featureList.forEach((e,i)=>{
             GVF_list.push(this.round(e.GVF));
             adcm_list.push(e.adcm);
             gadf_list.push(e.gadf);
             xAxisList.push(e.k);
             // find the elbow point
-            if(i===0){
-                elbowPoint = e.adcm - e.GVF;
-            }else if(i>0){
-                let temp = e.adcm - e.GVF;
-                if(temp < elbowPoint && temp >= 0){
-                    elbowPoint = temp;
-                    GVF_elbow_index = i;
-                }
+            if(e.GVF >= 0.5 && elbowFlag){
+                GVF_elbow_index = i;
+                elbowFlag = false;
             }
         });
         //console.log(GVF_elbow_index);

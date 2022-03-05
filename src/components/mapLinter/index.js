@@ -40,7 +40,7 @@ class MapLinter extends Component {
                 selectedCaseData: nextProps.selectedCaseData
             });
             
-        }else if(this.state.selectedRawCase !== this.props.selectRawCase){ //when user select a new case
+        }else if(this.state.selectedRawCase !== nextProps.selectRawCase){ //when user select a new case
             let selectRawCase = nextProps.selectRawCase;
             this.setState({
                 propsSpec: nextProps.vegaLiteSpec,

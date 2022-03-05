@@ -8,12 +8,21 @@ class SubMapGenerator extends Component {
         this.canvasRef = React.createRef();
     }
 
-    drawVegaMap = (selectedCaseData, spec, selectRawCase, selectProjType, center0, center1, scale) => {
+    drawVegaMap = (selectedCaseData, spec, selectRawCase, selectProjType) => {
         if(selectRawCase === 'county_unemployment'){
-
+            console.log(selectedCaseData);
             spec.data.values = selectedCaseData.geo;
-            spec.transform[0].from.data.values = selectedCaseData.data.data;
-            
+            //spec.transform[0].from.data.values = selectedCaseData.data.data;
+            //change map proj
+            if(selectProjType === "albersUsa"){
+                spec.projection = {
+                    "type": "albersUsa"
+                };
+            }else{
+                spec.projection = {
+                    "type": selectProjType,
+                };
+            }
             //console.log(spec);
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
@@ -28,7 +37,28 @@ class SubMapGenerator extends Component {
             spec.data.values = selectedCaseData.geo;
 
             //change map proj
-            let center = [center0, center1];
+            if(selectProjType === "albersUsa"){
+                spec.projection = {
+                    "type": "albersUsa"
+                };
+            }else{
+                spec.projection = {
+                    "type": selectProjType,
+                };
+            }
+            const result = embed(this.canvasRef.current, spec)
+            .then((re)=>{
+                // result should be stored into the state
+                console.log(re);
+            })
+            .catch((err)=>{
+                console.log(err);
+            });
+        }else if(selectRawCase === 'montreal_pop_density'){
+            /** Preprocess the vega spec */
+            spec.data.values = selectedCaseData.geo;
+
+            //change map proj
             if(selectProjType === "albersUsa"){
                 spec.projection = {
                     "type": "albersUsa"
@@ -39,16 +69,20 @@ class SubMapGenerator extends Component {
                 };
             }
 
-
+            //spec.projection.fit = selectedCaseData.geo.features;
             const result = embed(this.canvasRef.current, spec)
             .then((re)=>{
                 // result should be stored into the state
-                console.log(re);
+                //console.log('Original Choropleth Map');
+                
             })
             .catch((err)=>{
-                console.log(err);
+                //this.props.onVegaParseError(err, true);
+                //console.log(err);
             });
-        }  
+            
+        }
+
     };
 
     /** class function section */
@@ -57,10 +91,7 @@ class SubMapGenerator extends Component {
             this.props.selectedCaseData, 
             this.props.vegaLiteSpec, 
             this.props.selectRawCase,
-            this.props.selectProjType,
-            this.props.center0,
-            this.props.center1,
-            this.props.scale
+            this.props.selectProjType
         );
         //console.log(this.props);
     }
@@ -70,10 +101,7 @@ class SubMapGenerator extends Component {
             this.props.selectedCaseData, 
             this.props.vegaLiteSpec, 
             this.props.selectRawCase,
-            this.props.selectProjType,
-            this.props.center0,
-            this.props.center1,
-            this.props.scale
+            this.props.selectProjType
         );
     }
 
