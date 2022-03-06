@@ -685,7 +685,9 @@ class App extends Component {
                     />
                   </Col>
                   <Col span={24}>
-                      <StatusBar />
+                      <StatusBar 
+                        mapOptionSetting={this.mapOptionSetting}
+                      />
                   </Col>
                 </Row>
               </Col>
