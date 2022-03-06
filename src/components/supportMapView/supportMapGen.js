@@ -10,7 +10,7 @@ class SubMapGenerator extends Component {
 
     drawVegaMap = (selectedCaseData, spec, selectRawCase, selectProjType) => {
         if(selectRawCase === 'county_unemployment'){
-            console.log(selectedCaseData);
+            //console.log(selectedCaseData);
             spec.data.values = selectedCaseData.geo;
             //spec.transform[0].from.data.values = selectedCaseData.data.data;
             //change map proj
@@ -81,6 +81,34 @@ class SubMapGenerator extends Component {
                 //console.log(err);
             });
             
+        }else if(selectRawCase === 'georgia_pctBach'){
+
+            /** Preprocess the vega spec */
+            spec.data.values = selectedCaseData.geo;
+
+            //change map proj
+            if(selectProjType === "albersUsa"){
+                spec.projection = {
+                    "type": "albersUsa"
+                };
+            }else{
+                spec.projection = {
+                    "type": selectProjType,
+                };
+            }
+
+            //spec.projection.fit = selectedCaseData.geo.features;
+            const result = embed(this.canvasRef.current, spec)
+            .then((re)=>{
+                // result should be stored into the state
+                //console.log('Original Choropleth Map');
+                
+            })
+            .catch((err)=>{
+                //this.props.onVegaParseError(err, true);
+                //console.log(err);
+            });
+
         }
 
     };

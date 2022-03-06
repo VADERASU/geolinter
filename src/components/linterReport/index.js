@@ -8,6 +8,7 @@ import ClassNumErr from "./classNumErr";
 import ClassAccuErr from "./classAccuErr";
 import FillColorErr from "./fillColorScheme";
 import MapProjection from "./mapProj";
+import MapOptions from "./mapOptions";
 
 class LinterReport extends Component {
     constructor(props){
@@ -236,15 +237,15 @@ class LinterReport extends Component {
 
         });
 
-        return(
-            <Card
+        // case1 state_education
+        if(this.props.selectRawCase === 'state_education'){
+            return(
+                <Card
                 title='Detected Violations'
                 size='small'
                 className='cardDetail'
-                style={{height: 505}}
-                bodyStyle={{overflow: "scroll"}}
+                style={{height: 505, overflow: "scroll"}}
             >
-                
                     <HardRulePanel 
                         hasHardRuleViolation={this.props.hasHardRuleViolation}
                         hardRuleMsg={this.props.hardRuleMsg}
@@ -252,7 +253,6 @@ class LinterReport extends Component {
                     />
 
                     {/** # of class fix */}
-                    <div style={{display: this.state.numOfClass.style}}>
                         <ClassNumErr 
                             mapFeatureReady={this.props.mapFeatureReady}
                             errProp={this.state.numOfClass.errTitle}
@@ -269,32 +269,6 @@ class LinterReport extends Component {
                             originalMoran={this.props.originalMoran}
                             onRecommendMethodSelection={this.props.onRecommendMethodSelection}
                         />   
-                    </div>
-
-                    {/** classificationAcc fix */}
-                    <div style={{display: this.state.classificationAcc.style}}>
-                        <ClassAccuErr 
-                            hasErr={this.state.classificationAcc.style}
-                            mapFeatureReady={this.props.mapFeatureReady}
-                            errProp={this.state.classificationAcc.errTitle}
-                            
-                            colorList={this.props.colorList}
-                            selectedCaseData={this.props.selectedCaseData}
-                            onSoftFix={this.props.onSoftFix}
-                        />
-                    </div>
-
-                    {/** fillColorScheme fix */}
-                    <div style={{display: this.state.fillColorScheme.style}}>
-                        <FillColorErr 
-                            hasErr={this.state.fillColorScheme.style}
-                            mapFeatureReady={this.props.mapFeatureReady}
-                            errProp={this.state.fillColorScheme.errTitle}
-                            
-                            colorList={this.props.colorList}
-                            onSoftFix={this.props.onSoftFix}
-                        />
-                    </div>
 
                     {/** map projection adjustment */}
                     <div style={{marginTop: 5}}>
@@ -306,11 +280,47 @@ class LinterReport extends Component {
                             onMapScaleChange={this.props.onMapScaleChange}
                         />
                     </div>
-                                  
+
+                    {/** other map adjustment */}
+                    <div style={{marginTop: 5}}>
+                        <MapOptions 
+                            mapFeatureReady={this.props.mapFeatureReady}
+                            mapOptionSetting={this.props.mapOptionSetting}
+                        />
+                    </div>
                 
               
             </Card>
-        );
+            );
+        }
+
+
+        {/** classificationAcc fix 
+                    <div style={{display: this.state.classificationAcc.style}}>
+                        <ClassAccuErr 
+                            hasErr={this.state.classificationAcc.style}
+                            mapFeatureReady={this.props.mapFeatureReady}
+                            errProp={this.state.classificationAcc.errTitle}
+                            
+                            colorList={this.props.colorList}
+                            selectedCaseData={this.props.selectedCaseData}
+                            onSoftFix={this.props.onSoftFix}
+                        />
+                    </div>*/}
+
+                    {/** fillColorScheme fix 
+                    <div style={{display: this.state.fillColorScheme.style}}>
+                        <FillColorErr 
+                            hasErr={this.state.fillColorScheme.style}
+                            mapFeatureReady={this.props.mapFeatureReady}
+                            errProp={this.state.fillColorScheme.errTitle}
+                            
+                            colorList={this.props.colorList}
+                            onSoftFix={this.props.onSoftFix}
+                        />
+                    </div>*/}
+
+        
     }
 }
 export default LinterReport;

@@ -27,7 +27,11 @@ import county_unemployment_features from './resource/case2_county/county_unemplo
 
 // import case 3 data -> montreal population density statics
 import montreal_density from './resource/case3_montreal/montreal_density.json';
-import montreal_density_features from './resource/case3_montreal/montreal_density_features.json'; 
+import montreal_density_features from './resource/case3_montreal/montreal_density_features.json';
+
+// import case 4 data -> georgia pctBach statics
+import georgia_pctBach from './resource/case4_georgia/georgia_pctBach.json';
+import georgia_pctBach_features from './resource/case4_georgia/georgia_pctBach_features.json';
 
 /** import case scripts */
 import { case_scripts } from './resource/cases';
@@ -52,6 +56,10 @@ class App extends Component {
       montreal_pop_density:{
         geo: montreal_density,
         features: montreal_density_features
+      },
+      georgia_pctBach:{
+        geo: georgia_pctBach,
+        features: georgia_pctBach_features
       }
     };
 
@@ -70,9 +78,10 @@ class App extends Component {
     };
 
     this.externalGeoReverseFlag = true;
+    this.case4Flag = true;
 
     this.state = {
-      mapDataList: ['state_education','county_unemployment','montreal_pop_density'],
+      mapDataList: ['state_education','county_unemployment','montreal_pop_density','georgia_pctBach'],
       selectedCaseData: this.dataset['state_education'],
       colorList: {
         name: [
@@ -175,6 +184,12 @@ class App extends Component {
 
       // map projection props
       selectProjType: "equalEarth",
+      // map symbolism props
+      size: null,
+      background: null,
+      stroke: null,
+      strokeWidth: null,
+      title: null,
 
       //original measures
       originalGVF: {
@@ -198,8 +213,9 @@ class App extends Component {
     
     this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
     let selectedCaseData = this.dataset[selectedCase];
+
     if(selectedCase === "montreal_pop_density" && this.externalGeoReverseFlag){
-      selectedCaseData.geo.features.forEach(e=>{
+      this.dataset['montreal_pop_density'].geo.features.forEach(e=>{
         if(e.geometry.type === "Polygon"){
           e.geometry.coordinates[0].reverse();
         }else{
@@ -210,10 +226,7 @@ class App extends Component {
       });
       this.externalGeoReverseFlag = false;
     }
-    //console.log(selectedCaseData.geo.features[0].geometry.coordinates[0]);
-    
-    //console.log(selectedCaseData.geo.features[0].geometry.coordinates[0].reverse());
-    //console.log(selectedCaseData);
+
     this.setState({
       selectRawCase: selectedCase,
       selectedCaseData: selectedCaseData,
@@ -236,6 +249,21 @@ class App extends Component {
     });
   };
 
+  mapOptionSetting = (val) => {
+    let size = val.size === null ? null : val.size;
+    let background = val.background === null ? null : val.background;
+    let stroke = val.stroke === null ? null : val.stroke;
+    let strokeWidth = val.strokeWidth === null ? null : val.strokeWidth;
+    let title = val.title === null ? null : val.title;
+    
+    this.setState({
+      size: size,
+      background: background,
+      stroke: stroke,
+      strokeWidth: strokeWidth,
+      title: title
+    });
+  };
 
   handleRecommendMethodSelection = (val) => {
     this.setState({
@@ -691,6 +719,7 @@ class App extends Component {
                       onSoftFix={this.handleSoftFix}
                       onMapProjChange={this.handleMapProjChange}
                       onRecommendMethodSelection={this.handleRecommendMethodSelection}
+                      mapOptionSetting={this.mapOptionSetting}
                     />
                   </Col>
                 </Row>
@@ -709,6 +738,11 @@ class App extends Component {
                       selectProjType={this.state.selectProjType}
                       originalGVF={this.state.originalGVF[this.state.selectRawCase]}
                       originalMoran={this.state.originalMoran[this.state.selectRawCase]}
+                      mapSize={this.state.size}
+                      mapBackground={this.state.background}
+                      mapStroke={this.state.mapStroke}
+                      strokeWidth={this.state.strokeWidth}
+                      mapTitle={this.state.title}
                     />
                   </Col>
                   <Col span={24}>

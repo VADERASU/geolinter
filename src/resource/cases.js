@@ -5,6 +5,7 @@ export const case_scripts = {
     "width": 550,
     "height": 300,
     "background": "#F3F8FB",
+    "title": "The higher education rate of the states in the US",
     "data": {
         "values": "state_education",
         "format": {
@@ -18,6 +19,9 @@ export const case_scripts = {
     "encoding": {
         "stroke": {
             "value": "black"
+        },
+        "strokeWidth": {
+            "value": 1
         },
         "color": {
             "field": "properties.higher_education_rate",
@@ -101,10 +105,50 @@ montreal_pop_density:
                 "range": ["#8fd744", "#35b779", "#21918d", "#31688e", "#443a83"],
                 "type": "threshold",
                 "domain": [
-                    2590.0599999999995,
-                    5152.419999999999,
-                    7714.779999999999,
+                    2590.06,
+                    5152.42,
+                    7714.78,
                     10277.14
+                ]
+            },
+            "legend": {
+                "title": null
+            }
+        }         
+    },
+    "usermeta": {
+        "embedOptions": {
+            "actions": false
+        }
+    }
+}`,
+georgia_pctBach:
+`{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 550,
+    "height": 300,
+    "background": "#F3F8FB",
+    "data": {
+        "values": "georgia_pctBach",
+        "format": {
+            "property": "features"
+        }
+    },
+    "mark": "geoshape",
+    "encoding": {
+        "stroke": {
+            "value": "black"
+        },
+        "color": {
+            "field": "properties.PctBach",
+            "type": "quantitative",
+            "scale": {
+                "range": ["#8fd744", "#35b779", "#21918d", "#31688e", "#443a83"],
+                "type": "threshold",
+                "domain": [
+                    12.52,
+                    20.85,
+                    29.17
                 ]
             },
             "legend": {

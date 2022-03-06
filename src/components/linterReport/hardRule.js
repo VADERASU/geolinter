@@ -12,7 +12,7 @@ class HardRulePanel extends Component {
         if(!hasHardRuleViolation){
             return(
                 <Alert
-                    message="No parsing error"
+                    message="No hard rule violations"
                     type="success"
                     style={{marginBottom: 5}}
                     showIcon
@@ -22,7 +22,7 @@ class HardRulePanel extends Component {
         }else{
             return(
                 <Card
-                title='Parsing errors'
+                title='Hard rule violations are detected'
                 size='small'
                 className='hardRuleCard'
                 style={{marginBottom: 5}}

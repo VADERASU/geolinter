@@ -34,6 +34,21 @@
     width: 100%;
 }
 
+.otherOptCard{
+    border-style: solid;
+    border-color: #46a6ff;
+    border-width: 1px;
+}
+
+.otherOptCard .ant-card-head{
+    background: #bae7ff;
+    border-bottom: 1px solid #46a6ff;
+}
+
+.otherOptCard .cardGrid {
+    width: 100%;
+}
+
 .ant-card-grid{
     border: none;
     box-shadow: none;

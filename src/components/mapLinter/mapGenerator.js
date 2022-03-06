@@ -55,7 +55,24 @@ class MapGenerator extends Component {
                 //console.log(err);
             });
             
-        } 
+        }else if(selectRawCase === 'georgia_pctBach'){
+
+            /** Preprocess the vega spec */
+            spec.data.values = selectedCaseData.geo;
+
+            //spec.projection.fit = selectedCaseData.geo.features;
+            const result = embed(this.canvasRef.current, spec)
+            .then((re)=>{
+                // result should be stored into the state
+                //console.log('Original Choropleth Map');
+                
+            })
+            .catch((err)=>{
+                //this.props.onVegaParseError(err, true);
+                //console.log(err);
+            });
+
+        }
         
     };
 
