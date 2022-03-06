@@ -245,7 +245,7 @@ class LinterReport extends Component {
                 size='small'
                 className='cardDetail'
                 style={{height: 505, overflow: "scroll"}}
-            >
+                >
                     <HardRulePanel 
                         hasHardRuleViolation={this.props.hasHardRuleViolation}
                         hardRuleMsg={this.props.hardRuleMsg}
@@ -270,25 +270,39 @@ class LinterReport extends Component {
                             onRecommendMethodSelection={this.props.onRecommendMethodSelection}
                         />   
 
-                    {/** map projection adjustment */}
+                    {/** map projection adjustment 
                     <div style={{marginTop: 5}}>
                         <MapProjection 
                             mapFeatureReady={this.props.mapFeatureReady}
                             onMapProjChange={this.props.onMapProjChange}
-                            onMapCenter0Change={this.props.onMapCenter0Change}
-                            onMapCenter1Change={this.props.onMapCenter1Change}
-                            onMapScaleChange={this.props.onMapScaleChange}
                         />
-                    </div>
+                    </div>*/}
 
-                    {/** other map adjustment */}
+                    {/** other map adjustment 
                     <div style={{marginTop: 5}}>
                         <MapOptions 
                             mapFeatureReady={this.props.mapFeatureReady}
                             mapOptionSetting={this.props.mapOptionSetting}
                         />
-                    </div>
+                    </div>*/}
                 
+              
+            </Card>
+            );
+        }else{
+            return(
+                <Card
+                title='Detected Violations'
+                size='small'
+                className='cardDetail'
+                style={{height: 505, overflow: "scroll"}}
+                >
+                    <HardRulePanel 
+                        hasHardRuleViolation={this.props.hasHardRuleViolation}
+                        hardRuleMsg={this.props.hardRuleMsg}
+                        onHardRuleFixClick={this.props.onHardRuleFixClick}
+                    />
+
               
             </Card>
             );

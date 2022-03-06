@@ -185,11 +185,11 @@ class App extends Component {
       // map projection props
       selectProjType: "equalEarth",
       // map symbolism props
-      size: null,
-      background: null,
-      stroke: null,
-      strokeWidth: null,
-      title: null,
+      //size: null,
+      //background: null,
+      //stroke: null,
+      //strokeWidth: null,
+      //title: null,
 
       //original measures
       originalGVF: {
@@ -250,19 +250,37 @@ class App extends Component {
   };
 
   mapOptionSetting = (val) => {
-    let size = val.size === null ? null : val.size;
+    console.log(val);
+    //let size = val.size === null ? null : val.size;
     let background = val.background === null ? null : val.background;
     let stroke = val.stroke === null ? null : val.stroke;
     let strokeWidth = val.strokeWidth === null ? null : val.strokeWidth;
     let title = val.title === null ? null : val.title;
-    
+
+    this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
+    let subMapSpec = JSON.parse(JSON.stringify(this.state.vegaLiteSpec));
+    if(background !== null){
+      subMapSpec.background = background;
+    }
+    if(stroke !== null){
+      subMapSpec.encoding.stroke = {
+        "value": stroke
+      };
+    }
+    if(strokeWidth !== null){
+      subMapSpec.encoding.strokeWidth = {
+        "value": strokeWidth
+      };
+    }
+    if(title !== null){
+      subMapSpec.title = title
+    }
+
     this.setState({
-      size: size,
-      background: background,
-      stroke: stroke,
-      strokeWidth: strokeWidth,
-      title: title
+      vegaLiteSpec: subMapSpec,
+      rawScript: JSON.stringify(subMapSpec, null, 4)
     });
+    
   };
 
   handleRecommendMethodSelection = (val) => {
@@ -687,6 +705,8 @@ class App extends Component {
                   <Col span={24}>
                       <StatusBar 
                         mapOptionSetting={this.mapOptionSetting}
+                        onMapProjChange={this.handleMapProjChange}
+                        selectProjType={this.state.selectProjType}
                       />
                   </Col>
                 </Row>
@@ -740,11 +760,6 @@ class App extends Component {
                       selectProjType={this.state.selectProjType}
                       originalGVF={this.state.originalGVF[this.state.selectRawCase]}
                       originalMoran={this.state.originalMoran[this.state.selectRawCase]}
-                      mapSize={this.state.size}
-                      mapBackground={this.state.background}
-                      mapStroke={this.state.mapStroke}
-                      strokeWidth={this.state.strokeWidth}
-                      mapTitle={this.state.title}
                     />
                   </Col>
                   <Col span={24}>

@@ -7,7 +7,7 @@ class StatusBar extends Component {
     constructor(props){
         super(props);
         this.state = {
-            size: null,
+            //size: null,
             background: null,
             stroke: null,
             strokeWidth: null,
@@ -19,9 +19,38 @@ class StatusBar extends Component {
     //mapOptionSetting={this.props.mapOptionSetting}
     handleTitleChange = (val) => {
         this.setState({
-            title: val
+            title: val.target.value
         });
     };
+
+    handleStrokeColor = (val) => {
+        this.setState({
+            stroke: val
+        });
+    };
+
+    handleStrokeWidth = (val) => {
+        this.setState({
+            strokeWidth: val 
+        });
+    };
+
+    handleBackground = (val) => {
+        this.setState({
+            background: val
+        });
+    }
+
+    submitOption = () => {
+        let option = {
+            background: this.state.background,
+            stroke: this.state.stroke,
+            strokeWidth: this.state.strokeWidth,
+            title: this.state.title
+        };
+
+        this.props.mapOptionSetting(option);
+    }
 
     /** render components */
     render(){
@@ -33,7 +62,7 @@ class StatusBar extends Component {
                 title='Status & Global Options'
                 size='small'
                 className='cardDetail'
-                style={{height: 198}}
+                style={{height: 298}}
                 extra={
                     <div
                         style={{
@@ -49,7 +78,7 @@ class StatusBar extends Component {
                             marginTop: 5,
                             marginRight: 5
                         }}
-                        onClick={this.handleFix}
+                        onClick={this.submitOption}
                         >
                             Set
                         </Button>
@@ -61,7 +90,12 @@ class StatusBar extends Component {
                     stroke={this.state.stroke}
                     strokeWidth={this.state.strokeWidth}
                     title={this.state.title}
+                    onMapProjChange={this.props.onMapProjChange}
+                    selectProjType={this.props.selectProjType}
                     onTitleChange={this.handleTitleChange}
+                    handleStrokeColor={this.handleStrokeColor}
+                    handleStrokeWidth={this.handleStrokeWidth}
+                    handleBackground={this.handleBackground}
                 />
                 {/*<Steps 
                     size="small"

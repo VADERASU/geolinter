@@ -11,7 +11,7 @@ class CodeDiffer extends Component{
         return(
             <div
                 className={this.props.editorView === "hidden" ? "overFlowScroll hidden" : "overFlowScroll"}
-                style={{height: 740, fontSize: 10, marginTop: 10}}
+                style={{height: 640, fontSize: 10, marginTop: 10}}
             >
                 <ReactDiffViewer
                     oldValue={oldCode} newValue={newCode} splitView={false} 

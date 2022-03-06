@@ -22,7 +22,7 @@ class CodeEditor extends Component {
                 highlightActiveLine: true,
                 enableSnippets: true,
                 showLineNumbers: true,
-                height: "755px",
+                height: "655px",
                 width: "540px",
                 annotations: [{ row: 10, column: 3, type: 'error', text: 'Some error.'}]
             },
@@ -39,7 +39,7 @@ class CodeEditor extends Component {
                 title='Vega-lite Script'
                 size='small'
                 className='editorDetail'
-                style={{height: 810}}
+                style={{height: 710}}
                 extra={
                     <div style={{
                         display: 'inline-block',
