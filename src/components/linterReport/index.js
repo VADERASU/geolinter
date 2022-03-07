@@ -432,7 +432,7 @@ class LinterReport extends Component {
                         onHardRuleFixClick={this.props.onHardRuleFixClick}
                     />
 
-                    <div style={{marginTop: 5, display: this.state.borderColor.style}}>
+                    <div style={{marginTop: 5, marginBottom:5, display: this.state.borderColor.style}}>
                         <MapOptions 
                             errBorderColor={this.state.borderColor.errTitle}
                             mapFeatureReady={this.props.mapFeatureReady}
