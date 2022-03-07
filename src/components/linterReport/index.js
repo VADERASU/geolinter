@@ -6,8 +6,9 @@ import * as d3jnd from "d3-jnd";
 import HardRulePanel from "./hardRule";
 import ClassNumErr from "./classNumErr";
 import ClassAccuErr from "./classAccuErr";
-import FillColorErr from "./fillColorScheme";
-import MapProjection from "./mapProj";
+import SingleAccuErr from "./singleAccuErr";
+//import FillColorErr from "./fillColorScheme";
+//import MapProjection from "./mapProj";
 import MapOptions from "./mapOptions";
 
 class LinterReport extends Component {
@@ -51,6 +52,9 @@ class LinterReport extends Component {
             },
             originalGVF: 0,
             originalMoran: 0,
+            reCheckColorScheme: null,
+            reCheckStrokeColor: null,
+            reCheckBgColor: null
         };
     }
 
@@ -59,7 +63,26 @@ class LinterReport extends Component {
         return Math.round(m) / 100 * Math.sign(num);
     };
 
-    checkSoftViolations = (mapSoftProp, selectedCaseData, originGVF) => {
+    setreCheckColorScheme = (val) => {
+        console.log(val);
+        this.setState({
+            reCheckColorScheme: val
+        });
+    };
+
+    setreCheckStrokeColor = (val) => {
+        this.setState({
+            reCheckStrokeColor: val
+        });
+    };
+
+    setreCheckBgColor = (val) => {
+        this.setState({
+            reCheckBgColor: val
+        });
+    };
+
+    checkSoftViolations = (mapSoftProp, selectedCaseData, originGVF, reCheckColorScheme) => {
         let dictTemp = {
             numOfClass: {
                 style: "none",
@@ -143,13 +166,32 @@ class LinterReport extends Component {
          }
 
          // color scheme
-        let color_scheme = mapSoftProp.color_scheme;
+         //console.log(reCheckColorScheme);
+        let color_scheme = reCheckColorScheme === null ? mapSoftProp.color_scheme : reCheckColorScheme;
+
+        let strokeColor = this.props.reCheckStrokeColor === null ? mapSoftProp.stroke : this.props.reCheckStrokeColor;
+        let stroke_JND = true;
+
+        let bgColor = this.props.reCheckBgColor === null ? mapSoftProp.background : this.props.reCheckBgColor;
+        let bg_JND = true;
+
         let jndList = [];
         color_scheme.forEach((e,i)=>{
             if(i < color_scheme.length-1){
                 let isJND = d3jnd.noticeablyDifferent(color_scheme[i], color_scheme[i+1], 0.5, 0.5);
                 jndList.push(isJND);
             }
+
+            let stroke_JND_temp = d3jnd.noticeablyDifferent(color_scheme[i], strokeColor, 0.5, 0.5);
+            if(!stroke_JND_temp){
+                stroke_JND = stroke_JND_temp;
+            }
+
+            let bg_JND_temp = d3jnd.noticeablyDifferent(color_scheme[i], bgColor, 0.5, 0.5);
+            if(!bg_JND_temp){
+                bg_JND = bg_JND_temp;
+            }
+            
         });
         if(jndList.includes(false)){
             let errTitle = "Colors are not noticeably different";
@@ -162,12 +204,28 @@ class LinterReport extends Component {
             dictTemp.fillColorScheme.has = true;
             dictTemp.fillColorScheme.errTitle = errTitle;
         }
+        
+        if(stroke_JND === false){
+            let errTitle = "Current strock color "+strokeColor+" is not noticeably different with the fill color";
+            dictTemp.borderColor.style = "block";
+            dictTemp.borderColor.has = true;
+            dictTemp.borderColor.errTitle = errTitle;
+        }
+
+        if(bg_JND === false){
+            let errTitle = "Current background color "+bgColor+" is not noticeably different with the fill color";
+            dictTemp.backgroundColor.style = "block";
+            dictTemp.backgroundColor.has = true;
+            dictTemp.backgroundColor.errTitle = errTitle;
+        }
 
         //console.log(dictTemp);
         this.setState({
             numOfClass: dictTemp.numOfClass,
             classificationAcc: dictTemp.classificationAcc,
             fillColorScheme: dictTemp.fillColorScheme,
+            borderColor: dictTemp.borderColor,
+            backgroundColor: dictTemp.backgroundColor
         });
     };
 
@@ -181,7 +239,7 @@ class LinterReport extends Component {
         //console.log(mapSoftProp);
         if(mapSoftProp !== null){
             // check soft rule violations
-            this.checkSoftViolations(mapSoftProp, selectedCaseData, this.props.originalGVF);
+            this.checkSoftViolations(mapSoftProp, selectedCaseData, this.props.originalGVF, this.props.reCheckColorScheme);
         }
 
     }
@@ -189,13 +247,14 @@ class LinterReport extends Component {
     componentWillReceiveProps(nextProps, nextContext){
         let mapSoftProp = nextProps.mapFeatureReady;
         let selectedCaseData = nextProps.selectedCaseData;
+        
         this.setState({
             originalMoran: nextProps.originalMoran,
             originalGVF: nextProps.originalGVF
         });
         if(mapSoftProp !== null){
             // check soft rule violations
-            this.checkSoftViolations(mapSoftProp, selectedCaseData, nextProps.originalGVF);
+            this.checkSoftViolations(mapSoftProp, selectedCaseData, nextProps.originalGVF, nextProps.reCheckColorScheme);
         }
         
     }
@@ -357,6 +416,55 @@ class LinterReport extends Component {
                         style={{marginTop: 8}}
                         showIcon
                     />
+            </Card>
+            );
+        }else if(this.props.selectRawCase === 'georgia_pctBach'){
+            return(
+                <Card
+                title='Detected Violations'
+                size='small'
+                className='cardDetail'
+                style={{height: 505, overflow: "scroll"}}
+                >
+                    <HardRulePanel 
+                        hasHardRuleViolation={this.props.hasHardRuleViolation}
+                        hardRuleMsg={this.props.hardRuleMsg}
+                        onHardRuleFixClick={this.props.onHardRuleFixClick}
+                    />
+
+                    <div style={{marginTop: 5, display: this.state.borderColor.style}}>
+                        <MapOptions 
+                            errBorderColor={this.state.borderColor.errTitle}
+                            mapFeatureReady={this.props.mapFeatureReady}
+                            mapOptionSetting={this.props.mapOptionSetting}
+                        />
+                    </div>
+
+                    <SingleAccuErr 
+                        mapFeatureReady={this.props.mapFeatureReady}
+                        errColor={this.state.fillColorScheme.errTitle}
+                        errAccu={this.state.classificationAcc.errTitle}
+                        classificationList={data}
+
+                        currentSelectRecomm={this.props.currentSelectRecomm}
+
+                        colorList={this.props.colorList}
+                        selectedCaseData={this.props.selectedCaseData}
+                        onSoftFix={this.props.onSoftFix}
+                        originalGVF={this.props.originalGVF}
+                        originalMoran={this.props.originalMoran}
+                        onRecommendMethodSelection={this.props.onRecommendMethodSelection}
+
+                        setreCheckColorScheme={this.props.setreCheckColorScheme}
+                    />
+
+                    <Alert
+                        message="Please check and select the projection with the least distortion of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+                    
             </Card>
             );
         }else{

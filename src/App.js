@@ -190,6 +190,9 @@ class App extends Component {
       //stroke: null,
       //strokeWidth: null,
       //title: null,
+      reCheckColorScheme: null,
+      reCheckStrokeColor: null,
+      reCheckBgColor: null,
 
       //original measures
       originalGVF: {
@@ -209,6 +212,25 @@ class App extends Component {
   }
 
   /** class functions */
+
+  setreCheckColorScheme = (val) => {
+    console.log(val);
+    this.setState({
+        reCheckColorScheme: val
+    });
+  };
+
+  setreCheckStrokeColor = (val) => {
+      this.setState({
+          reCheckStrokeColor: val
+      });
+  };
+
+  setreCheckBgColor = (val) => {
+      this.setState({
+          reCheckBgColor: val
+      });
+  };
 
   // When select a new case study
   handleCaseSelection = (selectedCase) => {
@@ -247,7 +269,10 @@ class App extends Component {
       hasHardRuleViolation: false,
       hardRuleMsg:[],
       softFixSpec: null,
-      selectProjType: "equalEarth"
+      selectProjType: "equalEarth",
+      reCheckColorScheme: null,
+      reCheckStrokeColor: null,
+      reCheckBgColor: null
     });
   };
 
@@ -607,8 +632,10 @@ class App extends Component {
       width: spec.width,
       height: spec.height,
       background: spec.background,
+      stroke: spec.encoding.stroke.value,
+      strokeWidth: 1,
       //projection: spec.projection.type,
-      //border_stroke: spec.encoding.stroke.value,
+      
     };
 
     // check the class breaks and color scheme
@@ -621,6 +648,10 @@ class App extends Component {
     }else{
       // unclassed map
       mapFeature['ifClassed'] = false;
+    }
+
+    if("strokeWidth" in spec.encoding){
+      mapFeature["strokeWidth"] = spec.encoding.strokeWidth.value;
     }
 
     // check projection
@@ -745,6 +776,12 @@ class App extends Component {
                       onMapProjChange={this.handleMapProjChange}
                       onRecommendMethodSelection={this.handleRecommendMethodSelection}
                       mapOptionSetting={this.mapOptionSetting}
+                      reCheckColorScheme={this.state.reCheckColorScheme}
+                      reCheckStrokeColor={this.state.reCheckStrokeColor}
+                      reCheckBgColor={this.state.reCheckBgColor}
+                      setreCheckColorScheme={this.setreCheckColorScheme}
+                      setreCheckStrokeColor={this.setreCheckStrokeColor}
+                      setreCheckBgColor={this.setreCheckBgColor}
                     />
                   </Col>
                 </Row>

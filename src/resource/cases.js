@@ -137,7 +137,7 @@ georgia_pctBach:
     "mark": "geoshape",
     "encoding": {
         "stroke": {
-            "value": "black"
+            "value": "#8fd744"
         },
         "color": {
             "field": "properties.PctBach",
