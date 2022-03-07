@@ -81,7 +81,7 @@ class App extends Component {
     this.case4Flag = true;
 
     this.state = {
-      mapDataList: ['state_education','county_unemployment','montreal_pop_density','georgia_pctBach'],
+      mapDataList: ['state_education','montreal_pop_density','georgia_pctBach','county_unemployment'],
       selectedCaseData: this.dataset['state_education'],
       colorList: {
         name: [
@@ -194,13 +194,15 @@ class App extends Component {
       //original measures
       originalGVF: {
         state_education: 0,
-        county_unemployment: 0,
-        montreal_pop_density: 0
+        montreal_pop_density: 0.78,
+        georgia_pctBach: 0.63,
+        county_unemployment: 0.78,
       },
       originalMoran: {
         state_education: 0.21,
+        montreal_pop_density: 0.57,
+        georgia_pctBach: 0.24,
         county_unemployment: 0.21,
-        montreal_pop_density: 0.21
       },
 
     };
@@ -540,6 +542,7 @@ class App extends Component {
   };
 
   handleHardRuleFixClick = () => {
+    this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
     let spec = this.state.vegaLiteSpec;
     let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
 

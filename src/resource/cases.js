@@ -102,7 +102,7 @@ montreal_pop_density:
             "field": "properties.popDen",
             "type": "quantitative",
             "scale": {
-                "range": ["#8fd744", "#35b779", "#21918d", "#31688e", "#443a83"],
+                "range": ["#32B677", "#35b779", "#21918d", "#31688e", "#443a83"],
                 "type": "threshold",
                 "domain": [
                     2590.06,

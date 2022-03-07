@@ -23,8 +23,8 @@
     "key_prop": "popDen",
     "max": 12839.5,
     "min": 27.7,
-    "origin_GVF":0,
-    "origin_moran": 0.21,
+    "origin_GVF":0.78,
+    "origin_moran": 0.57,
     "data_list": [
         6142.0,
         4714.9,

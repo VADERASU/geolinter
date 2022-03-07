@@ -254,7 +254,7 @@ class GolbalOption extends Component {
                         <Col span={23}>
                             <Row>
                                 <Col span={10}>
-                                    Map background color: 
+                                    <b>Map background color:</b> 
                                 </Col>
                                 <Col span={14}>
                                     <Popover content={bgColorDiv}>

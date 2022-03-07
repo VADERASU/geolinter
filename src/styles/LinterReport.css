@@ -36,13 +36,13 @@
 
 .otherOptCard{
     border-style: solid;
-    border-color: #46a6ff;
+    border-color: #b7eb8f;
     border-width: 1px;
 }
 
 .otherOptCard .ant-card-head{
-    background: #bae7ff;
-    border-bottom: 1px solid #46a6ff;
+    background: #f6ffed;
+    border-bottom: 1px solid #b7eb8f;
 }
 
 .otherOptCard .cardGrid {

@@ -14,7 +14,7 @@ class HardRulePanel extends Component {
                 <Alert
                     message="No hard rule violations"
                     type="success"
-                    style={{marginBottom: 5}}
+                    style={{marginBottom: 8}}
                     showIcon
                     closable
                 />

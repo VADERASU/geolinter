@@ -21,8 +21,8 @@
         "Max p"
     ],
     "key_prop": "PctBach",
-    "max": 0.37,
-    "min": 0.11,
+    "max": 37.5,
+    "min": 4.2,
     "origin_GVF":0.63,
     "origin_moran": 0.24,
     "data_list": [

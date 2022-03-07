@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import "../../styles/LinterReport.css"
 import {Card, Alert, Button, Divider, Row, Col, Image, Select, InputNumber, Radio} from 'antd';
 import arrow from "../../resource/arrow.png";
-import { UpCircleTwoTone, DownCircleTwoTone } from '@ant-design/icons';
+import { UpCircleTwoTone, DownCircleTwoTone, ExclamationCircleTwoTone } from '@ant-design/icons';
 
 class ClassNumErr extends Component {
     constructor(props){
@@ -17,6 +17,8 @@ class ClassNumErr extends Component {
             selectedCaseData: null,
             originalGVF: 0,
             originalMoran: 0,
+            className: "softRuleCard",
+            ifFixed: ""
         };
     }
 
@@ -207,6 +209,11 @@ class ClassNumErr extends Component {
         };
         this.props.onRecommendMethodSelection(currentSelectRecomm);
         this.props.onSoftFix(fixObj);
+
+        this.setState({
+            className: "otherOptCard",
+            ifFixed: " (Fixed)"
+        });
     };
 
     componentDidMount() {
@@ -286,9 +293,9 @@ class ClassNumErr extends Component {
             return(
                 <div>
                 <Card
-                title={ErrMsg}
+                title={"Three soft rule violations are detected" + this.state.ifFixed}
                 size='small'
-                className='softRuleCard'
+                className={this.state.className}
                 extra={
                     <div
                         style={{
@@ -313,7 +320,7 @@ class ClassNumErr extends Component {
                 >
                     <div style={{padding: 8}}>
                     <Row gutter={[8,8]}>
-                        <Col span={24}><b>The recommendation of the number of class is 3 to 7.</b></Col>
+                        <Col span={24}><b style={{color: "red"}}>1. Too few classes.</b> The recommendation of the number of class is 3 to 7.</Col>
 
                         <Col span={24}>
                             <Row>
@@ -339,6 +346,7 @@ class ClassNumErr extends Component {
                             </Row>
                         </Col>
 
+                        <Col span={24}><b style={{color: "red"}}>2. Colors are not noticeably different.</b> The color differences should be clearly perceived in the selected scheme.</Col>
                         <Col span={24}>
                             <Row>
                                 <Col span={1}>
@@ -375,6 +383,7 @@ class ClassNumErr extends Component {
                             </Row>
                         </Col>                        
                         
+                        <Col span={24}><b style={{color: "red"}}>3. {this.props.errAccu}</b> Select a classification method that has a better accuracy and spatial autocorrelation.</Col>
                         <Col span={24}>
                             <Row>
                                 <Col span={1}>

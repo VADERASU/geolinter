@@ -54,6 +54,11 @@ class LinterReport extends Component {
         };
     }
 
+    round = (num) => {
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        return Math.round(m) / 100 * Math.sign(num);
+    };
+
     checkSoftViolations = (mapSoftProp, selectedCaseData, originGVF) => {
         let dictTemp = {
             numOfClass: {
@@ -124,9 +129,14 @@ class LinterReport extends Component {
              }
          });
          let GVFavg = GVFsum / methodNum;
-         //console.log(originGVF +", "+GVFavg);
+         console.log(originGVF +", "+GVFavg);
          if(originGVF < GVFavg || originGVF === 0){
-             let errTitle = "Classification accuracy is low";
+             let errTitle = "Classification accuracy is lower than the average ";
+             if(originGVF === 0){
+                errTitle = errTitle + "(original GVF: "+originGVF+")";
+             }else{
+                errTitle = errTitle + "(original GVF: "+originGVF+" < average GVF: "+this.round(GVFavg)+")";
+             }
              dictTemp.classificationAcc.style = dictTemp.numOfClass.has ? "none" : "block";
              dictTemp.classificationAcc.has = true;
              dictTemp.classificationAcc.errTitle = errTitle;
@@ -191,6 +201,7 @@ class LinterReport extends Component {
     }
     
     render(){
+        console.log(this.state);
         let selectedCaseData = this.props.selectedCaseData;
         const data = [];
         let classification_methods_title = selectedCaseData.features.classification_methods_title;
@@ -269,6 +280,20 @@ class LinterReport extends Component {
                             originalMoran={this.props.originalMoran}
                             onRecommendMethodSelection={this.props.onRecommendMethodSelection}
                         />   
+                    
+                    <Alert
+                        message="Please check and select the projection with the least distortion of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+
+                    <Alert
+                        message="Please properly define the strock color, width and background color of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
 
                     {/** map projection adjustment 
                     <div style={{marginTop: 5}}>
@@ -289,6 +314,51 @@ class LinterReport extends Component {
               
             </Card>
             );
+        }else if(this.props.selectRawCase === 'montreal_pop_density'){
+            return(
+                <Card
+                title='Detected Violations'
+                size='small'
+                className='cardDetail'
+                style={{height: 505, overflow: "scroll"}}
+                >
+                    <HardRulePanel 
+                        hasHardRuleViolation={this.props.hasHardRuleViolation}
+                        hardRuleMsg={this.props.hardRuleMsg}
+                        onHardRuleFixClick={this.props.onHardRuleFixClick}
+                    />
+
+                    <ClassAccuErr 
+                        mapFeatureReady={this.props.mapFeatureReady}
+                        errColor={this.state.fillColorScheme.errTitle}
+                        errAccu={this.state.classificationAcc.errTitle}
+                        classificationList={data}
+
+                        currentSelectRecomm={this.props.currentSelectRecomm}
+
+                        colorList={this.props.colorList}
+                        selectedCaseData={this.props.selectedCaseData}
+                        onSoftFix={this.props.onSoftFix}
+                        originalGVF={this.props.originalGVF}
+                        originalMoran={this.props.originalMoran}
+                        onRecommendMethodSelection={this.props.onRecommendMethodSelection}
+                    />
+
+                    <Alert
+                        message="Please check and select the projection with the least distortion of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+
+                    <Alert
+                        message="Please properly define the strock color, width and background color of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+            </Card>
+            );
         }else{
             return(
                 <Card
@@ -303,8 +373,9 @@ class LinterReport extends Component {
                         onHardRuleFixClick={this.props.onHardRuleFixClick}
                     />
 
+
               
-            </Card>
+                </Card> 
             );
         }
 
