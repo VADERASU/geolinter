@@ -10,6 +10,7 @@ import SingleAccuErr from "./singleAccuErr";
 //import FillColorErr from "./fillColorScheme";
 //import MapProjection from "./mapProj";
 import MapOptions from "./mapOptions";
+import BgOption from "./backgroundOption";
 
 class LinterReport extends Component {
     constructor(props){
@@ -82,7 +83,7 @@ class LinterReport extends Component {
         });
     };
 
-    checkSoftViolations = (mapSoftProp, selectedCaseData, originGVF, reCheckColorScheme) => {
+    checkSoftViolations = (mapSoftProp, selectedCaseData, originGVF, reCheckColorScheme, reCheckStrokeColor, reCheckBgColor) => {
         let dictTemp = {
             numOfClass: {
                 style: "none",
@@ -169,10 +170,10 @@ class LinterReport extends Component {
          //console.log(reCheckColorScheme);
         let color_scheme = reCheckColorScheme === null ? mapSoftProp.color_scheme : reCheckColorScheme;
 
-        let strokeColor = this.props.reCheckStrokeColor === null ? mapSoftProp.stroke : this.props.reCheckStrokeColor;
+        let strokeColor = reCheckStrokeColor === null ? mapSoftProp.stroke : reCheckStrokeColor;
         let stroke_JND = true;
 
-        let bgColor = this.props.reCheckBgColor === null ? mapSoftProp.background : this.props.reCheckBgColor;
+        let bgColor = reCheckBgColor === null ? mapSoftProp.background : reCheckBgColor;
         let bg_JND = true;
 
         let jndList = [];
@@ -239,7 +240,7 @@ class LinterReport extends Component {
         //console.log(mapSoftProp);
         if(mapSoftProp !== null){
             // check soft rule violations
-            this.checkSoftViolations(mapSoftProp, selectedCaseData, this.props.originalGVF, this.props.reCheckColorScheme);
+            this.checkSoftViolations(mapSoftProp, selectedCaseData, this.props.originalGVF, this.props.reCheckColorScheme, this.props.reCheckStrokeColor, this.props.reCheckBgColor);
         }
 
     }
@@ -247,14 +248,13 @@ class LinterReport extends Component {
     componentWillReceiveProps(nextProps, nextContext){
         let mapSoftProp = nextProps.mapFeatureReady;
         let selectedCaseData = nextProps.selectedCaseData;
-        
         this.setState({
             originalMoran: nextProps.originalMoran,
             originalGVF: nextProps.originalGVF
         });
         if(mapSoftProp !== null){
             // check soft rule violations
-            this.checkSoftViolations(mapSoftProp, selectedCaseData, nextProps.originalGVF, nextProps.reCheckColorScheme);
+            this.checkSoftViolations(mapSoftProp, selectedCaseData, nextProps.originalGVF, nextProps.reCheckColorScheme, nextProps.reCheckStrokeColor, nextProps.reCheckBgColor);
         }
         
     }
@@ -457,6 +457,37 @@ class LinterReport extends Component {
 
                         setreCheckColorScheme={this.props.setreCheckColorScheme}
                     />
+
+                    <Alert
+                        message="Please check and select the projection with the least distortion of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+                    
+            </Card>
+            );
+        }else if(this.props.selectRawCase === 'county_unemployment'){
+            return(
+                <Card
+                title='Detected Violations'
+                size='small'
+                className='cardDetail'
+                style={{height: 505, overflow: "scroll"}}
+                >
+                    <HardRulePanel 
+                        hasHardRuleViolation={this.props.hasHardRuleViolation}
+                        hardRuleMsg={this.props.hardRuleMsg}
+                        onHardRuleFixClick={this.props.onHardRuleFixClick}
+                    />
+
+                    <div style={{marginTop: 5, marginBottom:5, display: this.state.backgroundColor.style}}>
+                    <BgOption 
+                        backgroundColor={this.state.backgroundColor.errTitle}
+                        mapFeatureReady={this.props.mapFeatureReady}
+                        mapOptionSetting={this.props.mapOptionSetting}
+                    />
+                    </div>
 
                     <Alert
                         message="Please check and select the projection with the least distortion of the map in the global options window."

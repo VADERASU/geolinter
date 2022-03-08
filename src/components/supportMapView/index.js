@@ -105,7 +105,7 @@ class SupportMapView extends Component {
                 //parpare the scatter plot
                 let scatterData = [];
                 let currentScatter = [];
-                let originScatter = [[this.state.originalMoran, this.state.originalGVF, "Original method"]];
+                let originScatter = [[this.props.originalMoran, this.props.originalGVF, "Original method"]];
                 //console.log(features);
                 features.classification_methods.forEach((e, i)=>{
                     let scatterPointData = [];

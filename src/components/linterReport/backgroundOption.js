@@ -5,7 +5,7 @@ import {Card, Row, Col, Select, Input, Button, Image, Popover, InputNumber} from
 import { SketchPicker } from 'react-color'
 import reactCSS from 'reactcss'
 
-class MapOptions extends Component {
+class BgOption extends Component {
     state = {
         color: {
           r: '0',
@@ -19,10 +19,10 @@ class MapOptions extends Component {
             b: '251',
             a: '100',
         },
-        background: null,
+        background: '#F3F8FB',
         title: null,
-        stroke: "#000000",
-        strokeWidth: 1,
+        stroke: null,
+        strokeWidth: null,
         className: "softRuleCard",
         ifFixed: "",
       };    
@@ -38,6 +38,14 @@ class MapOptions extends Component {
       handleStrokeWidth = (val) => {
         this.setState({
             strokeWidth: val 
+        });
+    };
+
+    handleBgChange = (color) => {
+        //console.log(color);
+        this.setState({
+            bgcolor: color.rgb,
+            background: color.hex
         });
     };
 
@@ -171,54 +179,33 @@ class MapOptions extends Component {
 
                 <div style={{padding: 8}}>
                 <Row gutter={[5,5]}>
-                    <Col span={24}><b style={{color: "red"}}>1. {this.props.errBorderColor}</b></Col>
+                    <Col span={24}><b style={{color: "red"}}>1. {this.props.backgroundColor}</b></Col>
                     
                     <Col span={24}>
-                        <Row>
-                            <Col span={1}>
-                                <Image
-                                    width={15}
-                                    src={arrow}
-                                    preview={false}    
-                                />
-                            </Col>
-                            <Col span={23}>
-                                <Row gutter={[5,5]}>
-                                    <Col span={24}>
-                                        <b>Stroke properties: </b>Carefully choose a stroke color and set the width of it.
-                                    </Col>
-    
-                                    <Col span={24}>
-                                        <Row>
-                                            <Col span={6}>
-                                                Stroke color: 
-                                            </Col>
-                                            <Col span={6}>
-                                                <Popover content={strokeColorDiv}>
-                                                <div style={ styles.swatch } onClick={ this.handleClick }>
-                                                    <div style={ styles.color } />
-                                                </div>
-                                                </Popover>
-                                            </Col>
-                                            <Col span={6}>
-                                                Stroke width: 
-                                            </Col>
-                                            <Col span={6}>
-                                            <InputNumber
-                                                style={{marginLeft: 5}} 
-                                                size="small" 
-                                                min={0} 
-                                                max={1}
-                                                step={0.1} 
-                                                defaultValue={1}
-                                                onChange={this.handleStrokeWidth} 
-                                            />
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
+                    <Row>
+                    <Col span={1}>
+                        <Image
+                            width={15}
+                            src={arrow}
+                            preview={false}    
+                        />
+                        </Col>
+
+                        <Col span={23}>
+                            <Row>
+                                <Col span={10}>
+                                    <b>Map background color:</b> 
+                                </Col>
+                                <Col span={14}>
+                                    <Popover content={bgColorDiv}>
+                                        <div style={ bgStyles.swatch }>
+                                            <div style={ bgStyles.color } />
+                                        </div>
+                                    </Popover>                               
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
                     </Col>
     
                 </Row>
@@ -235,4 +222,4 @@ class MapOptions extends Component {
 
     }
 }
-export default MapOptions;
+export default BgOption;

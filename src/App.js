@@ -199,13 +199,13 @@ class App extends Component {
         state_education: 0,
         montreal_pop_density: 0.78,
         georgia_pctBach: 0.63,
-        county_unemployment: 0.78,
+        county_unemployment: 0.81,
       },
       originalMoran: {
         state_education: 0.21,
         montreal_pop_density: 0.57,
         georgia_pctBach: 0.24,
-        county_unemployment: 0.21,
+        county_unemployment: 0.68,
       },
 
     };

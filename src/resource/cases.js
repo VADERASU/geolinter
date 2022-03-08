@@ -47,7 +47,7 @@ county_unemployment:
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": 550,
     "height": 300,
-    "background": "#F3F8FB",
+    "background": "#fc9272",
     "data": {
         "values": "county_unemployment",
         "format": {
@@ -66,9 +66,9 @@ county_unemployment:
             "field": "properties.rate",
             "type": "quantitative",
             "scale": {
-                "range": ["#8fd744", "#35b779", "#21918d", "#31688e", "#443a83"],
+                "range": ["#fee5d9","#fcbba1","#fc9272","#fb6a4a","#de2d26","#a50f15"],
                 "type": "threshold",
-                "domain": [0.06, 0.12, 0.18, 0.24]
+                "domain": [0.06, 0.08, 0.09, 0.1, 0.12]
             },
             "legend": {
                 "title": null

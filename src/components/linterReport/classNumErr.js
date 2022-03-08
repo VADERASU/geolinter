@@ -219,14 +219,6 @@ class ClassNumErr extends Component {
     componentDidMount() {
         let currentSelectRecomm = this.props.currentSelectRecomm;
         //console.log(currentSelectRecomm);
-        if(currentSelectRecomm.k !== null){
-            this.setState({
-                k: currentSelectRecomm.k,
-                color_scheme: currentSelectRecomm.color_scheme,
-                color_scheme_name: currentSelectRecomm.color_scheme_name,
-                selectClassification: currentSelectRecomm.selectClassification
-            });    
-        }
         
         let selectedCaseData = this.props.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
@@ -236,11 +228,7 @@ class ClassNumErr extends Component {
             originalGVF: this.props.originalGVF,
             originalMoran: this.props.originalMoran
         });
-    }
 
-    componentWillReceiveProps(nextProps, nextContext){
-        let currentSelectRecomm = nextProps.currentSelectRecomm;
-        //console.log(currentSelectRecomm);
         if(currentSelectRecomm.k !== null){
             this.setState({
                 k: currentSelectRecomm.k,
@@ -249,15 +237,30 @@ class ClassNumErr extends Component {
                 selectClassification: currentSelectRecomm.selectClassification
             });    
         }
+    }
+
+    componentWillReceiveProps(nextProps, nextContext){
+        let currentSelectRecomm = nextProps.currentSelectRecomm;
+        //console.log(currentSelectRecomm);
 
         let selectedCaseData = nextProps.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
             selectClassification: nextProps.classificationList[0].methodName,
+            //classificationList: nextProps.classificationList,
             selectedCaseData: selectedCaseData,
             originalGVF: this.props.originalGVF,
             originalMoran: this.props.originalMoran
         });
+
+        if(currentSelectRecomm.k !== null){
+            this.setState({
+                k: currentSelectRecomm.k,
+                color_scheme: currentSelectRecomm.color_scheme,
+                color_scheme_name: currentSelectRecomm.color_scheme_name,
+                selectClassification: currentSelectRecomm.selectClassification
+            });    
+        }
     }
 
     render(){
@@ -305,11 +308,13 @@ class ClassNumErr extends Component {
                         }}
                     >
                         <Button
-                         size="small" 
+                         size="small"
+                         type="primary"
                          style={{
                             float:'left',
+                            width: 80,
                             marginTop: 7,
-                            marginRight: 5
+                            marginRight: 30
                         }}
                         onClick={this.handleFix}
                         >

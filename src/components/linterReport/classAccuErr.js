@@ -220,14 +220,6 @@ class ClassAccuErr extends Component {
         let currentSelectRecomm = this.props.currentSelectRecomm;
         let k = this.props.mapFeatureReady.k;
         //console.log(currentSelectRecomm);
-        if(currentSelectRecomm.k !== null){
-            this.setState({
-                k: currentSelectRecomm.k,
-                color_scheme: currentSelectRecomm.color_scheme,
-                color_scheme_name: currentSelectRecomm.color_scheme_name,
-                selectClassification: currentSelectRecomm.selectClassification
-            });    
-        }
         
         let selectedCaseData = this.props.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
@@ -237,12 +229,7 @@ class ClassAccuErr extends Component {
             originalGVF: this.props.originalGVF,
             originalMoran: this.props.originalMoran
         });
-    }
 
-    componentWillReceiveProps(nextProps, nextContext){
-        let currentSelectRecomm = nextProps.currentSelectRecomm;
-        //console.log(currentSelectRecomm);
-        let k = nextProps.mapFeatureReady.k;
         if(currentSelectRecomm.k !== null){
             this.setState({
                 k: currentSelectRecomm.k,
@@ -251,6 +238,13 @@ class ClassAccuErr extends Component {
                 selectClassification: currentSelectRecomm.selectClassification
             });    
         }
+        
+    }
+
+    componentWillReceiveProps(nextProps, nextContext){
+        let currentSelectRecomm = nextProps.currentSelectRecomm;
+        //console.log(currentSelectRecomm);
+        let k = nextProps.mapFeatureReady.k;
 
         let selectedCaseData = nextProps.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
@@ -260,6 +254,16 @@ class ClassAccuErr extends Component {
             originalGVF: this.props.originalGVF,
             originalMoran: this.props.originalMoran
         });
+
+        if(currentSelectRecomm.k !== null){
+            this.setState({
+                k: currentSelectRecomm.k,
+                color_scheme: currentSelectRecomm.color_scheme,
+                color_scheme_name: currentSelectRecomm.color_scheme_name,
+                selectClassification: currentSelectRecomm.selectClassification
+            });    
+        }
+        
     }
 
     render(){
@@ -305,11 +309,13 @@ class ClassAccuErr extends Component {
                         }}
                     >
                         <Button
-                         size="small" 
+                         size="small"
+                         type="primary" 
                          style={{
                             float:'left',
+                            width: 80,
                             marginTop: 7,
-                            marginRight: 5
+                            marginRight: 30
                         }}
                         onClick={this.handleFix}
                         >
