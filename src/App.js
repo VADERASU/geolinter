@@ -208,10 +208,37 @@ class App extends Component {
         county_unemployment: 0.68,
       },
 
+      //global options indicator
+      globalProjHighlight: "cancelHighlight",
+      globalColorHighlight: "cancelHighlight",
     };
   }
 
   /** class functions */
+
+  handleglobalProjHighlightEnter = () => {
+    this.setState({
+      globalProjHighlight: "globalHighlight"
+    });
+  };
+
+  handleglobalColorHighlightEnter = () => {
+    this.setState({
+      globalColorHighlight: "globalHighlight"
+    });
+  };
+
+  handleglobalProjHighlightLeave = () => {
+    this.setState({
+      globalProjHighlight: "cancelHighlight"
+    });
+  };
+
+  handleglobalColorHighlightLeave = () => {
+    this.setState({
+      globalColorHighlight: "cancelHighlight"
+    });
+  };
 
   setreCheckColorScheme = (val) => {
     console.log(val);
@@ -741,6 +768,8 @@ class App extends Component {
                         mapOptionSetting={this.mapOptionSetting}
                         onMapProjChange={this.handleMapProjChange}
                         selectProjType={this.state.selectProjType}
+                        globalProjHighlight={this.state.globalProjHighlight}
+                        globalColorHighlight={this.state.globalColorHighlight}
                       />
                   </Col>
                 </Row>
@@ -782,6 +811,10 @@ class App extends Component {
                       setreCheckColorScheme={this.setreCheckColorScheme}
                       setreCheckStrokeColor={this.setreCheckStrokeColor}
                       setreCheckBgColor={this.setreCheckBgColor}
+                      handleglobalProjHighlightEnter={this.handleglobalProjHighlightEnter}
+                      handleglobalColorHighlightEnter={this.handleglobalColorHighlightEnter}
+                      handleglobalProjHighlightLeave={this.handleglobalProjHighlightLeave}
+                      handleglobalColorHighlightLeave={this.handleglobalColorHighlightLeave}
                     />
                   </Col>
                 </Row>
@@ -800,6 +833,7 @@ class App extends Component {
                       selectProjType={this.state.selectProjType}
                       originalGVF={this.state.originalGVF[this.state.selectRawCase]}
                       originalMoran={this.state.originalMoran[this.state.selectRawCase]}
+                      mapFeatureReady={mapFeatureReady}
                     />
                   </Col>
                   <Col span={24}>

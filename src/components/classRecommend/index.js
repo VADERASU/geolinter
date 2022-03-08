@@ -418,7 +418,7 @@ class ClassRecommend extends Component {
                 />
 
                 <Drawer
-                    title="Choropleth Map Preview"
+                    title={"Choropleth Map Preview - " + this.state.selectedClassificationFeature}
                     placement="right"
                     onClose={this.onDrawerClose}
                     visible={this.state.drawerVisible}

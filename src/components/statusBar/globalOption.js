@@ -124,7 +124,7 @@ class GolbalOption extends Component {
             </div>
           );
       
-
+        //console.log(this.props.globalProjHighlight);
         return(
             <div style={{padding: 8}}>
             <Row gutter={[5,5]}>
@@ -141,27 +141,31 @@ class GolbalOption extends Component {
                                 />
                             </Col>
                             <Col span={23}>
-                                <Row gutter={[5,5]}>
-                                        <Col span={24}>
-                                            <b>Map projection: </b>Select a proper cartographic projection type.
-                                        </Col>
-                                        <Col span={24}>
-                                        <Select
-                                            size="small"
-                                            style={{
-                                                width: 225
-                                            }}
-                                            value={this.props.selectProjType}
-                                            onChange={this.handleProjChange}
-                                        >
-                                            <Option key="equalEarth" value="equalEarth">equalEarth</Option>
-                                            <Option key="mercator" value="mercator">mercator</Option>
-                                            <Option key="albersUsa" value="albersUsa">albersUsa</Option>
-                                            <Option key="albers" value="albers">albers</Option>
-                                            <Option key="naturalEarth1" value="naturalEarth1">naturalEarth1</Option>
-                                        </Select>
-                                        </Col>
-                                </Row>                                 
+                                <div 
+                                    className={this.props.globalProjHighlight}
+                                >
+                                    <Row gutter={[5,5]}>
+                                            <Col span={24}>
+                                                <b>Map projection: </b>Select a proper cartographic projection type.
+                                            </Col>
+                                            <Col span={24}>
+                                            <Select
+                                                size="small"
+                                                style={{
+                                                    width: 225
+                                                }}
+                                                value={this.props.selectProjType}
+                                                onChange={this.handleProjChange}
+                                            >
+                                                <Option key="equalEarth" value="equalEarth">equalEarth</Option>
+                                                <Option key="mercator" value="mercator">mercator</Option>
+                                                <Option key="albersUsa" value="albersUsa">albersUsa</Option>
+                                                <Option key="albers" value="albers">albers</Option>
+                                                <Option key="naturalEarth1" value="naturalEarth1">naturalEarth1</Option>
+                                            </Select>
+                                            </Col>
+                                    </Row>      
+                                </div>                           
                             </Col>
                         </Row>
                 </Col>
@@ -193,6 +197,9 @@ class GolbalOption extends Component {
                         </Row>
                 </Col>
 
+                <div 
+                    className={this.props.globalColorHighlight}
+                >
                 <Col span={24}>
                     <Row>
                         <Col span={1}>
@@ -267,7 +274,7 @@ class GolbalOption extends Component {
                         </Col>
                     </Row>
                 </Col>
-
+                </div>
             </Row>
             </div>
             

@@ -92,3 +92,11 @@
   width: 10px;
   height: 10px;
 }
+
+.globalHighlight {
+  background: #e6f7ff;
+}
+
+.cancelHighlight {
+  background: #F3F8FB;
+}

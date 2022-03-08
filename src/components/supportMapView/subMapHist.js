@@ -16,7 +16,7 @@ class SubMapHistogram extends Component{
         // Chart dimensions
         let dimensions = {
             width: scrollWidth,
-            height: scrollHeight-50,
+            height: scrollHeight-70,
             margin: {
                 top: 0,
                 right: 20,
@@ -66,7 +66,7 @@ class SubMapHistogram extends Component{
                 .attr("y1", 0)
                 .attr("x2", xScale(binBreak))  //<<== and here
                 .attr("y2", dimensions.height - dimensions.margin.top - dimensions.margin.bottom)
-                .style("stroke-width", 1.5)
+                .style("stroke-width", 2)
                 .style("stroke", "darkgray")
                 .style("fill", "none"); 
             
@@ -79,13 +79,13 @@ class SubMapHistogram extends Component{
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height + 20)
+                    .attr('y', dimensions.height + 40)
                     .attr('height', 10)
                     .attr('fill', colorScale(binBreak));
 
                 const colorText = colorBinGroup.append('text')
                     .attr('x', xScale(binBreak)-10)
-                    .attr('y', dimensions.height+50)
+                    .attr('y', i%2 !== 0 ? dimensions.height+65 : dimensions.height+35)
                     //.attr('font-size', 13)
                     .text(i!==0 ? binBreak : "");
             }

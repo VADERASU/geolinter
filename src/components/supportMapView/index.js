@@ -46,9 +46,36 @@ class SupportMapView extends Component {
             let softFixSpec = this.props.softFixSpec;
             //console.log(softFixSpec);
             if(softFixSpec === null){
+                let mapFeatureReady = this.props.mapFeatureReady;
+                let classification_methods_title = this.props.selectedCaseData.features.classification_methods_title;
+                //console.log(mapFeatureReady);
+                
+                let originalGVF = this.props.originalGVF;
+                let originalMoran = this.props.originalMoran;
+                let features = this.props.selectedCaseData.features;
+                //parpare the scatter plot
+                let scatterData = [];
+                let currentScatter = [];
+                let originScatter = [[originalMoran, originalGVF, "Original method"]];
+                
+                features.classification_methods.forEach((e, i)=>{
+                    let scatterPointData = [];
+                    let methodFeature = features[e].filter(element => element.k === mapFeatureReady.k);
+                    if(methodFeature.length !== 0){
+                        let moran = Math.round(methodFeature[0].moran * 100) / 100;
+                        if(moran >= 0){
+                            scatterPointData.push(moran);
+                            // push GVF into the scatter data
+                            scatterPointData.push(Math.round(methodFeature[0].GVF * 100) / 100);
+                            scatterPointData.push(classification_methods_title[i]);
+                            scatterData.push(scatterPointData);
+                        }
+                    }
+                });
+                
                 return(
                     <Card
-                    title='Choropleth Map After Soft Fix'
+                    title={'Choropleth Map After Soft Fix - Original Map'}
                     size='small'
                     className='cardDetail'
                     style={{
@@ -67,12 +94,51 @@ class SupportMapView extends Component {
                             style={{marginTop: 5, marginBottom: 5}}
                         />
 
-                        <Empty
-                            style={{marginTop: 20}}
-                            description={
-                                <span>This panel will be updated during the soft rule fixing.</span>
-                            }
+                        <Row>
+                        <Col span={12}>
+                            <Row gutter={[8, 8]}>
+                                    
+                                <Col span={24}>
+                                <Empty
+                                    style={{marginTop: 5}}
+                                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                    description={
+                                        <span>Please fix the soft rule violation(s).</span>
+                                    }
+                                />
+                                </Col>
+                                    
+                                <Col span={24}>
+                                    <Row gutter={5}>
+                                        <Col span={12}>
+                                        <Statistic
+                                            title={"Orginal GVF: "}
+                                            value={originalGVF}
+                                            precision={2}
+                                            style={{marginLeft: 40}}
+                                        />
+                                        </Col>
+
+                                        <Col span={12}>
+                                        <Statistic
+                                            title={"Original Moran's I: "}
+                                            value={originalMoran}
+                                            precision={2}
+                                        />
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Col>
+
+                        <Col span={12}>
+                        <ScatterGenerator 
+                            scatterData={scatterData}
+                            currentScatter={currentScatter}
+                            originScatter={originScatter}
                         />
+                        </Col>
+                        </Row>
 
                     </Card>
                 );
@@ -137,7 +203,7 @@ class SupportMapView extends Component {
 
                 return(
                     <Card
-                    title='Choropleth Map After Soft Fix'
+                    title={'Choropleth Map After Soft Fix - '+selectClassification}
                     size='small'
                     className='cardDetail'
                     style={{
@@ -171,7 +237,7 @@ class SupportMapView extends Component {
                                 </Col>
                                     
                                 <Col span={24}>
-                                    <Row gutter={5}>
+                                    <Row gutter={[8, 8]}>
                                         <Col span={12}>
                                         <Statistic
                                             title={"GVF: "+this.round(newGVF)}
@@ -179,8 +245,7 @@ class SupportMapView extends Component {
                                             precision={2}
                                             valueStyle={GVFdiff > 0 ? { color: '#3f8600' } : { color: '#cf1322' }}
                                             prefix={GVFdiff>0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
-                                            
-                                            style={{marginLeft: 10}}
+                                            style={{marginLeft: 40}}
                                         />
                                         </Col>
 

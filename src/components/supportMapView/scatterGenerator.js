@@ -12,7 +12,7 @@ class ScatterGenerator extends Component {
 
     setEchartOption = (scatterGenerator, currentScatter, originScatter) => {
         const options = {
-            grid: { top: 25, right: 20, bottom: 30, left: 30 },
+            grid: { top: 25, right: 20, bottom: 40, left: 30 },
             xAxis: {
                 type: 'value',
                 name: "Moran's I",

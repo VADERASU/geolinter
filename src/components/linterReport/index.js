@@ -207,7 +207,7 @@ class LinterReport extends Component {
         }
         
         if(stroke_JND === false){
-            let errTitle = "Current strock color "+strokeColor+" is not noticeably different with the fill color";
+            let errTitle = "Current stroke color "+strokeColor+" is not noticeably different with the fill color";
             dictTemp.borderColor.style = "block";
             dictTemp.borderColor.has = true;
             dictTemp.borderColor.errTitle = errTitle;
@@ -229,6 +229,7 @@ class LinterReport extends Component {
             backgroundColor: dictTemp.backgroundColor
         });
     };
+
 
     componentDidMount() {
         let mapSoftProp = this.props.mapFeatureReady;
@@ -340,19 +341,29 @@ class LinterReport extends Component {
                             onRecommendMethodSelection={this.props.onRecommendMethodSelection}
                         />   
                     
-                    <Alert
-                        message="Please check and select the projection with the least distortion of the map in the global options window."
-                        type="info"
-                        style={{marginTop: 8}}
-                        showIcon
-                    />
+                    <div
+                        onMouseEnter={this.props.handleglobalProjHighlightEnter}
+                        onMouseLeave={this.props.handleglobalProjHighlightLeave}
+                    >
+                        <Alert
+                            message="Please check and select the projection with the least distortion of the map in the global options window."
+                            type="info"
+                            style={{marginTop: 8}}
+                            showIcon
+                        />
+                    </div>
 
-                    <Alert
-                        message="Please properly define the strock color, width and background color of the map in the global options window."
-                        type="info"
-                        style={{marginTop: 8}}
-                        showIcon
-                    />
+                    <div
+                        onMouseEnter={this.props.handleglobalColorHighlightEnter}
+                        onMouseLeave={this.props.handleglobalColorHighlightLeave}
+                    >
+                        <Alert
+                            message="Please properly define the strock color, width and background color of the map in the global options window."
+                            type="info"
+                            style={{marginTop: 8}}
+                            showIcon
+                        />
+                    </div>
 
                     {/** map projection adjustment 
                     <div style={{marginTop: 5}}>
@@ -403,19 +414,29 @@ class LinterReport extends Component {
                         onRecommendMethodSelection={this.props.onRecommendMethodSelection}
                     />
 
+                    <div
+                        onMouseEnter={this.props.handleglobalProjHighlightEnter}
+                        onMouseLeave={this.props.handleglobalProjHighlightLeave}
+                    >
                     <Alert
                         message="Please check and select the projection with the least distortion of the map in the global options window."
                         type="info"
                         style={{marginTop: 8}}
                         showIcon
                     />
+                    </div>
 
+                    <div
+                        onMouseEnter={this.props.handleglobalColorHighlightEnter}
+                        onMouseLeave={this.props.handleglobalColorHighlightLeave}
+                    >
                     <Alert
                         message="Please properly define the strock color, width and background color of the map in the global options window."
                         type="info"
                         style={{marginTop: 8}}
                         showIcon
                     />
+                    </div>
             </Card>
             );
         }else if(this.props.selectRawCase === 'georgia_pctBach'){
@@ -458,12 +479,17 @@ class LinterReport extends Component {
                         setreCheckColorScheme={this.props.setreCheckColorScheme}
                     />
 
+                    <div
+                        onMouseEnter={this.props.handleglobalProjHighlightEnter}
+                        onMouseLeave={this.props.handleglobalProjHighlightLeave}
+                    >
                     <Alert
                         message="Please check and select the projection with the least distortion of the map in the global options window."
                         type="info"
                         style={{marginTop: 8}}
                         showIcon
                     />
+                    </div>
                     
             </Card>
             );
@@ -489,12 +515,17 @@ class LinterReport extends Component {
                     />
                     </div>
 
+                    <div
+                        onMouseEnter={this.props.handleglobalProjHighlightEnter}
+                        onMouseLeave={this.props.handleglobalProjHighlightLeave}
+                    >
                     <Alert
                         message="Please check and select the projection with the least distortion of the map in the global options window."
                         type="info"
                         style={{marginTop: 8}}
                         showIcon
                     />
+                    </div>
                     
             </Card>
             );

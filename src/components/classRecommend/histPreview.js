@@ -16,7 +16,7 @@ class HistPreview extends Component{
         // Chart dimensions
         let dimensions = {
             width: scrollWidth,
-            height: scrollHeight-50,
+            height: scrollHeight-70,
             margin: {
                 top: 0,
                 right: 30,
@@ -81,13 +81,13 @@ class HistPreview extends Component{
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height+20)
+                    .attr('y', dimensions.height+35)
                     .attr('height', 12)
                     .attr('fill', colorScale(binBreak));
 
                 const colorText = colorBinGroup.append('text')
                 .attr('x', xScale(binBreak)-10)
-                .attr('y', dimensions.height+50)
+                .attr('y', i%2 !== 0 ? dimensions.height+65 : dimensions.height+30)
                 //.style('font-size', 15)
                 .text(i!==0 ? binBreak : "");
             }

@@ -22,12 +22,12 @@ class MainMapHistogram extends Component {
          * than the standard deviation to outliers in data.
          */
         const dataBins = d3.bin().thresholds(d3.thresholdFreedmanDiaconis)(data);
-        //console.log(dataBins);
+        //console.log(d3.thresholdFreedmanDiaconis(data));
 
         // Chart dimensions
         let dimensions = {
             width: scrollWidth,
-            height: scrollHeight-60,
+            height: scrollHeight-70,
             margin: {
                 top: 5,
                 right: 40,
@@ -84,8 +84,8 @@ class MainMapHistogram extends Component {
                 .attr("x1", xScale(binBreak))  //<<== change your code here
                 .attr("y1", 0)
                 .attr("x2", xScale(binBreak))  //<<== and here
-                .attr("y2", dimensions.height - dimensions.margin.top - dimensions.margin.bottom)
-                .style("stroke-width", 1.5)
+                .attr("y2", dimensions.height - dimensions.margin.top - dimensions.margin.bottom + 5)
+                .style("stroke-width", 2)
                 .style("stroke", "darkgray")
                 .style("fill", "none"); 
             
@@ -98,21 +98,21 @@ class MainMapHistogram extends Component {
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height)
-                    .attr('height', 15)
+                    .attr('y', dimensions.height + 5)
+                    .attr('height', 12)
                     .attr('fill', colorScale(binBreak));
 
                 const colorText = colorBinGroup.append('text')
                     .attr('x', xScale(binBreak)-10)
-                    .attr('y', dimensions.height+30)
-                    .style('font-size', 12)
+                    .attr('y', i%2 !== 0 ? dimensions.height+30 : dimensions.height)
+                    .style('font-size', 10)
                     .text(i!==0 ? binBreak : "");
 
                 if(i >0){ // TODO: Visual Design needed!!!
                     const colorJndErrText = colorBinGroup.append('text')
                         .attr('x', xScale(binBreak)-70)
-                        .attr('y', dimensions.height+45)
-                        .style('font-size', 12)
+                        .attr('y', dimensions.height+50)
+                        .style('font-size', 10)
                         .attr('fill', "red")
                         .text(jndList[i-1] ? "" : "Not noticeably different colors");
                 }

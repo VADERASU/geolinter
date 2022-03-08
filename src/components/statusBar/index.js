@@ -96,6 +96,8 @@ class StatusBar extends Component {
                     handleStrokeColor={this.handleStrokeColor}
                     handleStrokeWidth={this.handleStrokeWidth}
                     handleBackground={this.handleBackground}
+                    globalProjHighlight={this.props.globalProjHighlight}
+                    globalColorHighlight={this.props.globalColorHighlight}
                 />
                 {/*<Steps 
                     size="small"
