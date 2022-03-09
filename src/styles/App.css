@@ -94,9 +94,11 @@
 }
 
 .globalHighlight {
-  background: #1890ff;
+  background: #2ccce4;
+  padding: 5px;
 }
 
 .cancelHighlight {
   background: #F3F8FB;
+  padding: 5px;
 }

@@ -8,20 +8,17 @@ class FillColorScheme extends Component {
     constructor(props){
         super(props);
         this.state = {
-            k: this.props.mapFeatureReady.k,
+            k: 4,
             color_scheme: ['#5dc963', '#21918d', '#3b528b'],
             color_scheme_name: "Sequential: viridis",
-            originColorScheme: this.props.mapFeatureReady.color_scheme,
-            originColorSchemeName: "Sequential: viridis",
             sortMeasure: "GVF",
-            selectClassification: null,
+            selectClassification: "Fisher Jenks",
             classificationList: null,
             selectedCaseData: null,
             originalGVF: 0,
             originalMoran: 0,
             className: "softRuleCard",
-            ifFixed: "",
-            useOriginalColor: true
+            ifFixed: ""
         };
     }
 
@@ -78,8 +75,7 @@ class FillColorScheme extends Component {
         let color = colorList[k][index];
         this.setState({
             k: value,
-            color_scheme: color,
-            useOriginalColor: false
+            color_scheme: color
         });
         this.generateClassificationList(this.state.selectedCaseData, k, this.state.sortMeasure);
     };
@@ -92,8 +88,7 @@ class FillColorScheme extends Component {
         let color = colorList[k][index];
         this.setState({
             color_scheme: color,
-            color_scheme_name: recommend_color_name,
-            useOriginalColor: false
+            color_scheme_name: recommend_color_name
         });
     };
 
@@ -197,13 +192,10 @@ class FillColorScheme extends Component {
         let subMapFeature = this.props.selectedCaseData.features[keyName].filter(element => element.k === this.state.k);
         let breaks = subMapFeature[0].breaks;
 
-        let color_scheme = this.state.useOriginalColor ? this.state.originColorScheme : this.state.color_scheme;
-        let color_scheme_name = this.state.useOriginalColor ? this.state.originColorSchemeName : this.state.color_scheme_name;
-
         let fixObj = {
             k: this.state.k,
-            color_scheme: color_scheme,
-            color_scheme_name: color_scheme_name,
+            color_scheme: this.state.color_scheme,
+            color_scheme_name: this.state.color_scheme_name,
             selectClassification: this.state.selectClassification,
             breaks: breaks,
             fixType: "classNum"
@@ -211,13 +203,12 @@ class FillColorScheme extends Component {
         //console.log(fixObj);
         let currentSelectRecomm = {
             k: this.state.k,
-            color_scheme: color_scheme,
-            color_scheme_name: color_scheme_name,
+            color_scheme: this.state.color_scheme,
+            color_scheme_name: this.state.color_scheme_name,
             selectClassification: this.state.selectClassification
         };
         this.props.onRecommendMethodSelection(currentSelectRecomm);
         this.props.onSoftFix(fixObj);
-        this.props.setreCheckColorScheme(color_scheme);
 
         this.setState({
             className: "otherOptCard",
@@ -228,11 +219,12 @@ class FillColorScheme extends Component {
     componentDidMount() {
         let currentSelectRecomm = this.props.currentSelectRecomm;
         let k = this.props.mapFeatureReady.k;
+        //console.log(currentSelectRecomm);
         
         let selectedCaseData = this.props.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
-            selectClassification: this.props.classificationList[0].methodName,
+            //selectClassification: this.props.classificationList[0].methodName,
             selectedCaseData: selectedCaseData,
             originalGVF: this.props.originalGVF,
             originalMoran: this.props.originalMoran
@@ -246,17 +238,18 @@ class FillColorScheme extends Component {
                 selectClassification: currentSelectRecomm.selectClassification
             });    
         }
-
+        
     }
 
     componentWillReceiveProps(nextProps, nextContext){
         let currentSelectRecomm = nextProps.currentSelectRecomm;
+        //console.log(currentSelectRecomm);
         let k = nextProps.mapFeatureReady.k;
 
         let selectedCaseData = nextProps.selectedCaseData;
         this.generateClassificationList(selectedCaseData, this.state.k, "GVF");
         this.setState({
-            selectClassification: nextProps.classificationList[0].methodName,
+            //selectClassification: nextProps.classificationList[0].methodName,
             selectedCaseData: selectedCaseData,
             originalGVF: this.props.originalGVF,
             originalMoran: this.props.originalMoran
@@ -270,7 +263,7 @@ class FillColorScheme extends Component {
                 selectClassification: currentSelectRecomm.selectClassification
             });    
         }
-
+        
     }
 
     render(){
@@ -293,20 +286,18 @@ class FillColorScheme extends Component {
             });
         }
 
-
-        let colorCubeR = [];
-        this.props.mapFeatureReady.color_scheme.forEach(e=>{
-            let style = {backgroundColor: e};
-            colorCubeR.push(<div key={e} className="colorCube" style={style}></div>);
-        });
-        let colorDIVR = <div className="colorDIV-container">{colorCubeR}</div>;
+        let ErrMsg = this.props.errColor;
+        
+        if(this.props.errAccu !== null){
+            ErrMsg = ErrMsg + ", " + this.props.errAccu;
+        }
 
         //console.log(this.state);
         if(mapFeatureReady !== null && this.state.classificationList !== null){
             return(
                 <div>
                 <Card
-                title={"Soft rule violations are detected" + this.state.ifFixed}
+                title={"Two soft rule violations are detected" + this.state.ifFixed}
                 size='small'
                 className={this.state.className}
                 extra={
@@ -319,7 +310,7 @@ class FillColorScheme extends Component {
                     >
                         <Button
                          size="small"
-                         type="primary"
+                         type="primary" 
                          style={{
                             float:'left',
                             width: 80,
@@ -335,8 +326,7 @@ class FillColorScheme extends Component {
                 >
                     <div style={{padding: 8}}>
                     <Row gutter={[8,8]}>
-                                                
-                        <Col span={24}><b style={{color: "red"}}>1. {this.props.errAccu}</b> Select a classification method that has a better accuracy and spatial autocorrelation.</Col>
+                        <Col span={24}><b style={{color: "red"}}>1. Fill colors in the scheme are not noticeably different.</b> The color differences should be clearly perceived in the selected scheme.</Col>
                         <Col span={24}>
                             <Row>
                                 <Col span={1}>
@@ -350,30 +340,34 @@ class FillColorScheme extends Component {
                                 <Col span={23}>
                                     <Row gutter={[5,5]}>
                                         <Col span={24}>
-                                            <b>Choose a recommended classification method: </b> 
-                                        </Col>
-                                        <Col span={10}>
-                                            <Radio.Group defaultValue="maxGVF" size="small" onChange={this.handleClassificationChange}>
-                                                <Radio.Button value="maxGVF">Highest GVF</Radio.Button>
-                                                <Radio.Button value="maxMoran">Highest Moran's I</Radio.Button>
-                                            </Radio.Group>
-                                        </Col>
-                                        <Col span={14}>
-                                            <Select value={this.state.selectClassification} size="small" style={{ width: 330 }} onChange={this.handleClassificationSelect}>
-                                                {dataOption}
+                                            <span
+                                            style={{
+                                                float:'left',
+                                                marginRight: 5
+                                            }}
+                                            ><b>Fix step 1: </b>Choose a color scheme: </span>
+                                            <Select
+                                                size="small"
+                                                style={{
+                                                    float: 'left',
+                                                    width: 225
+                                                }}
+                                                value={this.state.color_scheme_name}
+                                                onChange={this.handleColorChange}
+                                            >
+                                                {colorOption}
                                             </Select>
                                         </Col>
-                                    </Row> 
+                                    </Row>
                                 </Col>
-                                
                             </Row>
-                        </Col>
+                        </Col>                        
 
                         <Divider
                         style={{marginTop: 5, marginBottom: 5}}
                         />
 
-                        <Col span={24}><b>Option: You can also change the number of class and set new color_scheme.</b></Col>
+                        <Col span={24}><b>Option: You can change the number of class.</b></Col>
                         <Col span={24}>
                             <Row>
                                 <Col span={1}>
@@ -398,6 +392,7 @@ class FillColorScheme extends Component {
                             </Row>
                         </Col>
 
+                        <Col span={24}><b>Option: You can select a new classification method.</b></Col>
                         <Col span={24}>
                             <Row>
                                 <Col span={1}>
@@ -408,40 +403,25 @@ class FillColorScheme extends Component {
                                         style={{marginLeft: 5}}
                                     />
                                 </Col>
-
                                 <Col span={23}>
                                     <Row gutter={[5,5]}>
                                         <Col span={24}>
-                                            <div style={{display: "flex"}}>Current color scheme is: {colorDIVR}</div>
+                                            Choose a recommended classification method with proper GVF and Moran's I scores: 
                                         </Col>
-                                    </Row>
+                                        <Col span={10}>
+                                            <Radio.Group defaultValue="maxGVF" size="small" onChange={this.handleClassificationChange}>
+                                                <Radio.Button value="maxGVF">Highest GVF</Radio.Button>
+                                                <Radio.Button value="maxMoran">Highest Moran's I</Radio.Button>
+                                            </Radio.Group>
+                                        </Col>
+                                        <Col span={14}>
+                                            <Select value={this.state.selectClassification} size="small" style={{ width: 330 }} onChange={this.handleClassificationSelect}>
+                                                {dataOption}
+                                            </Select>
+                                        </Col>
+                                    </Row> 
                                 </Col>
-
-                                <Col span={1}></Col>
-
-                                <Col span={23}>
-                                    <Row gutter={[5,5]}>
-                                            <Col span={24}>
-                                                <span
-                                                style={{
-                                                    float:'left',
-                                                    marginRight: 5
-                                                }}
-                                                >Or choose a color scheme: </span>
-                                                <Select
-                                                    size="small"
-                                                    style={{
-                                                        float: 'left',
-                                                        width: 225
-                                                    }}
-                                                    value={this.state.color_scheme_name}
-                                                    onChange={this.handleColorChange}
-                                                >
-                                                    {colorOption}
-                                                </Select>
-                                            </Col>
-                                        </Row>
-                                </Col>
+                                
                             </Row>
                         </Col>
                         

@@ -7,7 +7,7 @@ import HardRulePanel from "./hardRule";
 import ClassNumErr from "./classNumErr";
 import ClassAccuErr from "./classAccuErr";
 import SingleAccuErr from "./singleAccuErr";
-//import FillColorErr from "./fillColorScheme";
+import FillColorScheme from "./fillColorScheme";
 //import MapProjection from "./mapProj";
 import MapOptions from "./mapOptions";
 import BgOption from "./backgroundOption";
@@ -529,7 +529,7 @@ class LinterReport extends Component {
                     
             </Card>
             );
-        }else{
+        }else{ // Case5
             return(
                 <Card
                 title='Detected Violations'
@@ -543,9 +543,45 @@ class LinterReport extends Component {
                         onHardRuleFixClick={this.props.onHardRuleFixClick}
                     />
 
+                    <FillColorScheme 
+                        mapFeatureReady={this.props.mapFeatureReady}
+                        errColor={this.state.fillColorScheme.errTitle}
+                        classificationList={data}
 
-              
-                </Card> 
+                        currentSelectRecomm={this.props.currentSelectRecomm}
+
+                        colorList={this.props.colorList}
+                        selectedCaseData={this.props.selectedCaseData}
+                        onSoftFix={this.props.onSoftFix}
+                        originalGVF={this.props.originalGVF}
+                        originalMoran={this.props.originalMoran}
+                        onRecommendMethodSelection={this.props.onRecommendMethodSelection}
+                    />
+
+                    <div
+                        onMouseEnter={this.props.handleglobalProjHighlightEnter}
+                        onMouseLeave={this.props.handleglobalProjHighlightLeave}
+                    >
+                    <Alert
+                        message="Please check and select the projection with the least distortion of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+                    </div>
+
+                    <div
+                        onMouseEnter={this.props.handleglobalColorHighlightEnter}
+                        onMouseLeave={this.props.handleglobalColorHighlightLeave}
+                    >
+                    <Alert
+                        message="Please properly define the strock color, width and background color of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+                    </div>
+            </Card>
             );
         }
 

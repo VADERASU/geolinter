@@ -33,6 +33,10 @@ import montreal_density_features from './resource/case3_montreal/montreal_densit
 import georgia_pctBach from './resource/case4_georgia/georgia_pctBach.json';
 import georgia_pctBach_features from './resource/case4_georgia/georgia_pctBach_features.json';
 
+// import case 5 data -> chicago income_pc statics
+import chicago_income from './resource/case5_chicago/chicago_income.json';
+import chicago_income_features from './resource/case5_chicago/chicago_income_features.json';
+
 /** import case scripts */
 import { case_scripts } from './resource/cases';
 
@@ -60,6 +64,10 @@ class App extends Component {
       georgia_pctBach:{
         geo: georgia_pctBach,
         features: georgia_pctBach_features
+      },
+      chicago_income:{
+        geo: chicago_income,
+        features: chicago_income_features
       }
     };
 
@@ -78,10 +86,10 @@ class App extends Component {
     };
 
     this.externalGeoReverseFlag = true;
-    this.case4Flag = true;
+    this.chicagoHardruleFlag = true;
 
     this.state = {
-      mapDataList: ['state_education','montreal_pop_density','georgia_pctBach','county_unemployment'],
+      mapDataList: ['state_education','montreal_pop_density','georgia_pctBach','county_unemployment', 'chicago_income'],
       selectedCaseData: this.dataset['state_education'],
       colorList: {
         name: [
@@ -200,12 +208,14 @@ class App extends Component {
         montreal_pop_density: 0.78,
         georgia_pctBach: 0.63,
         county_unemployment: 0.81,
+        chicago_income: 0.77
       },
       originalMoran: {
         state_education: 0.21,
         montreal_pop_density: 0.57,
         georgia_pctBach: 0.24,
         county_unemployment: 0.68,
+        chicago_income: 0.53
       },
 
       //global options indicator
@@ -301,6 +311,7 @@ class App extends Component {
       reCheckStrokeColor: null,
       reCheckBgColor: null
     });
+    
   };
 
   mapOptionSetting = (val) => {

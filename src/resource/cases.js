@@ -162,5 +162,45 @@ georgia_pctBach:
         }
     }
 }`,
+chicago_income:
+`{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 550,
+    "height": 300,
+    "background": "#F3F8FB",
+    "data": {
+        "values": "chicago_income",
+        "format": {
+            "property": "features"
+        }
+    },
+    "mark": "geoshape",
+    "encoding": {
+        "stroke": {
+            "value": "black"
+        },
+        "color": {
+            "field": "properties.income_pc",
+            "type": "quantitative",
+            "scale": {
+                "range": ["#fef0d9","#fdcc8a","#fc8d59","#ff8d5f"],
+                "type": "threshold",
+                "domain": [
+                    18881.0,
+                    28887.0,
+                    44689.0
+                ]
+            },
+            "legend": {
+                "title": null
+            }
+        }         
+    },
+    "usermeta": {
+        "embedOptions": {
+            "actions": false
+        }
+    }
+}`,
 
 };
