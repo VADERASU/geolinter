@@ -79,7 +79,7 @@ class CodeEditor extends Component {
                                 marginTop: 10,
                                 marginRight: 5
                             }}
-                        ><b>Status Annotation Msg</b></span>
+                        ><b style={{color: "orange"}}>Soft violations detected</b></span>
                         
                     </div>
                 }

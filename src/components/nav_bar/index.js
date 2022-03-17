@@ -17,7 +17,7 @@ class NavBar extends React.Component{
                 className='navBarDetail'
                 style={{height: 40}}
             >
-                <span className="logo" href="#">Choropleth Map Linter</span>
+                <span className="logo" href="#">GeoLinter</span>
                 <span className='label'>Select a case:</span>
                 <Select
                     onChange={this.props.onCaseSelection}

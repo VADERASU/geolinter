@@ -358,7 +358,7 @@ class LinterReport extends Component {
                         onMouseLeave={this.props.handleglobalColorHighlightLeave}
                     >
                         <Alert
-                            message="Please properly define the strock color, width and background color of the map in the global options window."
+                            message="Please properly define the stroke color, width and background color of the map in the global options window."
                             type="info"
                             style={{marginTop: 8}}
                             showIcon
@@ -431,7 +431,7 @@ class LinterReport extends Component {
                         onMouseLeave={this.props.handleglobalColorHighlightLeave}
                     >
                     <Alert
-                        message="Please properly define the strock color, width and background color of the map in the global options window."
+                        message="Please properly define the stroke color, width and background color of the map in the global options window."
                         type="info"
                         style={{marginTop: 8}}
                         showIcon
@@ -575,7 +575,7 @@ class LinterReport extends Component {
                         onMouseLeave={this.props.handleglobalColorHighlightLeave}
                     >
                     <Alert
-                        message="Please properly define the strock color, width and background color of the map in the global options window."
+                        message="Please properly define the stroke color, width and background color of the map in the global options window."
                         type="info"
                         style={{marginTop: 8}}
                         showIcon

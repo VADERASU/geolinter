@@ -73,8 +73,10 @@ class StatusBar extends Component {
                     >
                         <Button
                          size="small" 
+                         type="primary" 
                          style={{
                             float:'left',
+                            width: 70,
                             marginTop: 5,
                             marginRight: 5
                         }}
