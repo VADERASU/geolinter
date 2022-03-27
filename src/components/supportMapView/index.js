@@ -243,7 +243,7 @@ class SupportMapView extends Component {
                                             title={"GVF: "+this.round(newGVF)}
                                             value={GVFdiff > 0 ? GVFdiff : 0-GVFdiff}
                                             precision={2}
-                                            valueStyle={morandiff > 0 ? { color: '#3f8600' } : { color: '#cf13cc' }}
+                                            valueStyle={GVFdiff > 0 ? { color: '#3f8600' } : { color: '#cf1322' }}
                                             prefix={GVFdiff>0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
                                             style={{marginLeft: 40}}
                                         />
@@ -254,7 +254,7 @@ class SupportMapView extends Component {
                                             title={"Moran's I: "+this.round(newMoran)}
                                             value={morandiff > 0 ? morandiff : 0-morandiff}
                                             precision={2}
-                                            valueStyle={morandiff > 0 ? { color: '#3f8600' } : { color: '#cf13cc' }}
+                                            valueStyle={GVFdiff > 0 ? { color: '#3f8600' } : { color: '#cf1322' }}
                                             prefix={morandiff>0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
                                             
                                         />

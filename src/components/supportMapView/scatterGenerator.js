@@ -63,7 +63,7 @@ class ScatterGenerator extends Component {
                     type: 'scatter',
                     symbolSize: 14,
                     data: originScatter,
-                    color: '#F00',
+                    color: '#CF13CC',
                 },
                 {
                     type: 'effectScatter',
