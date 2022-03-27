@@ -254,7 +254,7 @@ class SupportMapView extends Component {
                                             title={"Moran's I: "+this.round(newMoran)}
                                             value={morandiff > 0 ? morandiff : 0-morandiff}
                                             precision={2}
-                                            valueStyle={morandiff > 0 ? { color: '#3f8600' } : { color: '#cf1322' }}
+                                            valueStyle={morandiff > 0 ? { color: '#3f8600' } : { color: '#cf13cc' }}
                                             prefix={morandiff>0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
                                             
                                         />
