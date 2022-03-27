@@ -243,7 +243,7 @@ class SupportMapView extends Component {
                                             title={"GVF: "+this.round(newGVF)}
                                             value={GVFdiff > 0 ? GVFdiff : 0-GVFdiff}
                                             precision={2}
-                                            valueStyle={GVFdiff > 0 ? { color: '#3f8600' } : { color: '#cf1322' }}
+                                            valueStyle={morandiff > 0 ? { color: '#3f8600' } : { color: '#cf13cc' }}
                                             prefix={GVFdiff>0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
                                             style={{marginLeft: 40}}
                                         />
