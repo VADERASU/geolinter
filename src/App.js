@@ -2,7 +2,7 @@ import {Component} from 'react';
 import './styles/App.css';
 import {Layout} from 'antd';
 import {Row, Col, Card, Divider} from 'antd';
-import * as turf from "@turf/turf";
+//import * as turf from "@turf/turf";
 //import {Select, Slider, Switch, Empty} from 'antd';
 /** import local components */
 import NavBar from './components/nav_bar';
@@ -103,7 +103,7 @@ class App extends Component {
         ],
 
         3: [
-          ['#5dc963', '#21918d', '#3b528b'],
+            ['#5dc963','#21918d','#3b528b'],
             ['#fee0d2','#fc9272','#de2d26'],
             ['#e5f5e0','#a1d99b','#31a354'],
             ['#edf8b1','#7fcdbb','#2c7fb8'],
@@ -113,7 +113,7 @@ class App extends Component {
           ],
 
         4: [
-          ['#7ad151', '#22a884', '#2a788e', '#414487'],
+          ['#7ad151','#22a884','#2a788e','#414487'],
           ['#fee5d9','#fcae91','#fb6a4a','#cb181d'],
           ['#edf8e9','#bae4b3','#74c476','#238b45'],
           ['#ffffcc','#a1dab4','#41b6c4','#225ea8'],
@@ -123,7 +123,7 @@ class App extends Component {
         ],
 
         5: [
-          ['#8fd744', '#35b779', '#21918d', '#31688e', '#443a83'],
+          ['#8fd744','#35b779','#21918d','#31688e','#443a83'],
           ['#fee5d9','#fcae91','#fb6a4a','#de2d26','#a50f15'],
           ['#edf8e9','#bae4b3','#74c476','#31a354','#006d2c'],
           ['#ffffcc','#a1dab4','#41b6c4','#2c7fb8','#253494'],
@@ -133,7 +133,7 @@ class App extends Component {
         ],
 
         6: [
-          ['#9fda3a', '#4ac26d', '#1fa187', '#27808e', '#375c8d', '#46327f'],
+          ['#9fda3a','#4ac26d','#1fa187','#27808e','#375c8d','#46327f'],
           ['#fee5d9','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15'],
           ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c'],
           ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494'],
@@ -143,7 +143,7 @@ class App extends Component {
         ],
 
         7: [
-          ['#abdc32', '#5dc963', '#28ae80', '#21918d', '#2c728e', '#3b528b', '#472d7b'],
+          ['#abdc32','#5dc963','#28ae80','#21918d','#2c728e','#3b528b','#472d7b'],
           ['#fee5d9','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#99000d'],
           ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#41ab5d','#238b45','#005a32'],
           ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#0c2c84'],
@@ -181,7 +181,7 @@ class App extends Component {
         selectClassification: null
       },
 
-      /** Hard rules detection */
+      /** Hard rules detection - DEPRECATED!! */
       hasHardRuleViolation: false,
       hardRuleMsg:[],
 
@@ -497,6 +497,7 @@ class App extends Component {
     return lineNumber;
   }
 
+  // DEPRECATED!!!
   checkMapHardRule = (spec) => {
     let hardRuleViolation = [];
     spec.data.values = this.state.selectRawCase;
@@ -604,6 +605,7 @@ class App extends Component {
     return {hardRuleViolation, hasHardRuleViolation};
   };
 
+  // DEPRECATED!!!
   handleHardRuleFixClick = () => {
     this.state.vegaLiteSpec.data.values = this.state.selectRawCase;
     let spec = this.state.vegaLiteSpec;
