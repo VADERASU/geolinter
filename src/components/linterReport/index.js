@@ -3,7 +3,6 @@ import "../../styles/LinterReport.css"
 import {Card, Alert, Button, Space} from 'antd';
 import 'd3-color';
 import * as d3jnd from "d3-jnd";
-import HardRulePanel from "./hardRule";
 import ClassNumErr from "./classNumErr";
 import ClassAccuErr from "./classAccuErr";
 import SingleAccuErr from "./singleAccuErr";
@@ -317,11 +316,6 @@ class LinterReport extends Component {
                 className='cardDetail'
                 style={{height: 505, overflow: "scroll"}}
                 >
-                    <HardRulePanel 
-                        hasHardRuleViolation={this.props.hasHardRuleViolation}
-                        hardRuleMsg={this.props.hardRuleMsg}
-                        onHardRuleFixClick={this.props.onHardRuleFixClick}
-                    />
 
                     {/** # of class fix */}
                         <ClassNumErr 
@@ -392,11 +386,6 @@ class LinterReport extends Component {
                 className='cardDetail'
                 style={{height: 505, overflow: "scroll"}}
                 >
-                    <HardRulePanel 
-                        hasHardRuleViolation={this.props.hasHardRuleViolation}
-                        hardRuleMsg={this.props.hardRuleMsg}
-                        onHardRuleFixClick={this.props.onHardRuleFixClick}
-                    />
 
                     <ClassAccuErr 
                         mapFeatureReady={this.props.mapFeatureReady}
@@ -447,11 +436,6 @@ class LinterReport extends Component {
                 className='cardDetail'
                 style={{height: 505, overflow: "scroll"}}
                 >
-                    <HardRulePanel 
-                        hasHardRuleViolation={this.props.hasHardRuleViolation}
-                        hardRuleMsg={this.props.hardRuleMsg}
-                        onHardRuleFixClick={this.props.onHardRuleFixClick}
-                    />
 
                     <div style={{marginTop: 5, marginBottom:5, display: this.state.borderColor.style}}>
                         <MapOptions 
@@ -501,11 +485,6 @@ class LinterReport extends Component {
                 className='cardDetail'
                 style={{height: 505, overflow: "scroll"}}
                 >
-                    <HardRulePanel 
-                        hasHardRuleViolation={this.props.hasHardRuleViolation}
-                        hardRuleMsg={this.props.hardRuleMsg}
-                        onHardRuleFixClick={this.props.onHardRuleFixClick}
-                    />
 
                     <div style={{marginTop: 5, marginBottom:5, display: this.state.backgroundColor.style}}>
                     <BgOption 
@@ -537,11 +516,6 @@ class LinterReport extends Component {
                 className='cardDetail'
                 style={{height: 505, overflow: "scroll"}}
                 >
-                    <HardRulePanel 
-                        hasHardRuleViolation={this.props.hasHardRuleViolation}
-                        hardRuleMsg={this.props.hardRuleMsg}
-                        onHardRuleFixClick={this.props.onHardRuleFixClick}
-                    />
 
                     <FillColorScheme 
                         mapFeatureReady={this.props.mapFeatureReady}

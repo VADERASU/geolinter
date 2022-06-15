@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import '../../styles/MapLinter.css';
 import * as d3 from 'd3';
-import 'd3-color';
+//import 'd3-color';
 import * as d3jnd from "d3-jnd";
 
 class MainMapHistogram extends Component {

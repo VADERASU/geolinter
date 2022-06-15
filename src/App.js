@@ -713,14 +713,9 @@ class App extends Component {
   render(){
     const { Content } = Layout;
     //console.log(this.state);
-    /** Hard rule check for the spec properties */
+    
     let spec = this.state.vegaLiteSpec;
-    let {hardRuleViolation, hasHardRuleViolation} = this.checkMapHardRule(spec);
-    //console.log(hardRuleViolation);
-    //console.log(hasHardRuleViolation);
-    let hardErrFlag = (this.state.hasHardRuleViolation || hasHardRuleViolation) ? true : false; 
-    let hardErrMsg = this.state.hardRuleMsg.concat(hardRuleViolation);
-
+    
     //TODO: Soft rule check
     let mapFeatureReady = null;
     let recommend_k = null;
@@ -728,22 +723,21 @@ class App extends Component {
     let color_scheme_name = "Sequential: viridis";
     let originVegaSpec = null;
     let softFixSpec = this.state.softFixSpec;
-    if(!hardErrFlag){
-      /** record the original map spec with deceptive designs */
-      originVegaSpec = JSON.parse(JSON.stringify(spec));
-      /** extract map features */
-      mapFeatureReady = this.extractMapFeatures(spec);
-      // determine color scheme and k for the recommend charts
-      if(softFixSpec !== null){
-        recommend_k = softFixSpec.k;
-        recommend_color = softFixSpec.color_scheme;
-        color_scheme_name = softFixSpec.color_scheme_name;
-      }else{
-        recommend_k = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.k : 3;
-        recommend_color = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.color_scheme : ['#5dc963', '#21918d', '#3b528b'];
-        
-      } 
-    }
+   
+    /** record the original map spec with deceptive designs */
+    originVegaSpec = JSON.parse(JSON.stringify(spec));
+    /** extract map features */
+    mapFeatureReady = this.extractMapFeatures(spec);
+    // determine color scheme and k for the recommend charts
+    if(softFixSpec !== null){
+      recommend_k = softFixSpec.k;
+      recommend_color = softFixSpec.color_scheme;
+      color_scheme_name = softFixSpec.color_scheme_name;
+    }else{
+      recommend_k = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.k : 3;
+      recommend_color = (mapFeatureReady.k >= 3 && mapFeatureReady.k <= 7) ? mapFeatureReady.color_scheme : ['#5dc963', '#21918d', '#3b528b'];        
+    } 
+    
 
     return(
       <div className='App'>
@@ -753,7 +747,7 @@ class App extends Component {
             {/** Row #1 */}
             <Row gutter={6}>
               {/** Left Main Col */}
-              <Col span={7}>
+              <Col span={8}>
                 <Row gutter={[6,6]}>
                   {/** Nav Panel */}
                   <Col span={24}>
@@ -764,95 +758,19 @@ class App extends Component {
                   </Col>
                   {/** Vega-Lite Script Editor */}
                   <Col span={24}>
-                    <CodeEditor
-                      vagaLiteSpecText={this.state.rawScript}
-                      onScriptRunClick={this.handleScriptRunClick}
-                      onEditorChange={this.handleEditorChange}
-                      specOld={this.state.specOld}
-                      specOldText={this.state.specOldText}
-                      editorView={this.state.editorView}
-                      onEditorViewSwitch={this.handleEditorViewSwitch}
-                      hasHardRuleViolation={hardErrFlag}
-                      hardRuleMsg={hardErrMsg}
-                    />
-                  </Col>
-                  <Col span={24}>
-                      <StatusBar 
-                        mapOptionSetting={this.mapOptionSetting}
-                        onMapProjChange={this.handleMapProjChange}
-                        selectProjType={this.state.selectProjType}
-                        globalProjHighlight={this.state.globalProjHighlight}
-                        globalColorHighlight={this.state.globalColorHighlight}
-                      />
-                  </Col>
-                </Row>
-              </Col>
-
-              {/** Middle Col */}
-              <Col span={8}>
-                <Row gutter={[6,6]}>
-                  {/** 1st Row at the middle column - show original map */}
-                  <Col span={24}>
                     <MapLinter
                       vegaLiteSpec={this.state.specOld}
                       selectRawCase={this.state.oldSelectRawCase}
                       selectedCaseData={this.state.oldSelectedCaseData}
                       onVegaParseError={this.handleVegaParseError}
-                      hasHardRuleViolation={hardErrFlag}
-                    />
-                  </Col>
-                  {/** Linter Report */}
-                  <Col span={24}>
-                    <LinterReport
-                      currentSelectRecomm={this.state.currentSelectRecomm}
-                      originalGVF={this.state.originalGVF[this.state.selectRawCase]}
-                      originalMoran={this.state.originalMoran[this.state.selectRawCase]}
-                      hasHardRuleViolation={hardErrFlag}
-                      hardRuleMsg={hardErrMsg}
-                      onHardRuleFixClick={this.handleHardRuleFixClick}
-                      mapFeatureReady={mapFeatureReady}
-                      selectedCaseData={this.state.selectedCaseData}
-                      selectRawCase={this.state.selectRawCase}
-                      colorList={this.state.colorList}
-                      onSoftFix={this.handleSoftFix}
-                      onMapProjChange={this.handleMapProjChange}
-                      onRecommendMethodSelection={this.handleRecommendMethodSelection}
-                      mapOptionSetting={this.mapOptionSetting}
-                      reCheckColorScheme={this.state.reCheckColorScheme}
-                      reCheckStrokeColor={this.state.reCheckStrokeColor}
-                      reCheckBgColor={this.state.reCheckBgColor}
-                      setreCheckColorScheme={this.setreCheckColorScheme}
-                      setreCheckStrokeColor={this.setreCheckStrokeColor}
-                      setreCheckBgColor={this.setreCheckBgColor}
-                      handleglobalProjHighlightEnter={this.handleglobalProjHighlightEnter}
-                      handleglobalColorHighlightEnter={this.handleglobalColorHighlightEnter}
-                      handleglobalProjHighlightLeave={this.handleglobalProjHighlightLeave}
-                      handleglobalColorHighlightLeave={this.handleglobalColorHighlightLeave}
-                    />
-                  </Col>
-                </Row>
-              </Col>
-
-              {/** Right Col */}
-              <Col span={9}>
-                <Row gutter={[6,6]}>
-                  <Col span={24}>
-                    <SupportMapView 
-                      selectRawCase={this.state.selectRawCase}
-                      selectedCaseData={this.state.selectedCaseData}
-                      vegaLiteSpec={this.state.vegaLiteSpec}
-                      softFixSpec={this.state.softFixSpec}
-                      hasHardRuleViolation={hardErrFlag}
-                      selectProjType={this.state.selectProjType}
-                      originalGVF={this.state.originalGVF[this.state.selectRawCase]}
-                      originalMoran={this.state.originalMoran[this.state.selectRawCase]}
                       mapFeatureReady={mapFeatureReady}
                     />
                   </Col>
                   <Col span={24}>
+                    {/*
                     <ClassRecommend
                       softFixSpec={this.state.softFixSpec}
-                      hasHardRuleViolation={hardErrFlag}
+                      hasHardRuleViolation={false}
                       selectRawCase={this.state.selectRawCase}
                       selectedCaseData={this.state.selectedCaseData}
                       vegaLiteSpec={this.state.vegaLiteSpec}
@@ -867,6 +785,75 @@ class App extends Component {
                       onCurrentMeasuresChange={this.handleCurrentMeasuresChange}
                       onRecommendMethodSelection={this.handleRecommendMethodSelection}
                     />
+                    */}
+                  </Col>
+                </Row>
+              </Col>
+
+              {/** Middle Col */}
+              <Col span={8}>
+                <Row gutter={[6,6]}>
+                  {/** 1st Row at the middle column - show original map */}
+                  <Col span={24}>
+                    {/*
+                      <LinterReport
+                        currentSelectRecomm={this.state.currentSelectRecomm}
+                        originalGVF={this.state.originalGVF[this.state.selectRawCase]}
+                        originalMoran={this.state.originalMoran[this.state.selectRawCase]}
+                        mapFeatureReady={mapFeatureReady}
+                        selectedCaseData={this.state.selectedCaseData}
+                        selectRawCase={this.state.selectRawCase}
+                        colorList={this.state.colorList}
+                        onSoftFix={this.handleSoftFix}
+                        onMapProjChange={this.handleMapProjChange}
+                        onRecommendMethodSelection={this.handleRecommendMethodSelection}
+                        mapOptionSetting={this.mapOptionSetting}
+                        reCheckColorScheme={this.state.reCheckColorScheme}
+                        reCheckStrokeColor={this.state.reCheckStrokeColor}
+                        reCheckBgColor={this.state.reCheckBgColor}
+                        setreCheckColorScheme={this.setreCheckColorScheme}
+                        setreCheckStrokeColor={this.setreCheckStrokeColor}
+                        setreCheckBgColor={this.setreCheckBgColor}
+                        handleglobalProjHighlightEnter={this.handleglobalProjHighlightEnter}
+                        handleglobalColorHighlightEnter={this.handleglobalColorHighlightEnter}
+                        handleglobalProjHighlightLeave={this.handleglobalProjHighlightLeave}
+                        handleglobalColorHighlightLeave={this.handleglobalColorHighlightLeave}
+                      />
+                  */}
+                  </Col>
+                  {/** Linter Report */}
+                  <Col span={24}>
+                    {/*
+                      <StatusBar 
+                        mapOptionSetting={this.mapOptionSetting}
+                        onMapProjChange={this.handleMapProjChange}
+                        selectProjType={this.state.selectProjType}
+                        globalProjHighlight={this.state.globalProjHighlight}
+                        globalColorHighlight={this.state.globalColorHighlight}
+                      />
+                */}
+                  </Col>
+                </Row>
+              </Col>
+
+              {/** Right Col */}
+              <Col span={8}>
+                <Row gutter={[6,6]}>
+                  <Col span={24}>
+                    <SupportMapView 
+                      selectRawCase={this.state.selectRawCase}
+                      selectedCaseData={this.state.selectedCaseData}
+                      vegaLiteSpec={this.state.vegaLiteSpec}
+                      softFixSpec={this.state.softFixSpec}
+                      hasHardRuleViolation={false}
+                      selectProjType={this.state.selectProjType}
+                      originalGVF={this.state.originalGVF[this.state.selectRawCase]}
+                      originalMoran={this.state.originalMoran[this.state.selectRawCase]}
+                      mapFeatureReady={mapFeatureReady}
+                    />
+                  </Col>
+                  <Col span={24}>
+                    
                     
                   </Col>
                 </Row>

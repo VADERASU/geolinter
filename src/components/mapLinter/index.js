@@ -2,74 +2,55 @@ import {Component} from "react";
 import '../../styles/MapLinter.css';
 import {Card, Divider, Row, Col, Empty} from 'antd';
 import MapGenerator from "./mapGenerator";
+import OriginalMapD3 from "./originMapD3";
 import MainMapHistogram from "./mainMapHist";
 
 class MapLinter extends Component {
     constructor(props){
         super(props);
         this.state = {
-            propsSpec: null,
-            selectedRawCase: null,
-            selectedCaseData: null
+            
         };
     }
 
     componentDidMount() {
-        if(this.state.selectedRawCase === null){
-            this.setState({
-                propsSpec: this.props.vegaLiteSpec,
-                selectedRawCase: this.props.selectRawCase,
-                selectedCaseData: this.props.selectedCaseData
-            });
-        }else if(this.state.selectedRawCase !== this.props.selectRawCase){ //when user select a new case
-            let selectRawCase = this.props.selectRawCase;
-            this.setState({
-                propsSpec: this.props.vegaLiteSpec,
-                selectedRawCase: this.props.selectRawCase,
-                selectedCaseData: this.props.selectedCaseData
-            });
-        } 
+        
     }
 
     componentWillReceiveProps(nextProps, nextContext){
-        if(this.state.selectedRawCase === null){
-            let selectRawCase = nextProps.selectRawCase;
-            this.setState({
-                propsSpec: nextProps.vegaLiteSpec,
-                selectedRawCase: selectRawCase,
-                selectedCaseData: nextProps.selectedCaseData
-            });
-            
-        }else if(this.state.selectedRawCase !== nextProps.selectRawCase){ //when user select a new case
-            let selectRawCase = nextProps.selectRawCase;
-            this.setState({
-                propsSpec: nextProps.vegaLiteSpec,
-                selectedRawCase: selectRawCase,
-                selectedCaseData: nextProps.selectedCaseData
-            });
-            
-        }
+       
     }
 
     /** render components */
     /** TODO: should add the vis design between two maps */
     render(){
-        let hasHardRuleViolation = this.props.hasHardRuleViolation;
+        let projectionCheck = true;
         //console.log(hasHardRuleViolation);
-        if(hasHardRuleViolation){
+        if(projectionCheck){
             return(
                 <Card
+                    title='Original Choropleth Map'
                     size='small'
                     className='cardDetail'
-                    style={{height: 500}}
+                    style={{height: 550}}
                 >
-                    <Empty
-                        style={{marginTop: 120}}
-                        description={
-                            <span>Please run the VEGA sript again
-                            after fixing the invalid scripts</span>
-                        }
+                    <OriginalMapD3
+                        selectedCaseData={this.props.selectedCaseData}
+                        vegaLiteSpec={this.props.vegaLiteSpec}
+                        selectRawCase={this.props.selectRawCase}
+                        onVegaParseError={this.props.onVegaParseError}
+                        mapFeatureReady={this.props.mapFeatureReady}
                     />
+                    
+                    <Divider
+                        style={{marginTop: 5, marginBottom: 5}}
+                    />
+    
+                    <MainMapHistogram
+                        selectedCaseData={this.props.selectedCaseData}
+                        vegaLiteSpec={this.props.vegaLiteSpec}
+                    />
+                    
                 </Card>
             );
         }else{
@@ -81,9 +62,9 @@ class MapLinter extends Component {
                     style={{height: 550}}
                 >
                     <MapGenerator
-                        selectedCaseData={this.state.selectedCaseData}
-                        vegaLiteSpec={this.state.propsSpec}
-                        selectRawCase={this.state.selectedRawCase}
+                        selectedCaseData={this.props.selectedCaseData}
+                        vegaLiteSpec={this.props.vegaLiteSpec}
+                        selectRawCase={this.props.selectRawCase}
                         onVegaParseError={this.props.onVegaParseError}
                     />
                     
@@ -92,8 +73,8 @@ class MapLinter extends Component {
                     />
     
                     <MainMapHistogram
-                        selectedCaseData={this.state.selectedCaseData}
-                        vegaLiteSpec={this.state.propsSpec}
+                        selectedCaseData={this.props.selectedCaseData}
+                        vegaLiteSpec={this.props.vegaLiteSpec}
                     />
                     
                 </Card>
