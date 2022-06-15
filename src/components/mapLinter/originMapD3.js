@@ -8,9 +8,10 @@ class OriginalMapD3 extends Component {
         this.canvasRef = React.createRef();
     }
 
-    drawMap = () => {
+    drawMap = (d3MapInfo) => {
         const {scrollWidth, scrollHeight} = this.canvasRef.current;
         //const format = d3.format(".02f");
+        console.log(d3MapInfo);
 
         // Chart dimensions
         let dimensions = {
@@ -27,20 +28,36 @@ class OriginalMapD3 extends Component {
         dimensions.boundedHeight = dimensions.height - dimensions.margin.top - dimensions.margin.bottom;
 
         // init path and projection
-        const projection = d3.geoMercator()
-            .scale(70)
-            .center([0,20])
+        const projection = d3.geoAlbersUsa()
+            .scale(600)
+            //.center([0,20])
             .translate([dimensions.width / 2, dimensions.height / 2]);
 
         const path = d3.geoPath()
             .projection(projection);
 
-        const colorScale = d3.scaleThreshold().domain(breaks).range(colorRange);
+        const colorScale = d3.scaleThreshold()
+            .domain(d3MapInfo.breaks)
+            .range(d3MapInfo.color_scheme);
 
         const svgRoot = d3.select(this.canvasRef.current).select("svg");
         const rootGroup = svgRoot.select('g#root-group');
         const mapGroup = rootGroup.append('g')
         .attr("transform", `translate(${dimensions.margin.left}, ${dimensions.margin.top})`);
+
+        const map = mapGroup.append('g')
+        .selectAll('path')
+        .data(d3MapInfo.geoJsonObj.features)
+        .join('path')
+        // draw polygons
+        .attr('d', path)
+        // set the colors
+        .attr('fill', d => {
+            let eduRate = d.properties.higher_education_rate;
+            //console.log(eduRate);
+            let color = eduRate !== 'unknown' ? colorScale(eduRate) : '#F3F8FB';
+            return color;
+        })
 
     };
 
@@ -49,19 +66,39 @@ class OriginalMapD3 extends Component {
         rootGroup.selectAll('g').remove();
     };
 
-    mapDataProcess = (selectedCaseData, vegaMapFeature, selectRawCase) => {
-        
+    mapDataProcess = (selectedCaseData, mapFeatureReady, selectRawCase) => {
+        //console.log(mapFeatureReady);
+        let d3MapInfo = {
+            'geoJsonObj': selectedCaseData.geo,
+            'max': selectedCaseData.features.max,
+            'min': selectedCaseData.features.min,
+            'breaks': mapFeatureReady.breaks,
+            'color_scheme': mapFeatureReady.color_scheme,
+            'projection': mapFeatureReady.projection,
+            'background': mapFeatureReady.background,
+            'stroke': mapFeatureReady.stroke,
+            'stroke_width': mapFeatureReady.strokeWidth
+        };
+        return d3MapInfo;
     };
 
     componentDidMount = () => {
-        let selectedCaseData = this.props.selectedCaseData;
-        let selectRawCase = this.props.selectRawCase;
-        let vegaMapFeature = this.props.mapFeatureReady;
-        //console.log(vegaMapFeature);
+        let d3MapInfo = this.mapDataProcess(
+            this.props.selectedCaseData,
+            this.props.mapFeatureReady,
+            this.props.selectRawCase
+        );
+        this.drawMap(d3MapInfo);
     };
 
     componentDidUpdate = () => {
         this.clearCanvas();
+        let d3MapInfo = this.mapDataProcess(
+            this.props.selectedCaseData,
+            this.props.mapFeatureReady,
+            this.props.selectRawCase
+        );
+        this.drawMap(d3MapInfo);
     };
 
     render(){

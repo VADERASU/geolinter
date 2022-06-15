@@ -27,9 +27,9 @@ export const case_scripts = {
             "field": "properties.higher_education_rate",
             "type": "quantitative",
             "scale": {
-                "range": ["#edf8e9","#edfce9"],
+                "range": ["#5dc963","#21918d","#3b528b"],
                 "type": "threshold",
-                "domain": [0.2]
+                "domain": [0.17, 0.24, 0.3]
             },
             "legend": {
                 "title": null
