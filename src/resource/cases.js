@@ -42,6 +42,51 @@ export const case_scripts = {
         }
     }
 }`,
+
+state_shipment:
+`{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 550,
+    "height": 300,
+    "background": "#F3F8FB",
+    "title": "Value of Freight Shipments by State: 2002",
+    "data": {
+        "values": "state_shipment",
+        "format": {
+            "property": "features"
+        }
+    },
+    "mark": "geoshape",
+    "projection": {
+        "type": "albersUsa"
+    },
+    "encoding": {
+        "stroke": {
+            "value": "black"
+        },
+        "strokeWidth": {
+            "value": 1
+        },
+        "color": {
+            "field": "properties.shipment",
+            "type": "quantitative",
+            "scale": {
+                "range": ["#ffffff","#D9E6EB","#BAC9C9","#BAC9d4","#151719"],
+                "type": "threshold",
+                "domain": [50, 249, 399, 600]
+            },
+            "legend": {
+                "title": null
+            }
+        }         
+    },
+    "usermeta": {
+        "embedOptions": {
+            "actions": false
+        }
+    }
+}`,
+
 county_unemployment:
 `{
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -127,6 +172,7 @@ georgia_pctBach:
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": 550,
     "height": 300,
+    "title": "Poverty Rates in Georgia",
     "background": "#F3F8FB",
     "data": {
         "values": "georgia_pctBach",
@@ -135,20 +181,25 @@ georgia_pctBach:
         }
     },
     "mark": "geoshape",
+    "projection": {
+        "type": "mercator"
+    },
     "encoding": {
         "stroke": {
-            "value": "#8fd744"
+            "value": "#F3F8FB"
         },
         "color": {
-            "field": "properties.PctBach",
+            "field": "properties.PctPov",
             "type": "quantitative",
             "scale": {
-                "range": ["#8fd744", "#35b779", "#21918d", "#31688e", "#443a83"],
+                "range": ["#fcd792", "#f1bd71", "#918cc4", "#817dbb", "#70669d"],
                 "type": "threshold",
                 "domain": [
-                    12.52,
-                    20.85,
-                    29.17
+                    11,
+                    13,
+                    15,
+                    17,
+                    52.2
                 ]
             },
             "legend": {
@@ -175,6 +226,9 @@ chicago_income:
         }
     },
     "mark": "geoshape",
+    "projection": {
+        "type": "mercator"
+    },
     "encoding": {
         "stroke": {
             "value": "black"
@@ -183,12 +237,60 @@ chicago_income:
             "field": "properties.income_pc",
             "type": "quantitative",
             "scale": {
-                "range": ["#fef0d9","#fdcc8a","#fc8d59","#ff8d5f"],
+                "range": ["#fbeaa7","#fdf3b6","#fffbc6","#bcdb80","#5da45f"],
                 "type": "threshold",
                 "domain": [
-                    18881.0,
-                    28887.0,
-                    44689.0
+                    15246.0,
+                    17974.0,
+                    23495.0,
+                    33364.0
+                ]
+            },
+            "legend": {
+                "title": null
+            }
+        }         
+    },
+    "usermeta": {
+        "embedOptions": {
+            "actions": false
+        }
+    }
+}`,
+euro_gdp:
+`{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 550,
+    "height": 300,
+    "title": "GDP in Thousands of Millions of USD",
+    "background": "#191a1a",
+    "data": {
+        "values": "euro_gdp",
+        "format": {
+            "property": "features"
+        }
+    },
+    "mark": "geoshape",
+    "projection": {
+        "type": "mercator"
+    },
+    "encoding": {
+        "stroke": {
+            "value": "white"
+        },
+        "color": {
+            "field": "properties.gdp_md_est",
+            "type": "quantitative",
+            "scale": {
+                "range": ["#bfc7c9","#a8beba","#84b0a6","#60a18c","#46936b","#317a49","#185632"],
+                "type": "threshold",
+                "domain": [
+                    20000,
+                    50000,
+                    100000,
+                    200000,
+                    500000,
+                    1000000
                 ]
             },
             "legend": {

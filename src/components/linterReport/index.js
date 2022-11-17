@@ -142,6 +142,7 @@ class LinterReport extends Component {
          let GVFsum = 0;
          let methodNum = 0;
          let classification_methods_title = selectedCaseData.features.classification_methods_title;
+         //console.log(classification_methods_title);
          classification_methods_title.forEach((element, i)=>{
              let keyName = selectedCaseData.features.classification_methods[i];
              let currentFeature = selectedCaseData.features[keyName];
@@ -384,7 +385,8 @@ class LinterReport extends Component {
               
             </Card>
             );
-        }else if(this.props.selectRawCase === 'montreal_pop_density'){
+        }else if(this.props.selectRawCase === 'montreal_pop_density' || this.props.selectRawCase === 'state_shipment'
+        || this.props.selectRawCase === 'georgia_pctBach' || this.props.selectRawCase === 'euro_gdp'){
             return(
                 <Card
                 title='Detected Violations'
@@ -439,7 +441,7 @@ class LinterReport extends Component {
                     </div>
             </Card>
             );
-        }else if(this.props.selectRawCase === 'georgia_pctBach'){
+        }else if(this.props.selectRawCase === 'georgia_pctBach_bak'){
             return(
                 <Card
                 title='Detected Violations'

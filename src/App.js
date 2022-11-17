@@ -22,8 +22,8 @@ import state_education_features from './resource/case1_state_edu/state_education
 // import case 2 data -> county-level unemployment statics
 //import us10m from './resource/us10m.json';
 //import unemployment from './resource/unemployment.json';
-import county_unemployment from './resource/case2_county/county_unemployment.json';
-import county_unemployment_features from './resource/case2_county/county_unemployment_features.json';
+//import county_unemployment from './resource/case2_county/county_unemployment.json';
+//import county_unemployment_features from './resource/case2_county/county_unemployment_features.json';
 
 // import case 3 data -> montreal population density statics
 import montreal_density from './resource/case3_montreal/montreal_density.json';
@@ -36,6 +36,14 @@ import georgia_pctBach_features from './resource/case4_georgia/georgia_pctBach_f
 // import case 5 data -> chicago income_pc statics
 import chicago_income from './resource/case5_chicago/chicago_income.json';
 import chicago_income_features from './resource/case5_chicago/chicago_income_features.json';
+
+// tvcg case 1 -> state_freight_shipments
+import state_shipment from './resource/tvcg_c1/state_shipment.json';
+import state_shipment_features from './resource/tvcg_c1/state_shipment_features.json';
+
+// tvcg dark case -> euro countries' GDP
+import euro_gdp from './resource/tvcg_dark/euro_gdp.json';
+import euro_gdp_features from './resource/tvcg_dark/euro_gdp_features.json';
 
 /** import case scripts */
 import { case_scripts } from './resource/cases';
@@ -50,13 +58,21 @@ class App extends Component {
         geo: state_education,
         features: state_education_features
       },
-      county_unemployment: {
+      state_shipment:{
+        geo: state_shipment,
+        features: state_shipment_features
+      },
+      euro_gdp:{
+        geo: euro_gdp,
+        features: euro_gdp_features
+      },
+      //county_unemployment: {
         //geo: us10m,
         //data: unemployment,
         //features: null
-        geo: county_unemployment,
-        features: county_unemployment_features
-      },
+        //geo: county_unemployment,
+        //features: county_unemployment_features
+      //},
       montreal_pop_density:{
         geo: montreal_density,
         features: montreal_density_features
@@ -89,7 +105,7 @@ class App extends Component {
     this.chicagoHardruleFlag = true;
 
     this.state = {
-      mapDataList: ['state_education','montreal_pop_density','georgia_pctBach','county_unemployment', 'chicago_income'],
+      mapDataList: ['state_education','state_shipment','montreal_pop_density','georgia_pctBach','chicago_income','euro_gdp'],
       selectedCaseData: this.dataset['state_education'],
       colorList: {
         name: [
@@ -208,14 +224,18 @@ class App extends Component {
         montreal_pop_density: 0.78,
         georgia_pctBach: 0.63,
         county_unemployment: 0.81,
-        chicago_income: 0.77
+        chicago_income: 0.77,
+        state_shipment: 0.37,
+        euro_gdp: 0.79
       },
       originalMoran: {
         state_education: 0.21,
         montreal_pop_density: 0.57,
         georgia_pctBach: 0.24,
         county_unemployment: 0.68,
-        chicago_income: 0.53
+        chicago_income: 0.53,
+        state_shipment: 0.33,
+        euro_gdp: 0.42
       },
 
       //global options indicator
@@ -709,6 +729,7 @@ class App extends Component {
 
   /** Render components for the main layout */
   render(){
+    console.log(state_shipment_features);
     const { Content } = Layout;
     //console.log(this.state);
     /** Hard rule check for the spec properties */
