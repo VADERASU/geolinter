@@ -417,7 +417,7 @@ class ClassAccuErr extends Component {
                                         style={{marginLeft: 5}} 
                                         size="small" 
                                         min={3} 
-                                        max={7} 
+                                        max={12} 
                                         value={this.state.k} 
                                         onChange={this.handleNumOfClassChange} 
                                     />
