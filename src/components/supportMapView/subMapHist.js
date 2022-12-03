@@ -80,14 +80,14 @@ class SubMapHistogram extends Component{
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
                     .attr('y', dimensions.height + 40)
-                    .attr('height', 10)
+                    .attr('height', 20)
                     .attr('fill', colorScale(binBreak));
 
-                const colorText = colorBinGroup.append('text')
-                    .attr('x', xScale(binBreak)-10)
-                    .attr('y', i%2 !== 0 ? dimensions.height+65 : dimensions.height+35)
-                    //.attr('font-size', 13)
-                    .text(i!==0 ? binBreak : "");
+                //const colorText = colorBinGroup.append('text')
+                //    .attr('x', xScale(binBreak)-10)
+                //    .attr('y', i%2 !== 0 ? dimensions.height+65 : dimensions.height+35)
+                //    //.attr('font-size', 13)
+                //    .text(i!==0 ? binBreak : "");
             }
         });
 

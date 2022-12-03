@@ -351,7 +351,7 @@ class ClassRecommend extends Component {
                                     }} 
                                     size="small" 
                                     min={3} 
-                                    max={7} 
+                                    max={9} 
                                     value={this.state.recommend_k}
                                     onChange={this.handleNumOfClassChange}
                                 />
