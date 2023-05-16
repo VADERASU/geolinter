@@ -76,7 +76,7 @@ state_shipment:
                 "domain": [50, 249, 399, 600]
             },
             "legend": {
-                "title": null
+                "title": "billion $"
             }
         }         
     },

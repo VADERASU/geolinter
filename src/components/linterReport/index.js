@@ -11,6 +11,7 @@ import FillColorScheme from "./fillColorScheme";
 //import MapProjection from "./mapProj";
 import MapOptions from "./mapOptions";
 import BgOption from "./backgroundOption";
+import { Normcheck } from "./normcheck";
 
 class LinterReport extends Component {
     constructor(props){
@@ -385,7 +386,7 @@ class LinterReport extends Component {
               
             </Card>
             );
-        }else if(this.props.selectRawCase === 'montreal_pop_density' || this.props.selectRawCase === 'state_shipment'
+        }else if(this.props.selectRawCase === 'montreal_pop_density'
         || this.props.selectRawCase === 'georgia_pctBach' || this.props.selectRawCase === 'euro_gdp'){
             return(
                 <Card
@@ -399,7 +400,7 @@ class LinterReport extends Component {
                         hardRuleMsg={this.props.hardRuleMsg}
                         onHardRuleFixClick={this.props.onHardRuleFixClick}
                     />
-
+                    
                     <ClassAccuErr 
                         mapFeatureReady={this.props.mapFeatureReady}
                         errColor={this.state.fillColorScheme.errTitle}
@@ -531,6 +532,66 @@ class LinterReport extends Component {
                     
             </Card>
             );
+        }else if(this.props.selectRawCase === 'state_shipment'){
+
+            // TVCG UPDATE CASE 1
+            return(
+                <Card
+                title='Detected Violations'
+                size='small'
+                className='cardDetail'
+                style={{height: 505, overflow: "scroll"}}
+                >
+                    <HardRulePanel 
+                        hasHardRuleViolation={this.props.hasHardRuleViolation}
+                        hardRuleMsg={this.props.hardRuleMsg}
+                        onHardRuleFixClick={this.props.onHardRuleFixClick}
+                    />
+                    <Normcheck />
+                    {/**
+                     <ClassAccuErr 
+                        mapFeatureReady={this.props.mapFeatureReady}
+                        errColor={this.state.fillColorScheme.errTitle}
+                        errAccu={this.state.classificationAcc.errTitle}
+                        classificationList={data}
+
+                        currentSelectRecomm={this.props.currentSelectRecomm}
+
+                        colorList={this.props.colorList}
+                        selectedCaseData={this.props.selectedCaseData}
+                        onSoftFix={this.props.onSoftFix}
+                        originalGVF={this.props.originalGVF}
+                        originalMoran={this.props.originalMoran}
+                        onRecommendMethodSelection={this.props.onRecommendMethodSelection}
+                    />
+
+                    <div
+                        onMouseEnter={this.props.handleglobalProjHighlightEnter}
+                        onMouseLeave={this.props.handleglobalProjHighlightLeave}
+                    >
+                    <Alert
+                        message="Please check and select the projection with the least distortion of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+                    </div>
+                     */}
+
+                    <div
+                        onMouseEnter={this.props.handleglobalColorHighlightEnter}
+                        onMouseLeave={this.props.handleglobalColorHighlightLeave}
+                    >
+                    <Alert
+                        message="Please properly define the stroke color, width and background color of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+                    </div>
+            </Card>
+            );
+
         }else{ // Case5
             return(
                 <Card
