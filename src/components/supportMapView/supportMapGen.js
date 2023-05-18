@@ -128,7 +128,7 @@ class SubMapGenerator extends Component {
                 //this.props.onVegaParseError(err, true);
                 //console.log(err);
             });
-        }else if(selectRawCase === 'state_shipment'){
+        }else if(selectRawCase === 'state_shipment' || selectRawCase === 'state_shipment_norm'){
             /** Preprocess the vega spec */
             spec.data.values = selectedCaseData.geo;
 

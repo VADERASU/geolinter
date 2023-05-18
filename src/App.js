@@ -41,6 +41,9 @@ import chicago_income_features from './resource/case5_chicago/chicago_income_fea
 import state_shipment from './resource/tvcg_c1/state_shipment.json';
 import state_shipment_features from './resource/tvcg_c1/state_shipment_features.json';
 
+import state_shipment_norm from './resource/tvcg_c1/tvcg_state_shipment.json';
+import state_shipment_features_norm from './resource/tvcg_c1/state_shipment_features_new.json';
+
 // tvcg dark case -> euro countries' GDP
 import euro_gdp from './resource/tvcg_dark/euro_gdp.json';
 import euro_gdp_features from './resource/tvcg_dark/euro_gdp_features.json';
@@ -61,6 +64,10 @@ class App extends Component {
       state_shipment:{
         geo: state_shipment,
         features: state_shipment_features
+      },
+      state_shipment_norm:{
+        geo: state_shipment_norm,
+        features: state_shipment_features_norm
       },
       euro_gdp:{
         geo: euro_gdp,
@@ -105,7 +112,7 @@ class App extends Component {
     this.chicagoHardruleFlag = true;
 
     this.state = {
-      mapDataList: ['state_education','state_shipment','montreal_pop_density','georgia_pctBach','chicago_income','euro_gdp'],
+      mapDataList: ['state_education','state_shipment','state_shipment_norm','montreal_pop_density','georgia_pctBach','chicago_income','euro_gdp'],
       selectedCaseData: this.dataset['state_education'],
       colorList: {
         name: [
@@ -277,6 +284,7 @@ class App extends Component {
         county_unemployment: 0.81,
         chicago_income: 0.77,
         state_shipment: 0.37,
+        state_shipment_norm: 0.37,
         euro_gdp: 0.79
       },
       originalMoran: {
@@ -286,6 +294,7 @@ class App extends Component {
         county_unemployment: 0.68,
         chicago_income: 0.53,
         state_shipment: 0.33,
+        state_shipment_norm: 0.33,
         euro_gdp: 0.42
       },
 
@@ -898,6 +907,7 @@ class App extends Component {
                       handleglobalColorHighlightEnter={this.handleglobalColorHighlightEnter}
                       handleglobalProjHighlightLeave={this.handleglobalProjHighlightLeave}
                       handleglobalColorHighlightLeave={this.handleglobalColorHighlightLeave}
+                      onCaseSelection={this.handleCaseSelection}
                     />
                   </Col>
                 </Row>

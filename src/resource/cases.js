@@ -87,6 +87,50 @@ state_shipment:
     }
 }`,
 
+state_shipment_norm:
+`{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 550,
+    "height": 300,
+    "background": "#F3F8FB",
+    "title": "2002 U.S. Value of Freight Shipments Per Capita by State",
+    "data": {
+        "values": "state_shipment_norm",
+        "format": {
+            "property": "features"
+        }
+    },
+    "mark": "geoshape",
+    "projection": {
+        "type": "albersUsa"
+    },
+    "encoding": {
+        "stroke": {
+            "value": "black"
+        },
+        "strokeWidth": {
+            "value": 1
+        },
+        "color": {
+            "field": "properties.shipment_per_capita",
+            "type": "quantitative",
+            "scale": {
+                "range": ["#ffffff","#D9E6EB","#BAC9C9","#BAC9d4","#151719"],
+                "type": "threshold",
+                "domain": [5000, 24900, 39900, 60000]
+            },
+            "legend": {
+                "title": "USD"
+            }
+        }         
+    },
+    "usermeta": {
+        "embedOptions": {
+            "actions": false
+        }
+    }
+}`,
+
 county_unemployment:
 `{
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",

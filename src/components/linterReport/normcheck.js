@@ -1,11 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {Card, Typography, Space, Divider, Select, Upload, Button, Row, Col} from 'antd';
+import {Card, Typography, Space, Divider, Select, Upload, Button, Row, Col, Input} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import "../../styles/LinterReport.css"
 
 export function Normcheck(props){
     const { Text, Title } = Typography;
+
+    const handleClick = () => {
+        props.onCaseSelection("state_shipment_norm");
+    };
 
     return(
         <Card
@@ -66,14 +70,15 @@ export function Normcheck(props){
                         </Col>
                     </Row>    
                 </div>
-
-                <Space wrap style={{marginLeft: 80, marginTop: 10}}>
-                    <Button type="primary">Normalize the Data</Button>
-                    <Button>Skip, Data has already been normalized</Button>
-                    
                 </Space>
-                  
-                    
+                
+                <Divider />
+                <Text strong>Enter the data units after normalization:</Text>
+                <Input placeholder="e.g. per catipa, or percent (%)" />
+
+                <Space wrap style={{marginLeft: 80, marginTop: 20}}>
+                    <Button type="primary" onClick={handleClick}>Normalize the Data</Button>
+                    <Button>Skip, Data has already been normalized</Button>
                 </Space>
             </div>
 

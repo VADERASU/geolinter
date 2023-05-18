@@ -386,7 +386,7 @@ class LinterReport extends Component {
               
             </Card>
             );
-        }else if(this.props.selectRawCase === 'montreal_pop_density'
+        }else if(this.props.selectRawCase === 'montreal_pop_density' || this.props.selectRawCase === 'state_shipment_norm'
         || this.props.selectRawCase === 'georgia_pctBach' || this.props.selectRawCase === 'euro_gdp'){
             return(
                 <Card
@@ -401,6 +401,10 @@ class LinterReport extends Component {
                         onHardRuleFixClick={this.props.onHardRuleFixClick}
                     />
                     
+                    <Alert message="Normalized" type="success" showIcon closable
+                        style={{marginBottom: 8}}
+                    />
+
                     <ClassAccuErr 
                         mapFeatureReady={this.props.mapFeatureReady}
                         errColor={this.state.fillColorScheme.errTitle}
@@ -547,7 +551,9 @@ class LinterReport extends Component {
                         hardRuleMsg={this.props.hardRuleMsg}
                         onHardRuleFixClick={this.props.onHardRuleFixClick}
                     />
-                    <Normcheck />
+                    <Normcheck
+                        onCaseSelection={this.props.onCaseSelection}
+                    />
                     {/**
                      <ClassAccuErr 
                         mapFeatureReady={this.props.mapFeatureReady}
