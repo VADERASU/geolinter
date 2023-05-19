@@ -12,6 +12,7 @@ import FillColorScheme from "./fillColorScheme";
 import MapOptions from "./mapOptions";
 import BgOption from "./backgroundOption";
 import { Normcheck } from "./normcheck";
+import NewCaseErr from "./newcaseErr";
 
 class LinterReport extends Component {
     constructor(props){
@@ -309,7 +310,7 @@ class LinterReport extends Component {
             }
 
         });
-
+        //console.log(data);
         // case1 state_education
         if(this.props.selectRawCase === 'state_education'){
             return(
@@ -386,8 +387,10 @@ class LinterReport extends Component {
               
             </Card>
             );
-        }else if(this.props.selectRawCase === 'montreal_pop_density' || this.props.selectRawCase === 'state_shipment_norm'
-        || this.props.selectRawCase === 'georgia_pctBach' || this.props.selectRawCase === 'euro_gdp'){
+        }else if(this.props.selectRawCase === 'montreal_pop_density' || 
+            this.props.selectRawCase === 'georgia_pctBach' || 
+            this.props.selectRawCase === 'euro_gdp'){ 
+            // NEW CASES for TVCG with proj problem
             return(
                 <Card
                 title='Detected Violations'
@@ -402,6 +405,60 @@ class LinterReport extends Component {
                     />
                     
                     <Alert message="Normalized" type="success" showIcon closable
+                        style={{marginBottom: 8}}
+                    />
+
+                    <NewCaseErr 
+                        mapFeatureReady={this.props.mapFeatureReady}
+                        errColor={this.state.fillColorScheme.errTitle}
+                        errAccu={this.state.classificationAcc.errTitle}
+                        classificationList={data}
+
+                        currentSelectRecomm={this.props.currentSelectRecomm}
+
+                        colorList={this.props.colorList}
+                        selectedCaseData={this.props.selectedCaseData}
+                        onSoftFix={this.props.onSoftFix}
+                        originalGVF={this.props.originalGVF}
+                        originalMoran={this.props.originalMoran}
+                        onRecommendMethodSelection={this.props.onRecommendMethodSelection}
+                        onMapProjChange={this.props.onMapProjChange}
+                    />
+
+
+                    <div
+                        onMouseEnter={this.props.handleglobalColorHighlightEnter}
+                        onMouseLeave={this.props.handleglobalColorHighlightLeave}
+                    >
+                    <Alert
+                        message="Please properly define the stroke color, width and background color of the map in the global options window."
+                        type="info"
+                        style={{marginTop: 8}}
+                        showIcon
+                    />
+                    </div>
+            </Card>
+            );
+            
+        }else if(this.props.selectRawCase === 'state_shipment_norm'){
+            return(
+                <Card
+                title='Detected Violations'
+                size='small'
+                className='cardDetail'
+                style={{height: 505, overflow: "scroll"}}
+                >
+                    <HardRulePanel 
+                        hasHardRuleViolation={this.props.hasHardRuleViolation}
+                        hardRuleMsg={this.props.hardRuleMsg}
+                        onHardRuleFixClick={this.props.onHardRuleFixClick}
+                    />
+                    
+                    <Alert message="Normalized" type="success" showIcon closable
+                        style={{marginBottom: 8}}
+                    />
+
+                    <Alert message="Map is using the proper projection - albersUsa" type="success" showIcon closable
                         style={{marginBottom: 8}}
                     />
 

@@ -172,7 +172,7 @@ class App extends Component {
           ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#0c2c84'],
           ['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#990000'],
           ['#b2182b','#ef8a62','#fddbc7','#f7f7f7','#d1e5f0','#67a9cf','#2166ac'],
-          ['#c51b7d','#e9a3c9','#fde0ef','#f7f7f7','#e6f5d0','#a1d76a','#4d9221']
+          ["#C75DAB", "#D691C1", "#E4C1D9", "#F1F1F1", "#A7D3D4", "#42B7B9", "#009B9E"]
         ],
 
         8: [
@@ -226,7 +226,7 @@ class App extends Component {
           
         ],
       },
-
+      //["#009B9E","#42B7B9","#A7D3D4","#F1F1F1","#E4C1D9","#D691C1","#C75DAB"]
       /** vegalite script */
       selectRawCase: "state_education",
       vegaLiteSpec: JSON.parse(case_scripts["state_education"]),

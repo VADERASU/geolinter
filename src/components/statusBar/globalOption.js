@@ -158,7 +158,7 @@ class GolbalOption extends Component {
                                                 onChange={this.handleProjChange}
                                             >
                                                 <Option key="equalEarth" value="equalEarth">equalEarth</Option>
-                                                <Option key="mercator" value="mercator">mercator</Option>
+                                                <Option key="azimuthalEqualArea" value="azimuthalEqualArea">azimuthalEqualArea</Option>
                                                 <Option key="albersUsa" value="albersUsa">albersUsa</Option>
                                                 <Option key="albers" value="albers">albers</Option>
                                                 <Option key="naturalEarth1" value="naturalEarth1">naturalEarth1</Option>
