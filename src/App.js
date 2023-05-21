@@ -48,6 +48,9 @@ import state_shipment_features_norm from './resource/tvcg_c1/state_shipment_feat
 import euro_gdp from './resource/tvcg_dark/euro_gdp.json';
 import euro_gdp_features from './resource/tvcg_dark/euro_gdp_features.json';
 
+import euro_gdp_norm from './resource/tvcg_dark/euro_gdp_newnew.json';
+import euro_gdp_features_norm from './resource/tvcg_dark/euro_gdp_features_new.json';
+
 /** import case scripts */
 import { case_scripts } from './resource/cases';
 
@@ -72,6 +75,10 @@ class App extends Component {
       euro_gdp:{
         geo: euro_gdp,
         features: euro_gdp_features
+      },
+      euro_gdp_norm:{
+        geo: euro_gdp_norm,
+        features: euro_gdp_features_norm
       },
       //county_unemployment: {
         //geo: us10m,
@@ -112,7 +119,7 @@ class App extends Component {
     this.chicagoHardruleFlag = true;
 
     this.state = {
-      mapDataList: ['state_education','state_shipment','state_shipment_norm','montreal_pop_density','georgia_pctBach','chicago_income','euro_gdp'],
+      mapDataList: ['state_education','state_shipment','state_shipment_norm','montreal_pop_density','georgia_pctBach','chicago_income','euro_gdp', 'euro_gdp_norm'],
       selectedCaseData: this.dataset['state_education'],
       colorList: {
         name: [
@@ -285,7 +292,8 @@ class App extends Component {
         chicago_income: 0.77,
         state_shipment: 0.37,
         state_shipment_norm: 0.37,
-        euro_gdp: 0.79
+        euro_gdp: 0.79,
+        euro_gdp_norm: 0.79
       },
       originalMoran: {
         state_education: 0.21,
@@ -295,7 +303,8 @@ class App extends Component {
         chicago_income: 0.53,
         state_shipment: 0.33,
         state_shipment_norm: 0.33,
-        euro_gdp: 0.42
+        euro_gdp: 0.42,
+        euro_gdp_norm: 0.42
       },
 
       //global options indicator

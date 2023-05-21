@@ -389,7 +389,8 @@ class LinterReport extends Component {
             );
         }else if(this.props.selectRawCase === 'montreal_pop_density' || 
             this.props.selectRawCase === 'georgia_pctBach' || 
-            this.props.selectRawCase === 'euro_gdp'){ 
+            this.props.selectRawCase === 'euro_gdp' ||
+            this.props.selectRawCase === 'euro_gdp_norm'){ 
             // NEW CASES for TVCG with proj problem
             return(
                 <Card

@@ -349,4 +349,52 @@ euro_gdp:
     }
 }`,
 
+euro_gdp_norm:
+`{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 550,
+    "height": 300,
+    "title": "2010 GDP Per Capita by Country in Europe",
+    "background": "#191a1a",
+    "data": {
+        "values": "euro_gdp",
+        "format": {
+            "property": "features"
+        }
+    },
+    "mark": "geoshape",
+    "projection": {
+        "type": "mercator"
+    },
+    "encoding": {
+        "stroke": {
+            "value": "white"
+        },
+        "color": {
+            "field": "properties.gdp_per_capita",
+            "type": "quantitative",
+            "scale": {
+                "range": ["#bfc7c9","#a8beba","#84b0a6","#60a18c","#46936b","#317a49","#185632"],
+                "type": "threshold",
+                "domain": [
+                    2000,
+                    5000,
+                    10000,
+                    20000,
+                    50000,
+                    70000
+                ]
+            },
+            "legend": {
+                "title": "GDP per capita ($)"
+            }
+        }         
+    },
+    "usermeta": {
+        "embedOptions": {
+            "actions": false
+        }
+    }
+}`,
+
 };
