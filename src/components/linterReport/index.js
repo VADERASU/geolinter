@@ -480,18 +480,6 @@ class LinterReport extends Component {
                     />
 
                     <div
-                        onMouseEnter={this.props.handleglobalProjHighlightEnter}
-                        onMouseLeave={this.props.handleglobalProjHighlightLeave}
-                    >
-                    <Alert
-                        message="Please check and select the projection with the least distortion of the map in the global options window."
-                        type="info"
-                        style={{marginTop: 8}}
-                        showIcon
-                    />
-                    </div>
-
-                    <div
                         onMouseEnter={this.props.handleglobalColorHighlightEnter}
                         onMouseLeave={this.props.handleglobalColorHighlightLeave}
                     >

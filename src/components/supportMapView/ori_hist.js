@@ -1,10 +1,7 @@
 import React, {Component} from "react";
-import '../../styles/MapLinter.css';
 import * as d3 from 'd3';
-import 'd3-color';
-import * as d3jnd from "d3-jnd";
 
-class MainMapHistogram extends Component {
+class Original_hist extends Component{
     constructor(props){
         super(props);
         this.canvasRef = React.createRef();
@@ -13,26 +10,18 @@ class MainMapHistogram extends Component {
     drawHistogram = (data, breaks, colorRange, maxVal, minVal) => {
         const {scrollWidth, scrollHeight} = this.canvasRef.current;
         const format = d3.format(".02f");
-        /**
-         * d3.thresholdSturges (used by default) is based on Sturges’s formula (1926)
-         * perform poorly if n < 30 and data are not normally distributed.
-         * These three generators implicitely assume a normal distribution. 
-         * Scott’s normal reference rule is optimal for random samples of 
-         * normally distributed data. Freedman–Diaconis’ choice is less sensitive 
-         * than the standard deviation to outliers in data.
-         */
+
         const dataBins = d3.bin().thresholds(d3.thresholdFreedmanDiaconis)(data);
-        //console.log(d3.thresholdFreedmanDiaconis(data));
 
         // Chart dimensions
         let dimensions = {
             width: scrollWidth,
             height: scrollHeight-70,
             margin: {
-                top: 5,
-                right: 40,
-                bottom: 30,
-                left: 20, //60
+                top: 0,
+                right: 20,
+                bottom: 0,
+                left: 15, //60
             },
         };
         dimensions.boundedWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right;
@@ -42,7 +31,7 @@ class MainMapHistogram extends Component {
         const rootGroup = svgRoot.select('g#root-group');
         const histGroup = rootGroup.append('g')
             .attr("transform", `translate(${dimensions.margin.left}, ${dimensions.margin.top})`);
-        
+
         /** setup scales */
         const xScale = d3.scaleLinear()
             .domain([dataBins[0].x0, dataBins[dataBins.length - 1].x1])
@@ -53,14 +42,6 @@ class MainMapHistogram extends Component {
             .range([dimensions.height - dimensions.margin.bottom, dimensions.margin.top]);
 
         const colorScale = d3.scaleThreshold().domain(breaks).range(colorRange);
-
-        let jndList = [];
-        colorRange.forEach((e,i)=>{
-            if(i < colorRange.length-1){
-                let isJND = d3jnd.noticeablyDifferent(colorRange[i], colorRange[i+1], 0.5, 0.5);
-                jndList.push(isJND);
-            }
-        });
 
         /** render bars for the hist */
         const barsGroup = histGroup.append('g').attr('class', 'bars');
@@ -84,7 +65,7 @@ class MainMapHistogram extends Component {
                 .attr("x1", xScale(binBreak))  //<<== change your code here
                 .attr("y1", 0)
                 .attr("x2", xScale(binBreak))  //<<== and here
-                .attr("y2", dimensions.height - dimensions.margin.top - dimensions.margin.bottom + 5)
+                .attr("y2", dimensions.height - dimensions.margin.top - dimensions.margin.bottom)
                 .style("stroke-width", 2)
                 .style("stroke", "darkgray")
                 .style("fill", "none"); 
@@ -98,30 +79,17 @@ class MainMapHistogram extends Component {
                 const colorBins = colorBinGroup.append('rect')
                     .attr('x', xScale(binBreak))
                     .attr('width', xScale(colorBinList[i+1])-xScale(binBreak))
-                    .attr('y', dimensions.height + 5)
-                    .attr('height', 12)
+                    .attr('y', dimensions.height + 40)
+                    .attr('height', 20)
                     .attr('fill', colorScale(binBreak));
 
-                const colorText = colorBinGroup.append('text')
-                    .attr('x', xScale(binBreak)-10)
-                    .attr('y', i%2 !== 0 ? dimensions.height+30 : dimensions.height)
-                    .style('font-size', 10)
-                    .text(i!==0 ? binBreak : "");
-
-                if(i >0){ // TODO: Visual Design needed!!!
-                    const colorJndErrText = colorBinGroup.append('text')
-                        .attr('x', xScale(binBreak)-70)
-                        .attr('y', dimensions.height+50)
-                        .style('font-size', 10)
-                        .attr('fill', "red")
-                        .text(jndList[i-1] ? "" : "Not noticeably different colors");
-                }
+                //const colorText = colorBinGroup.append('text')
+                //    .attr('x', xScale(binBreak)-10)
+                //    .attr('y', i%2 !== 0 ? dimensions.height+65 : dimensions.height+35)
+                //    //.attr('font-size', 13)
+                //    .text(i!==0 ? binBreak : "");
             }
         });
-        //console.log(xScale(breaks[0].x1));
-        //const colorBins = colorBinGroup.selectAll('rect')
-        //.data(breaks)
-
 
         /** render x-axis */
         const xAxisGroup = histGroup.append('g')
@@ -153,42 +121,36 @@ class MainMapHistogram extends Component {
         rootGroup.selectAll('g').remove();
     };
 
+    round = (num) => {
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        return Math.round(m) / 100 * Math.sign(num);
+    };
+
     extractFeatures = (propData) => {
-        let data = this.props.state_shipment_features.data_list,
-            //breaks = [50, 249, 399, 600],
-            //colorRange = ["#ffffff","#D9E6EB","#BAC9C9","#BAC9d4","#151719"],
+        let data = this.props.selectedCaseData.features.data_list,
             breaks = this.props.vegaLiteSpec.encoding.color.scale.domain,
             colorRange = this.props.vegaLiteSpec.encoding.color.scale.range,
-            maxVal = this.props.state_shipment_features.max,
-            minVal = this.props.state_shipment_features.min;
+            maxVal = this.props.selectedCaseData.features.max,
+            minVal = this.props.selectedCaseData.features.min;
 
         return {data, breaks, colorRange, maxVal, minVal};
     };
 
     componentDidMount() {
-        if(this.props.selectedCaseData !== null){
-            let dataFeatures = this.props.selectedCaseData.features;
-            let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
-            if(dataFeatures !== null ) {
-             this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
-            }
-        }
+        let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
+        this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
+        //console.log(this.extractFeatures(this.props));
     }
 
     componentDidUpdate() {
         this.clearCanvas();
-        if(this.props.selectedCaseData !== null){
-            let dataFeatures = this.props.selectedCaseData.features;
-            let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
-            if(dataFeatures !== null ) {
-             this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
-            }
-        }
+        let {data, breaks, colorRange, maxVal, minVal} = this.extractFeatures(this.props);
+        this.drawHistogram(data, breaks, colorRange, maxVal, minVal);
     }
 
     render(){
         return(
-            <div style={{height: 170}} ref={this.canvasRef}> {/** 235px in 1080p */}
+            <div style={{height: 130, marginTop: 10}} ref={this.canvasRef}> {/** 235px in 1080p */}
                 <svg
                     style={{
                         width: '100%',
@@ -201,4 +163,4 @@ class MainMapHistogram extends Component {
         );
     }
 }
-export default MainMapHistogram;
+export default Original_hist;

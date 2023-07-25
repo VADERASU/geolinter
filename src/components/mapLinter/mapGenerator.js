@@ -25,7 +25,7 @@ class MapGenerator extends Component {
                 //console.log(err);
             });
 
-        }else if(selectRawCase === 'state_education'){
+        }else if(selectRawCase === 'state_shipment_norm'){
             /** SPATICL CASE 1 with un classed map */
             let unclass_spec_string = 
             `{
@@ -33,16 +33,16 @@ class MapGenerator extends Component {
                 "width": 550,
                 "height": 300,
                 "background": "#F3F8FB",
-                "title": "The higher education rate of the states in the US",
+                "title": "Value of Freight Shipments by State: 2002",
                 "data": {
-                    "values": "state_education",
+                    "values": "state_shipment",
                     "format": {
                         "property": "features"
                     }
                 },
                 "mark": "geoshape",
                 "projection": {
-                    "type": "equalEarth"
+                    "type": "albersUsa"
                 },
                 "encoding": {
                     "stroke": {
@@ -52,10 +52,15 @@ class MapGenerator extends Component {
                         "value": 1
                     },
                     "color": {
-                        "field": "properties.higher_education_rate",
+                        "field": "properties.shipment",
                         "type": "quantitative",
+                        "scale": {
+                            "range": ["#ffffff","#D9E6EB","#BAC9C9","#BAC9d4","#151719"],
+                            "type": "threshold",
+                            "domain": [50, 249, 399, 600]
+                        },
                         "legend": {
-                            "title": null
+                            "title": "billion $"
                         }
                     }         
                 },
@@ -67,7 +72,7 @@ class MapGenerator extends Component {
             }`;
 
             let unclass_spec = JSON.parse(unclass_spec_string);
-            unclass_spec.data.values = selectedCaseData.geo;
+            unclass_spec.data.values = this.props.state_shipment;
             /** Preprocess the vega spec */
             //spec.data.values = selectedCaseData.geo;
             //spec.projection.fit = selectedCaseData.geo.features;

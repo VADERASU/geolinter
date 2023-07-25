@@ -146,7 +146,7 @@ class GolbalOption extends Component {
                                 >
                                     <Row gutter={[5,5]}>
                                             <Col span={24}>
-                                                <b>Map projection: </b>Select a proper cartographic projection type.
+                                                <b>Map projection: </b> Recommend <b>[albersUsa]</b> based on your coordinates.
                                             </Col>
                                             <Col span={24}>
                                             <Select
@@ -161,7 +161,7 @@ class GolbalOption extends Component {
                                                 <Option key="azimuthalEqualArea" value="azimuthalEqualArea">azimuthalEqualArea</Option>
                                                 <Option key="albersUsa" value="albersUsa">albersUsa</Option>
                                                 <Option key="albers" value="albers">albers</Option>
-                                                <Option key="naturalEarth1" value="naturalEarth1">naturalEarth1</Option>
+                                                <Option key="azimuthalEquidistant" value="azimuthalEquidistant">naturalEarth1</Option>
                                             </Select>
                                             </Col>
                                     </Row>      
@@ -183,12 +183,12 @@ class GolbalOption extends Component {
                             <Col span={23}>
                                 <Row gutter={[5,5]}>
                                         <Col span={24}>
-                                            <b>Map caption: </b>You can set a caption that briefly explain the topic.
+                                            <b>Map title: </b>Enter the theme, place, and time to describe your map.
                                         </Col>
                                         <Col span={24}>
                                         <Input
                                             size="small" 
-                                            placeholder="Map caption"
+                                            placeholder="e.g. 2022 U.S. Income Per Capita"
                                             onChange={this.props.onTitleChange} 
                                         />
                                         </Col>

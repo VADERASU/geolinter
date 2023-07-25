@@ -887,6 +887,8 @@ class App extends Component {
                       selectedCaseData={this.state.oldSelectedCaseData}
                       onVegaParseError={this.handleVegaParseError}
                       hasHardRuleViolation={hardErrFlag}
+                      state_shipment={state_shipment}
+                      state_shipment_features={state_shipment_features}
                     />
                   </Col>
                   {/** Linter Report */}

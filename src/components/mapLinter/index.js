@@ -85,6 +85,7 @@ class MapLinter extends Component {
                         vegaLiteSpec={this.state.propsSpec}
                         selectRawCase={this.state.selectedRawCase}
                         onVegaParseError={this.props.onVegaParseError}
+                        state_shipment={this.props.state_shipment}
                     />
                     
                     <Divider
@@ -94,6 +95,7 @@ class MapLinter extends Component {
                     <MainMapHistogram
                         selectedCaseData={this.state.selectedCaseData}
                         vegaLiteSpec={this.state.propsSpec}
+                        state_shipment_features={this.props.state_shipment_features}
                     />
                     
                 </Card>

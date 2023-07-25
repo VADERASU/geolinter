@@ -5,6 +5,7 @@ import ScatterGenerator from "./scatterGenerator";
 import SubMapHistogram from "./subMapHist";
 import SubLineChartGenerator from "./subLineChart";
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import Original_hist from "./ori_hist";
 
 class SupportMapView extends Component {
     constructor(props){
@@ -99,12 +100,9 @@ class SupportMapView extends Component {
                             <Row gutter={[8, 8]}>
                                     
                                 <Col span={24}>
-                                <Empty
-                                    style={{marginTop: 5}}
-                                    image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                    description={
-                                        <span>Please fix the soft rule violation(s).</span>
-                                    }
+                                <Original_hist 
+                                    selectedCaseData={this.props.selectedCaseData}
+                                    vegaLiteSpec={this.props.vegaLiteSpec}
                                 />
                                 </Col>
                                     

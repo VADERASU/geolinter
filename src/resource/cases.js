@@ -120,7 +120,7 @@ state_shipment_norm:
                 "domain": [5000, 24900, 39900, 60000]
             },
             "legend": {
-                "title": "USD"
+                "title": "USD ($) Per Capita"
             }
         }         
     },
