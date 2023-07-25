@@ -1,10 +1,12 @@
-# Getting Started with Create React App
+# GeoLinter: A Linting Framework for Choropleth Maps
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+GeoLinter detects potentially suboptimal design decisions and provides further recommendations on design improvement with explanations at each step of the design process.
 
 ## Available Scripts
 
 In the project directory, you can run:
+### `yarn` or `yarn install`
+Install all the dependencies listed within package.json in the local node_modules folder.
 
 ### `yarn start`
 
