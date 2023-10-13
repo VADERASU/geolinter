@@ -1,5 +1,7 @@
 # GeoLinter: A Linting Framework for Choropleth Maps
 
+![Screenshot 2023-10-13 at 13-17-29 GeoLinter A Linting Framework for Choropleth Maps - geolinter2023 pdf](https://github.com/VADERASU/geolinter/assets/3042601/766080d5-2af1-4393-a7ee-bfccec960978)
+
 GeoLinter detects potentially suboptimal design decisions and provides further recommendations on design improvement with explanations at each step of the design process.
 
 F. Lei, A. Fan, A. M. MacEachren and R. Maciejewski, "GeoLinter: A Linting Framework for Choropleth Maps," in IEEE Transactions on Visualization and Computer Graphics, doi: 10.1109/TVCG.2023.3322372.
