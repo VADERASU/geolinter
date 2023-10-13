@@ -2,7 +2,7 @@
 
 GeoLinter detects potentially suboptimal design decisions and provides further recommendations on design improvement with explanations at each step of the design process.
 
-`F. Lei, A. Fan, A. M. MacEachren and R. Maciejewski, "GeoLinter: A Linting Framework for Choropleth Maps," in IEEE Transactions on Visualization and Computer Graphics, doi: 10.1109/TVCG.2023.3322372.`
+F. Lei, A. Fan, A. M. MacEachren and R. Maciejewski, "GeoLinter: A Linting Framework for Choropleth Maps," in IEEE Transactions on Visualization and Computer Graphics, doi: 10.1109/TVCG.2023.3322372.
 
 ## Available Scripts
 
