@@ -2,7 +2,7 @@
   "name": "deceptive-choropleth-linter",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mcnutt.in/geolinter",
+  "homepage": "https://vaderasu.github.io/geolinter",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
